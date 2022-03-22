@@ -2,6 +2,7 @@
 
 ## Cách chạy
 ### Bước 1:
+Mở VSCode clone project về và chạy câu lệnh:
 ```
 npm install -g expo-cli
 npm start
