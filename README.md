@@ -4,6 +4,7 @@
 ### Bước 1:
 Mở VSCode clone project về và chạy câu lệnh:
 ```
+npm install
 npm start
 ```
 ### Bước 2:
