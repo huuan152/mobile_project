@@ -28,7 +28,7 @@ export default function SignUp() {
       <TextInput placeholder='Mật khẩu' style={styles.input} value={password} secureTextEntry={true} onChangeText={text => setPassword(text)}></TextInput>
       <TextInput placeholder='Xác nhận mật khẩu' style={styles.input} value={passwordConfirm} secureTextEntry={true} onChangeText={text => setPasswordConfirm(text)}></TextInput>
       <Pressable style={styles.button} onPress={signUp}>
-        <Text style={styles.buttonText}>ĐĂNG NHẬP</Text>
+        <Text style={styles.buttonText}>ĐĂNG KÝ</Text>
       </Pressable>
     </ScrollView>
   );
