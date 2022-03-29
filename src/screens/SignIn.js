@@ -1,22 +1,45 @@
-import { StyleSheet, View, TextInput, Text, Image, ToastAndroid, ScrollView, Pressable } from 'react-native';
+import { StyleSheet, View, TextInput, Text, Image, ScrollView, Pressable, ToastAndroid } from 'react-native';
 import React, { useState } from 'react';
 import images from '../../assets/images/index';
+import axios from 'axios'
+
+const URL = "https://motel-app.herokuapp.com";
 
 export default function SignIn({navigation}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const logIn = async () => {
+      try {
+        await axios.post(`${URL}/api/user/login`, {
+          "email": username,
+          "password": password
+        });
+      } catch (error) {
+        if (error.message === "Request failed with status code 400") {
+          ToastAndroid.show("Tài khoản hoặc mật khẩu không đúng", ToastAndroid.SHORT);
+        } else {
+          console.log(error.message);
+        }
+      }
+  }
+
   const signIn = () => {
     if (username === "" || password === "") {
-      ToastAndroid.show("Tài khoản hoặc mật khẩu bỏ trống!", ToastAndroid.SHORT)
+      ToastAndroid.show("Tài khoản hoặc mật khẩu bỏ trống!", ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show(username + "\n" + password, ToastAndroid.SHORT)
+      var re = /\S+@\S+\.\S+/;
+      if (re.test(username)) {
+        logIn();
+      } else {
+        ToastAndroid.show("Tài khoản sai định dạng!", ToastAndroid.SHORT);
+      }
     }
   }
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'center', justifyContent: 'center',}}>
-      <Image source={images.logo} style={{marginBottom: 5}}></Image>
+      <Image source={images.logo} style={{marginBottom: 15}}></Image>
       <TextInput placeholder='Tài khoản' style={styles.input} value={username} onChangeText={text => setUsername(text)}></TextInput>
       <TextInput placeholder='Mật khẩu' style={styles.input} value={password} secureTextEntry={true} onChangeText={text => setPassword(text)}></TextInput>
       <Pressable style={styles.button} onPress={signIn}>
@@ -25,27 +48,23 @@ export default function SignIn({navigation}) {
       <Pressable>
         <Text style={styles.clickableText}>Quên mật khẩu?</Text>
       </Pressable>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 5}}>
         <View style={{flex: 1, height: 1.5, backgroundColor: 'grey'}} />
         <View>
           <Text style={{width: 250, textAlign: 'center', fontSize: 17, color: "grey"}}>Hoặc đăng nhập với tài khoản</Text>
         </View>
         <View style={{flex: 1, height: 1.5, backgroundColor: 'grey'}} />
       </View>
-      <View style={{flexDirection: "row"}}>
+      <View style={{flexDirection: "row", marginBottom: 20}}>
         <Pressable style={{...styles.button, backgroundColor: "#4267B2", flex: 1, marginRight: 10}} onPress={signIn}>
           <Image source={images.facebook} style={styles.buttonIcon}></Image>
           <Text style={styles.buttonText}>Facebook</Text>
         </Pressable>
-        <Pressable style={{...styles.button, backgroundColor: "#2196f3", flex: 1}} onPress={signIn}>
-          <Image source={images.zalo} style={styles.buttonIcon}></Image>
-          <Text style={styles.buttonText}>Zalo</Text>
+        <Pressable style={{...styles.button, backgroundColor: "white", flex: 1}} onPress={signIn}>
+          <Image source={images.google} style={styles.buttonIcon}></Image>
+          <Text style={{...styles.buttonText, color: "black"}}>Google</Text>
         </Pressable>
       </View>
-      <Pressable style={{...styles.button, backgroundColor: "white", width: "100%", marginTop: 0}} onPress={signIn}>
-        <Image source={images.google} style={styles.buttonIcon}></Image>
-        <Text style={{...styles.buttonText, color: "black"}}>Google</Text>
-      </Pressable>
       <Pressable onPress={() => navigation.navigate("SignUp")}>
         <Text style={styles.clickableText}>Chưa có tài khoản? Đăng ký tại đây</Text>
       </Pressable>
