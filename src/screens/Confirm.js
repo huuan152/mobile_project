@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, Text, ScrollView } from 'react-native';
+import StepBar from './StepBar';
 
 export default function Confirm() {
     const [title, setTitle] = useState('');
@@ -8,17 +9,20 @@ export default function Confirm() {
     const [description, setDescription] = useState('');
   
     return (
-        <ScrollView style={{ paddingHorizontal: 25 }}>
-            <Text style={{ fontSize: 17 }}>Tiêu đề bài đăng</Text>
-            <TextInput placeholder='Nhập tiêu đề bài đăng' style={styles.input} value={title} onChangeText={text => setTitle(text)}></TextInput>
-            <Text style={{ fontSize: 17 }}>Liên hệ với</Text>
-            <TextInput placeholder='Nhập họ và tên' style={styles.input} value={contactName} onChangeText={text => setContactName(text)}></TextInput>
-            <Text style={{ fontSize: 17 }}>Số điện thoại</Text>
-            <TextInput placeholder='Nhập số điện thoại' style={styles.input} value={phoneNumber} onChangeText={text => setPhoneNumber(text)}></TextInput>
-            <Text style={{ fontSize: 17 }}>Mô tả chi tiết</Text>
-            <TextInput style={{...styles.input, textAlignVertical: 'top'}} value={description} onChangeText={text => setDescription(text)} multiline = {true} numberOfLines = {6}></TextInput>
-            <Text style={{ fontSize: 17, fontStyle: 'italic' , textAlign: "justify"}}>* Bằng việc tiếp tục đăng tin nghĩa là bạn đã đồng ý với <Text style={{color: "#4285F4", textDecorationLine: 'underline'}}>Điều khoản và Chính sách</Text> của chúng tôi</Text>
-        </ScrollView>
+        <>
+            <StepBar step={3}/>
+            <ScrollView style={{ paddingHorizontal: 25, height: '100%', backgroundColor: 'white', paddingTop: 15 }}>
+                <Text style={{ fontSize: 17 }}>Tiêu đề bài đăng</Text>
+                <TextInput placeholder='Nhập tiêu đề bài đăng' style={styles.input} value={title} onChangeText={text => setTitle(text)}></TextInput>
+                <Text style={{ fontSize: 17 }}>Liên hệ với</Text>
+                <TextInput placeholder='Nhập họ và tên' style={styles.input} value={contactName} onChangeText={text => setContactName(text)}></TextInput>
+                <Text style={{ fontSize: 17 }}>Số điện thoại</Text>
+                <TextInput placeholder='Nhập số điện thoại' style={styles.input} value={phoneNumber} onChangeText={text => setPhoneNumber(text)}></TextInput>
+                <Text style={{ fontSize: 17 }}>Mô tả chi tiết</Text>
+                <TextInput style={{...styles.input, textAlignVertical: 'top'}} value={description} onChangeText={text => setDescription(text)} multiline = {true} numberOfLines = {6}></TextInput>
+                <Text style={{ fontSize: 17, fontStyle: 'italic' , textAlign: "justify"}}>* Bằng việc tiếp tục đăng tin nghĩa là bạn đã đồng ý với <Text style={{color: "#4285F4", textDecorationLine: 'underline'}}>Điều khoản và Chính sách</Text> của chúng tôi</Text>
+            </ScrollView>
+        </>
     );
   }
   
