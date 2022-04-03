@@ -1,6 +1,6 @@
 import { StyleSheet, View, TextInput, Text, Image, Pressable, ScrollView, ToastAndroid } from 'react-native';
 import React, { useState } from 'react';
-import images from '../../assets/images';
+import images from '../../../assets/images';
 import axios from 'axios';
 import { RadioButton } from 'react-native-paper';
 

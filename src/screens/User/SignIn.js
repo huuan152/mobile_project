@@ -1,6 +1,6 @@
 import { StyleSheet, View, TextInput, Text, Image, ScrollView, Pressable, ToastAndroid } from 'react-native';
 import React, { useState } from 'react';
-import images from '../../assets/images/index';
+import images from '../../../assets/images/index';
 import axios from 'axios'
 
 const URL = "https://motel-app.herokuapp.com";

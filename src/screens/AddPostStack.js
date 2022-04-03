@@ -13,7 +13,6 @@ const Stack = createStackNavigator();
 
 export default function AddPostStack() {
     return (
-        <NavigationContainer>
             <Stack.Navigator initialRouteName="Location" screenOptions={{
                 title: 'Đăng tin',
                 headerTitleStyle: {
@@ -84,7 +83,6 @@ export default function AddPostStack() {
                         ),
                 })}/>
             </Stack.Navigator>
-        </NavigationContainer>
   );
 }
 
