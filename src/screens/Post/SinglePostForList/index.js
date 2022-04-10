@@ -3,6 +3,7 @@ import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Entypo';
 import IconRec from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
+import BUTTON_COLORS from '../../../Constants/Utilities/index';
 
 //import { styles } from './style';
 const Post = (props) => {
@@ -17,11 +18,11 @@ const Post = (props) => {
                     <Text style={styles.price}>{`${price} triệu`}</Text>
                 </View>
                 <View style={styles.addressField}>
-                    <Icon size={16} color={'#458dc4'} name="location" />
+                    <Icon size={16} color={BUTTON_COLORS.colorPicked} name="location" />
                     <Text style={styles.addressText}>{address}</Text>
                 </View>
                 <View style={styles.areaField}>
-                    <IconRec size={16} color={'#458dc4'} name="vector-rectangle" />
+                    <IconRec size={16} color={BUTTON_COLORS.colorPicked} name="vector-rectangle" />
                     <Text style={styles.addressText}>{`${area} m2`}</Text>
                 </View>
             </View>
@@ -53,7 +54,7 @@ export const styles = StyleSheet.create({
         marginTop: -32,
         paddingVertical: 6,
         paddingHorizontal: 22,
-        backgroundColor: '#458dc4',
+        backgroundColor: BUTTON_COLORS.colorPicked,
         width: '45%',
         color: '#ffffff',
         borderRadius: 4

@@ -2,6 +2,7 @@ import { View, StyleSheet, Image, Text, ScrollView } from "react-native";
 import Utilities from "../../../Components/UtilitiesButton";
 import Icon from 'react-native-vector-icons/Entypo';
 import IconRec from 'react-native-vector-icons/MaterialCommunityIcons';
+import BUTTON_COLORS from '../../../Constants/Utilities/index';
 
 const mock_data = {
     price: "5.5",
@@ -34,25 +35,25 @@ const PostDetail = (props) => {
             <View style={styles.generalInfo}>
                 <Text style={styles.title}>{title}</Text>
                 <View style={styles.info}>
-                    <Icon size={24} color={'#458dc4'} name="location" />
+                    <Icon size={24} color={BUTTON_COLORS.colorPicked} name="location" />
                     <Text style={styles.infoText}>{addressText}</Text>
                 </View>
                 <View style={styles.info}>
-                    <IconRec size={24} color={'#458dc4'} name="vector-rectangle" />
+                    <IconRec size={24} color={BUTTON_COLORS.colorPicked} name="vector-rectangle" />
                     <Text style={styles.infoText}>{`${area} m2`}</Text>
                 </View>
                 <View style={styles.info}>
-                    <Icon size={24} color={'#458dc4'} name="phone" />
+                    <Icon size={24} color={BUTTON_COLORS.colorPicked} name="phone" />
                     <Text style={styles.infoText}>{phoneNumber}</Text>
                 </View>
             </View>
             <View style={styles.utilitiesField}>
-                <Text style={styles.utilitiesTitle}>{`Tiện ích(${utilities.length})`}</Text>
+                <Text style={{...styles.utilitiesTitle, color: BUTTON_COLORS.colorPicked}}>{`Tiện ích(${utilities.length})`}</Text>
                 <View style={styles.utilities}>
                     {utilities.map((element, index) => {
                         return (
                             <View style={styles.utilitiesItem}>
-                                <Utilities key={index} size={45} color={'#458dc4'} name={element} />
+                                <Utilities key={index} size={45} color={BUTTON_COLORS.colorPicked} name={element} iconClicked={false}/>
                             </View>
                         )
                     })}
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     priceText: {
         fontSize: 24,
         fontWeight: "bold",
-        color: "#4285F4"
+        color: BUTTON_COLORS.colorPicked
     },
     listImage: {
         width: "100%",
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         fontWeight: "bold",
-        color: "#4285F4"
+        color: BUTTON_COLORS.colorPicked
     },
     info: {
         flexDirection: "row",
@@ -117,7 +118,6 @@ const styles = StyleSheet.create({
     },
     utilitiesTitle: {
         fontSize: 18,
-        color: "#4285F4",
         marginLeft: 16
     },
     utilities: {
@@ -125,7 +125,8 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
     },
     utilitiesItem: {
-        flexBasis: "25%"
+        flexBasis: "25%",
+        justifyContent: 'flex-end',
     }
 
 })

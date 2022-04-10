@@ -2,6 +2,7 @@ import { StyleSheet, View, TextInput, Text, Image, ScrollView, Pressable, ToastA
 import React, { useState } from 'react';
 import images from '../../../assets/images/index';
 import axios from 'axios'
+import BUTTON_COLORS from '../../Constants/Utilities/index';
 
 const URL = "https://motel-app.herokuapp.com";
 
@@ -56,7 +57,7 @@ export default function SignIn({navigation}) {
         <View style={{flex: 1, height: 1.5, backgroundColor: 'grey'}} />
       </View>
       <View style={{flexDirection: "row", marginBottom: 20}}>
-        <Pressable style={{...styles.button, backgroundColor: "#4267B2", flex: 1, marginRight: 10}} onPress={signIn}>
+        <Pressable style={{...styles.button, backgroundColor: BUTTON_COLORS.colorPicked, flex: 1, marginRight: 10}} onPress={signIn}>
           <Image source={images.facebook} style={styles.buttonIcon}></Image>
           <Text style={styles.buttonText}>Facebook</Text>
         </Pressable>
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: '#4285F4',
+    backgroundColor: BUTTON_COLORS.colorPicked,
     flexDirection: "row",
   },
   buttonText: {
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
   },
   clickableText: {
     fontSize: 17,
-    color: '#4285F4',
+    color: BUTTON_COLORS.colorPicked,
     paddingBottom: 15,
   },
 });

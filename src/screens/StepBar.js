@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
+import BUTTON_COLORS from '../Constants/Utilities/index';
 
 const thirdIndicatorStyles = {
   stepIndicatorSize: 25,
   currentStepIndicatorSize: 30,
   separatorStrokeWidth: 2,
   currentStepStrokeWidth: 3,
-  stepStrokeCurrentColor: '#4285F4',
+  stepStrokeCurrentColor: BUTTON_COLORS.colorPicked,
   stepStrokeWidth: 3,
-  stepStrokeFinishedColor: '#4285F4',
+  stepStrokeFinishedColor: BUTTON_COLORS.colorPicked,
   stepStrokeUnFinishedColor: '#dedede',
-  separatorFinishedColor: '#4285F4',
+  separatorFinishedColor: BUTTON_COLORS.colorPicked,
   separatorUnFinishedColor: '#dedede',
-  stepIndicatorFinishedColor: '#4285F4',
+  stepIndicatorFinishedColor: BUTTON_COLORS.colorPicked,
   stepIndicatorUnFinishedColor: '#ffffff',
   stepIndicatorCurrentColor: '#ffffff',
   stepIndicatorLabelFontSize: 0,
@@ -23,7 +24,7 @@ const thirdIndicatorStyles = {
   stepIndicatorLabelUnFinishedColor: 'transparent',
   labelColor: '#999999',
   labelSize: 15,
-  currentStepLabelColor: '#4285F4',
+  currentStepLabelColor: BUTTON_COLORS.colorPicked,
 };
 
 export default function StepBar(props) {  

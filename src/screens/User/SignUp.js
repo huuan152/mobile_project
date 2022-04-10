@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import images from '../../../assets/images';
 import axios from 'axios';
 import { RadioButton } from 'react-native-paper';
+import BUTTON_COLORS from '../../Constants/Utilities/index';
 
 const URL = "https://motel-app.herokuapp.com";
 const emailRegex = /\S+@\S+\.\S+/;
@@ -65,14 +66,14 @@ export default function SignUp() {
           value="lessor"
           status={ role === 'lessor' ? 'checked' : 'unchecked' }
           onPress={() => setRole('lessor')}
-          color='#4285F4'
+          color={BUTTON_COLORS.colorPicked}
         />
         <Text style={{ fontSize: 17 }}>Người thuê</Text>
         <RadioButton
           value="lessee"
           status={ role === 'lessee' ? 'checked' : 'unchecked' }
           onPress={() => setRole('lessee')}
-          color='#4285F4'
+          color={BUTTON_COLORS.colorPicked}
         />
         <Text style={{ fontSize: 17 }}>Người cho thuê</Text>
       </View>
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: '#4285F4',
+    backgroundColor: BUTTON_COLORS.colorPicked,
     flexDirection: "row",
   },
   buttonText: {

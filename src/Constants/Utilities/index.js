@@ -1,4 +1,4 @@
-const BUTTON_COLORS = {
-    colorPicked: "#4285F4",
+export default {
+    colorPicked: "#2089dc",
     colorBasic: "#d3d3d3"
 }

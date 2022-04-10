@@ -6,6 +6,7 @@ import Location from './Location';
 import Info from './Info';
 import Images from './Images';
 import Confirm from './Confirm';
+import BUTTON_COLORS from '../Constants/Utilities/index';
 
 const Stack = createStackNavigator();
 
@@ -19,7 +20,7 @@ export default function AddPostStack() {
                     fontWeight: 'bold',
                     fontSize: 23
                 },
-                headerTintColor: '#4285F4',
+                headerTintColor: BUTTON_COLORS.colorPicked,
                 headerTitleAlign: 'center',
             }}>
                 <Stack.Screen 
@@ -88,7 +89,7 @@ export default function AddPostStack() {
 
 const styles = StyleSheet.create({
     text: {
-        color: '#4285F4', 
+        color: BUTTON_COLORS.colorPicked, 
         fontSize: 18, 
     }
 });
