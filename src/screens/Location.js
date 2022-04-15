@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TextInput, Text, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, TextInput, Text, ActivityIndicator, FlatList, Pressable } from 'react-native';
 import StepBar from './StepBar';
 import * as CurrentLocation from 'expo-location';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import BUTTON_COLORS from '../Constants/Utilities/index';
 import axios from 'axios';
-import SearchableDropdown from 'react-native-searchable-dropdown';
 
 export default function Location() {
-    // const arr = ["An", "Anh", "Chính", "Hải", "Tân", "Đức"];
     const [loading, setLoading] = useState("transparent");
     const [location, setLocation] = useState('');
     const [errorMsg, setErrorMsg] = useState(null);
-
-    const [selectedItems, setSelectedItems] = useState({});
-
-    const [items, setItems] = useState([]);
+    const [data, setData] = useState(["Hà Nội", "Thành phố Hồ Chí Minh", "Đà Nẵng", "Hải Phòng", "Quảng Ninh"]);
+    const [search, setSearch] = useState('');
 
     const getCurrentLocation = async () => {
         setLoading(BUTTON_COLORS.colorPicked);
@@ -45,86 +41,71 @@ export default function Location() {
     },[location])
 
     const searchLocation = async(input) => {
-        var newItems = [];    
-        await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&language=vi&components=country:vn&types=geocode&key=AIzaSyC_8ZzcEbucSlkDlE7GTiLHNhFvfGHDMlQ`)
-        .then(function (response) {
-            console.log(response);
-            response.data.predictions.forEach((element, index) => {
-                console.log(element.description);
-                 newItems.push({
-                     id: index,
-                     name: element
-                 })
+        setSearch(input);
+        if (input != '') {
+            var newItems = [];    
+            await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&language=vi&components=country:vn&types=address&key=AIzaSyC_8ZzcEbucSlkDlE7GTiLHNhFvfGHDMlQ`)
+            .then(function (response) {
+                console.log(response);
+                response.data.predictions.forEach((element, index) => {
+                    console.log(element.description);
+                    newItems.push(element.description);
+                })
+                setData(newItems);
             })
-            setItems(newItems);
-        })
-        .catch (function (error) { 
-            console.log(error);
-        });
+            .catch (function (error) { 
+                console.log(error);
+            });
+        }
     }
-
-    // const searchLocation = (input) => {
-    //     var newItems = [];
-    //     arr.forEach((element, index) => {
-    //         newItems.push({
-    //             id: index,
-    //             name: element
-    //         })
-    //     })
-    //     console.log("searchLocation");
-    //     console.log(newItems);
-    //     setItems(newItems);
-    // }
 
     useEffect(() => {
         console.log("useEffect");
-        console.log(items);
-    },[items]);
+        console.log(data);
+    },[data]);
 
+    const ItemClicked = (item) => {
+        setSearch(item);
+        searchLocation(item);
+    }
+
+    const ItemView = ({item}) => {
+        return (
+            <Pressable onPress={() => ItemClicked(item)}>
+                <Text style={styles.itemStyle}>{item}</Text>
+            </Pressable>
+        );
+    }
+
+    const ItemSeparatorView = () => {
+        return (
+            <View style={{ height: 0.5, width: '100%', backgroundColor: BUTTON_COLORS.colorBasic}}></View>
+        );
+    }
     
     return (
         <>
             <StepBar step={0}/>
             <View style={{ paddingHorizontal: 25, height: '100%', backgroundColor: 'white', paddingTop: 15}}>
-                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 5}}>
-                     <Text style={{ fontSize: 17 }}>{location}</Text>
-                     <View style={{flexDirection: 'row'}}>
-                         <ActivityIndicator size="small" color={loading} style={{paddingRight: 7}} />
-                         <FontAwesome.Button name="location-arrow" color={BUTTON_COLORS.colorPicked} backgroundColor="transparent" underlayColor="transparent" onPress={getCurrentLocation} size={20}/>
-                         <Text style={{color: BUTTON_COLORS.colorPicked, textAlignVertical: 'center'}} onPress={getCurrentLocation}>Vị trí hiện tại</Text>
-                     </View>
-                 </View>
-                 <SearchableDropdown
-                     selectedItems={selectedItems}
-                     onItemSelect={(item) => {
-                         setSelectedItems(item);
-                         console.log(item);
-                     }}
-                     containerStyle={{ padding: 5 }}
-                     itemStyle={{
-                         padding: 10,
-                         backgroundColor: 'white',
-                         borderColor: BUTTON_COLORS.colorBasic,
-                         borderWidth: 1,
-                         borderRadius: 5,
-                     }}
-                     itemTextStyle={{ color: 'black' }}
-                     items={items}
-                     textInputProps={{
-                         placeholder: "Tìm kiếm",
-                         underlineColorAndroid: "transparent",
-                         style: {
-                             padding: 12,
-                             borderWidth: 1,
-                             borderColor: BUTTON_COLORS.colorBasic,
-                             borderRadius: 5,
-                         },
-                         onTextChange: text => searchLocation(text)
-                     }}
-                        listProps={{
-                         nestedScrollEnabled: true,
-                    }}
-                 />
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 5}}>
+                    <Text style={{ fontSize: 17 }}>Địa chỉ</Text>
+                    <View style={{flexDirection: 'row'}}>
+                        <ActivityIndicator size="small" color={loading} style={{paddingRight: 7}} />
+                        <FontAwesome.Button name="location-arrow" color={BUTTON_COLORS.colorPicked} backgroundColor="transparent" underlayColor="transparent" onPress={getCurrentLocation} size={20}/>
+                        <Text style={{color: BUTTON_COLORS.colorPicked, textAlignVertical: 'center'}} onPress={getCurrentLocation}>Vị trí hiện tại</Text>
+                    </View>
+                </View>
+                <View>
+                    <TextInput style={styles.textInput} value={search} placeholder="Tìm kiếm" underlineColorAndroid="transparent" onChangeText={(text) => searchLocation(text)}></TextInput>
+                    <FlatList
+                        data={data}
+                        keyExtractor={(item, index) => index.toString()}
+                        ItemSeparatorComponent={ItemSeparatorView}
+                        renderItem={ItemView}
+                    >
+                    </FlatList>
+                </View>
+                <Text style={{ fontSize: 17 }}>{location}</Text>
              </View>
         </>
     );
@@ -147,4 +128,15 @@ export default function Location() {
         paddingTop: 10,
         backgroundColor: '#ecf0f1',
       },
+      itemStyle: {
+        padding: 10,
+      },
+      textInput: {
+        height: 50,
+        borderWidth: 1,
+        paddingHorizontal: 20,
+        borderColor: BUTTON_COLORS.colorBasic,
+        borderRadius: 5,
+        backgroundColor: 'white',
+      }
   });
