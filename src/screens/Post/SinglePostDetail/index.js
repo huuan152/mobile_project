@@ -1,8 +1,15 @@
+import React, { useState } from 'react';
 import { View, StyleSheet, Image, Text, ScrollView } from "react-native";
 import Utilities from "../../../Components/UtilitiesButton";
 import Icon from 'react-native-vector-icons/Entypo';
 import IconRec from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import BUTTON_COLORS from '../../../Constants/Utilities/index';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../../../Components/CarouselImage/CarouselCardItem';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+// import data from '../../../Components/CarouselImage/data';
 
 const mock_data = {
     price: "5.5",
@@ -25,83 +32,148 @@ const mock_data = {
 
 const PostDetail = (props) => {
     const { price, title, addressText, area, phoneNumber, utilities, detailInfo } = mock_data;
+    const [isFavorite, setIsFavorite] = useState(false);
+    const [index, setIndex] = React.useState(0);
+    const isCarousel = React.useRef(null);
+    const nav = useNavigation();
+    const onPressBackButton = () => {
+        nav.navigate('List Post');
+    }
+    const onPressFavoriteButton = () => {
+        setIsFavorite(!isFavorite);
+    }
     return (
         <ScrollView>
         <View style={styles.container}>
             <View style={styles.priceField}>
+                <TouchableOpacity onPress={onPressBackButton}>
+                    <IconMaterial
+                      name="arrow-back-ios"
+                      size={24}
+                      color={BUTTON_COLORS.colorPicked}
+                    />
+                </TouchableOpacity>
                 <Text style={styles.priceText}>{`${price} triệu/tháng `}</Text>
+                <TouchableOpacity onPress={onPressFavoriteButton}>
+                    {isFavorite ? 
+                    <Icon 
+                        name="heart" 
+                        size={24} 
+                        color={BUTTON_COLORS.colorPicked}
+                    /> : 
+                    <Icon 
+                        name="heart-outlined"
+                        size={24}
+                        color={BUTTON_COLORS.colorPicked}
+                    />}
+                </TouchableOpacity>
             </View>
-            <ListImage />
-            <View style={styles.generalInfo}>
-                <Text style={styles.title}>{title}</Text>
-                <View style={styles.info}>
-                    <Icon size={24} color={BUTTON_COLORS.colorPicked} name="location" />
-                    <Text style={styles.infoText}>{addressText}</Text>
-                </View>
-                <View style={styles.info}>
-                    <IconRec size={24} color={BUTTON_COLORS.colorPicked} name="vector-rectangle" />
-                    <Text style={styles.infoText}>{`${area} m2`}</Text>
-                </View>
-                <View style={styles.info}>
-                    <Icon size={24} color={BUTTON_COLORS.colorPicked} name="phone" />
-                    <Text style={styles.infoText}>{phoneNumber}</Text>
+            <View>
+                <Carousel
+                    layout="tinder"
+                    layoutCardOffset={9}
+                    ref={isCarousel}
+                    data={data}
+                    renderItem={CarouselCardItem}
+                    sliderWidth={SLIDER_WIDTH}
+                    itemWidth={ITEM_WIDTH}
+                    onSnapToItem={(index) => setIndex(index)}
+                    useScrollView={true}
+                />
+                <View style={styles.paginationImages}>
+                    <Pagination
+                        dotsLength={data.length}
+                        activeDotIndex={index}
+                        carouselRef={isCarousel}
+                        dotStyle={{
+                            width: 10,
+                            height: 10,
+                            borderRadius: 5,
+                            marginHorizontal: 0,
+                            backgroundColor: 'white'
+                        }}
+                        inactiveDotOpacity={0.4}
+                        inactiveDotScale={0.6}
+                        tappableDots={true}
+                    />
                 </View>
             </View>
-            <View style={styles.utilitiesField}>
-                <Text style={{...styles.utilitiesTitle, color: BUTTON_COLORS.colorPicked}}>{`Tiện ích(${utilities.length})`}</Text>
-                <View style={styles.utilities}>
-                    {utilities.map((element, index) => {
-                        return (
-                            <View style={styles.utilitiesItem}>
-                                <Utilities key={index} size={45} color={BUTTON_COLORS.colorPicked} name={element} iconClicked={false}/>
-                            </View>
-                        )
-                    })}
+            <View style={styles.detailField}>
+                <View style={styles.generalInfo}>
+                    <Text style={styles.title}>{title}</Text>
+                    <View style={styles.info}>
+                        <Icon size={24} color={BUTTON_COLORS.colorPicked} name="location" />
+                        <Text style={styles.infoText}>{addressText}</Text>
+                    </View>
+                    <View style={styles.info}>
+                        <IconRec size={24} color={BUTTON_COLORS.colorPicked} name="vector-rectangle" />
+                        <Text style={styles.infoText}>{`${area} m2`}</Text>
+                    </View>
+                    <View style={styles.info}>
+                        <Icon size={24} color={BUTTON_COLORS.colorPicked} name="phone" />
+                        <Text style={styles.infoText}>{phoneNumber}</Text>
+                    </View>
                 </View>
-            </View>
-            <View style={styles.detailInfo}>
-                <Text>{detailInfo}</Text>
+                <View style={styles.utilitiesField}>
+                    <Text style={{...styles.utilitiesTitle, color: BUTTON_COLORS.colorPicked}}>{`Tiện ích(${utilities.length})`}</Text>
+                    <View style={styles.utilities}>
+                        {utilities.map((element, index) => {
+                            return (
+                                <View key={index} style={styles.utilitiesItem}>
+                                    <Utilities size={45} color={BUTTON_COLORS.colorPicked} name={element} iconClicked={false}/>
+                                </View>
+                            )
+                        })}
+                    </View>
+                </View>
+                <View style={styles.detailInfo}>
+                    <Text style={styles.detailInfo}>{detailInfo}</Text>
+                </View>
             </View>
         </View>
         </ScrollView>
     );
 }
 
-const ListImage = () => {
-    return (
-        <View style={styles.listImage}>
-            <Image source={require('../SinglePostForList/phong_tro.png')} style={styles.image}/>
-        </View>
-    )
-}
+// const ListImage = () => {
+//     return (
+//         <View style={styles.listImage}>
+//             <Image source={require('../SinglePostForList/phong_tro.png')} style={styles.image}/>
+//         </View>
+//     )
+// }
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 32,
-        padding: 12
+        marginTop: 24,
     },
     priceField: {
         display: "flex",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "space-between",
+        flexDirection: 'row',
+        marginHorizontal: 9,
+        marginBottom: 12
     },
     priceText: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: BUTTON_COLORS.colorPicked
-    },
-    listImage: {
-        width: "100%",
-        height: 160
+        fontSize: 18,
+        color: BUTTON_COLORS.colorPicked,
+        fontWeight: '700',
     },
     image: {
         width: "100%",
         height: "100%"
     },
+    paginationImages: {
+        marginTop: -60
+    },
     title: {
-        fontSize: 24,
-        fontWeight: "bold",
+        fontSize: 16,
+        fontWeight: '700',
         color: BUTTON_COLORS.colorPicked
+    },
+    detailField: {
+        padding: 12
     },
     info: {
         flexDirection: "row",
@@ -109,7 +181,7 @@ const styles = StyleSheet.create({
         paddingLeft: 12
     },
     infoText: {
-        marginLeft: 12,
+        marginLeft: 8,
         fontSize: 16,
         color: 'gray'
     },
@@ -117,18 +189,39 @@ const styles = StyleSheet.create({
         marginTop: 12
     },
     utilitiesTitle: {
-        fontSize: 18,
-        marginLeft: 16
+        fontSize: 16,
     },
     utilities: {
         flexDirection: 'row',
         flexWrap: 'wrap',
+        marginBottom: 12
     },
     utilitiesItem: {
         flexBasis: "25%",
         justifyContent: 'flex-end',
+    },
+    detailInfo: {
+        fontSize: 16
     }
 
 })
+
+const data = [
+    {
+      title: "Aenean leo",
+      body: "Ut tincidunt tincidunt erat. Sed cursus turpis vitae tortor. Quisque malesuada placerat nisl. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.",
+      imgUrl: "https://picsum.photos/id/11/200/300"
+    },
+    {
+      title: "In turpis",
+      body: "Aenean ut eros et nisl sagittis vestibulum. Donec posuere vulputate arcu. Proin faucibus arcu quis ante. Curabitur at lacus ac velit ornare lobortis. ",
+      imgUrl: "https://picsum.photos/id/10/200/300"
+    },
+    {
+      title: "Lorem Ipsum",
+      body: "Phasellus ullamcorper ipsum rutrum nunc. Nullam quis ante. Etiam ultricies nisi vel augue. Aenean tellus metus, bibendum sed, posuere ac, mattis non, nunc.",
+      imgUrl: "https://picsum.photos/id/12/200/300"
+    }
+];
 
 export default PostDetail; 

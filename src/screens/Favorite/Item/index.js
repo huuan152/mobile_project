@@ -1,0 +1,86 @@
+import React from 'react';
+import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Entypo';
+import IconRec from 'react-native-vector-icons/MaterialCommunityIcons';
+import BUTTON_COLORS from '../../../Constants/Utilities';
+const Item = (props) => {
+    const nav = useNavigation();
+    const { price, address, area, title } = props;
+
+    return (
+        <TouchableOpacity style={styles.container}>
+            <View style={styles.content}>
+                <View style={styles.imageField}>
+                    <Text style={styles.price}>{`${price} triệu`}</Text>
+                    <Image source={require('../../../images/phong_tro.png')} style={styles.image}/>
+                </View>
+                <View style={styles.infoField}>
+                    <View style={styles.titleField}>
+                        <Text style={styles.title}>{title}</Text>
+                    </View>
+                    <View style={styles.addressField}>
+                        <Icon size={16} color={BUTTON_COLORS.colorPicked} name="location" />
+                        <Text style={styles.addressText}>{address}</Text>
+                    </View>
+                    <View style={styles.areaField}>
+                        <IconRec size={16} color={BUTTON_COLORS.colorPicked} name="vector-rectangle" />
+                        <Text style={styles.addressText}>{`${area} m2`}</Text>
+                    </View>
+                </View>
+            </View>
+        </TouchableOpacity>
+    );
+}
+
+
+const styles = StyleSheet.create({
+    container: {
+        flexBasis: '100%',
+    }, 
+    content: {
+        flexDirection: 'row'
+    },
+    imageField: {
+        flex: 2,
+        padding: 12
+    },
+    image: {
+        width: '100%',
+        height: 140
+    },
+    infoField: {
+        flex: 5,
+        marginTop: 3,
+        marginRight: 36
+    },
+    price: {
+        marginBottom: -32,
+        paddingVertical: 3,
+        paddingHorizontal: 20,
+        backgroundColor: BUTTON_COLORS.colorPicked,
+        width: '80%',
+        color: '#ffffff',
+        borderRadius: 4,
+        zIndex: 99
+    },
+    title: {
+        color: BUTTON_COLORS.colorPicked,
+        fontWeight: 'bold',
+        fontSize: 16,
+        marginBottom: 6
+    },
+    addressField: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 6
+    },
+    areaField: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    addressText: {
+        marginLeft: 8
+    }
+})
+export default Item;

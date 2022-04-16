@@ -3,18 +3,18 @@ import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Entypo';
 import IconRec from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
-import BUTTON_COLORS from '../../../Constants/Utilities/index';
+import BUTTON_COLORS from '../../Constants/Utilities/index';
 
 //import { styles } from './style';
 const Post = (props) => {
     const nav = useNavigation();
-    const { price, address, area, isOdd } = props;
+    const { price, address, area, isOdd, favoritePage } = props;
 
     return (
-        <TouchableOpacity style={styles.container} onPress={() => {nav.navigate('Post')}}>
+        <TouchableOpacity style={styles.containerForHomePage} onPress={() => {nav.navigate('Post')}}>
             <View style={isOdd ? styles.oddCard : styles.evenCard}>
                 <View style={styles.imageField}>
-                    <Image source={require('./phong_tro.png')} style={styles.image}/>
+                    <Image source={require('../../images/phong_tro.png')} style={styles.image}/>
                     <Text style={styles.price}>{`${price} triệu`}</Text>
                 </View>
                 <View style={styles.addressField}>
@@ -30,8 +30,8 @@ const Post = (props) => {
     );
 }
 
-export const styles = StyleSheet.create({
-    container: {
+const styles = StyleSheet.create({
+    containerForHomePage: {
         flexBasis: "50%",
         marginBottom: 8
     },
@@ -74,7 +74,5 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     }
-})
-
-
+});
 export default Post;
