@@ -10,7 +10,7 @@ export default function Location() {
     const [loading, setLoading] = useState("transparent");
     const [location, setLocation] = useState('');
     const [errorMsg, setErrorMsg] = useState(null);
-    const [data, setData] = useState(["Hà Nội", "Thành phố Hồ Chí Minh", "Đà Nẵng", "Hải Phòng", "Quảng Ninh"]);
+    const [data, setData] = useState([]);
     const [search, setSearch] = useState('');
 
     const getCurrentLocation = async () => {
@@ -25,6 +25,7 @@ export default function Location() {
         await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${currentLocation.coords.latitude},${currentLocation.coords.longitude}&key=AIzaSyC_8ZzcEbucSlkDlE7GTiLHNhFvfGHDMlQ`)
         .then(function (response) {
             setLocation(response.data.results[0].formatted_address);
+            setSearch(response.data.results[0].formatted_address);
         })
         .catch (function (error) { 
             console.log(error);
@@ -105,7 +106,6 @@ export default function Location() {
                     >
                     </FlatList>
                 </View>
-                <Text style={{ fontSize: 17 }}>{location}</Text>
              </View>
         </>
     );

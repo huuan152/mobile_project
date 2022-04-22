@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import BUTTON_COLORS from '../../Constants/Utilities/index';
 
 const Profile = () => {
     return (
@@ -15,11 +16,11 @@ const Profile = () => {
             <View style={styles.buttonField}>
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.postedRoom}>{`Phòng đã đăng`}</Text>
-                    <Icon size={24} color={'#2089dc'} name="right" />
+                    <Icon size={24} color={BUTTON_COLORS.colorPicked} name="right" />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.logout}>{`Đăng xuất`}</Text>
-                    <Icon size={24} color={'#2089dc'} name="right" />
+                    <Icon size={24} color={BUTTON_COLORS.colorPicked} name="right" />
                 </TouchableOpacity>
             </View>
         </View>
@@ -74,12 +75,12 @@ const styles = StyleSheet.create({
     },
     postedRoom: {
         fontSize: 18,
-        color: '#2089dc',
+        color: BUTTON_COLORS.colorPicked,
         fontWeight: '700'
     },
     logout: {
         fontSize: 18,
-        color: '#e34d4d',
+        color: BUTTON_COLORS.colorBasic,
         fontWeight: '700'
     }
 })

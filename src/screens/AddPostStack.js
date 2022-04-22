@@ -10,8 +10,6 @@ import BUTTON_COLORS from '../Constants/Utilities/index';
 
 const Stack = createStackNavigator();
 
-// check the valid navigation to the next screen by accessing in state in other component, by using Redux
-
 export default function AddPostStack() {
     return (
             <Stack.Navigator initialRouteName="Location" screenOptions={{
@@ -27,11 +25,6 @@ export default function AddPostStack() {
                     name="Location" 
                     component={Location} 
                     options={({ navigation }) => ({
-                        headerLeft: () => (
-                            <Pressable onPress={() => ToastAndroid.show('Hủy',ToastAndroid.SHORT)}>
-                                <Text style={{...styles.text, paddingLeft: 25}}>Hủy</Text>
-                            </Pressable>
-                        ),
                         headerRight: () => (
                             <Pressable onPress={() => navigation.navigate("Info")}>
                                 <Text style={{...styles.text, paddingRight: 25}}>Tiếp theo</Text>

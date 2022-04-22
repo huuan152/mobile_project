@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 32,
-        color: 'rgba(71, 98, 234, 0.8)',
+        color: BUTTON_COLORS.colorPicked,
         fontWeight: 'bold',
         marginLeft: 6
     },
