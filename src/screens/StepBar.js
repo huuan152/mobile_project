@@ -46,6 +46,7 @@ export default function StepBar(props) {
     container: {
       backgroundColor: 'white',
       paddingHorizontal: 10,
+      paddingTop: 15,
     },
     stepIndicator: {
       // marginTop: 10,

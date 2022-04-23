@@ -1,7 +1,6 @@
 import React from 'react';
 import { Pressable, Text, StyleSheet, ToastAndroid } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
 import Location from './Location';
 import Info from './Info';
 import Images from './Images';

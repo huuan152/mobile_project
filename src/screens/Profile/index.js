@@ -2,8 +2,11 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import BUTTON_COLORS from '../../Constants/Utilities/index';
+import { useNavigation } from '@react-navigation/native';
 
 const Profile = () => {
+    const nav = useNavigation();
+
     return (
         <View style={styles.container}>
             <View style={styles.headerField}>
@@ -16,6 +19,10 @@ const Profile = () => {
             <View style={styles.buttonField}>
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.postedRoom}>{`Phòng đã đăng`}</Text>
+                    <Icon size={24} color={BUTTON_COLORS.colorPicked} name="right" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => {nav.navigate('AreaTrackingScreen')}}>
+                    <Text style={styles.postedRoom}>{`Theo dõi khu vực`}</Text>
                     <Icon size={24} color={BUTTON_COLORS.colorPicked} name="right" />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}>

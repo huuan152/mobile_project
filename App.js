@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from 'react-native';
 // import SignInSignUp from './src/screens/SignInSignUpStack';
 import AddPostStack from './src/screens/AddPostStack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -7,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PostScreen from './src/screens/Post';
 import SeachScreen from './src/screens/Search';
 import Favorite from './src/screens/Favorite';
-import Profile from './src/screens/Profile';
+import ProfileStack from './src/screens/Profile/ProfileStack';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const Tab = createBottomTabNavigator();
@@ -35,7 +34,7 @@ export default function App() {
         <Tab.Screen options={{headerShown: false, tabBarLabel: 'Tài khoản',
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="user" color={color} size={size}/>
-          )}} name="Profile" component={Profile} />
+          )}} name="ProfileStack" component={ProfileStack} />
       </Tab.Navigator>
     </NavigationContainer>
   );
