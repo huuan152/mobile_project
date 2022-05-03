@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
-import BUTTON_COLORS from '../Constants/Utilities/index';
+import BUTTON_COLORS from '../../Constants/Utilities/index';
 
 const thirdIndicatorStyles = {
   stepIndicatorSize: 25,

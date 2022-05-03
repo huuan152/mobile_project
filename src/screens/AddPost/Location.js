@@ -3,15 +3,19 @@ import { StyleSheet, View, TextInput, Text, ActivityIndicator, FlatList, Pressab
 import StepBar from './StepBar';
 import * as CurrentLocation from 'expo-location';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import BUTTON_COLORS from '../Constants/Utilities/index';
+import BUTTON_COLORS from '../../Constants/Utilities/index';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { locationScreenData, locationScreenUpdate } from '../../redux/actions';
+import { addPostSelector } from '../../redux/selectors';
 
 export default function Location() {
+    const dispatch = useDispatch();
     const [loading, setLoading] = useState("transparent");
     const [location, setLocation] = useState('');
     const [errorMsg, setErrorMsg] = useState(null);
     const [data, setData] = useState([]);
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState(useSelector(addPostSelector).address);
 
     const getCurrentLocation = async () => {
         setLoading(BUTTON_COLORS.colorPicked);
@@ -26,6 +30,8 @@ export default function Location() {
         .then(function (response) {
             setLocation(response.data.results[0].formatted_address);
             setSearch(response.data.results[0].formatted_address);
+            dispatch(locationScreenUpdate(true));
+            dispatch(locationScreenData(response.data.results[0].formatted_address));
         })
         .catch (function (error) { 
             console.log(error);
@@ -61,9 +67,14 @@ export default function Location() {
     }
 
     useEffect(() => {
-        console.log("useEffect");
-        console.log(data);
-    },[data]);
+        if (data.includes(search)) {
+            dispatch(locationScreenUpdate(true));
+            setLocation(location);
+            dispatch(locationScreenData(location));
+        } else {
+            dispatch(locationScreenUpdate(false));
+        }
+    },[search]);
 
     const ItemClicked = (item) => {
         setSearch(item);

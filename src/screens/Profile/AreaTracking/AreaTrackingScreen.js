@@ -6,16 +6,11 @@ import City from '../../../Constants/Areas/tinh_tp.json';
 import District from '../../../Constants/Areas/quan_huyen.json';
 import SubDistrict from '../../../Constants/Areas/xa_phuong.json';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
 
 const AreaTrackingScreen = (props) => {
     const [search, setSearch] = useState('');
     const [area, setArea] = useState([]);
     const [data, setData] = useState([]);
-    const nav = useNavigation();
-    const onPressBackButton = () => {
-        nav.navigate('Profile');
-    }
 
     const searchArea = (input) => {
         setSearch(input);
@@ -84,15 +79,6 @@ const AreaTrackingScreen = (props) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.priceField}>
-                <TouchableOpacity onPress={onPressBackButton}>
-                    <IconMaterial
-                      name="arrow-back-ios"
-                      size={24}
-                      color={BUTTON_COLORS.colorPicked}
-                    />
-                </TouchableOpacity>
-            </View>
             <View style={{marginHorizontal: 24}}>
                 <Text style={styles.inputTitle}>Theo dõi khu vực</Text>
                 <View style={styles.inputArea}>

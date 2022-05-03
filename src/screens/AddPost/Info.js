@@ -1,25 +1,59 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, TextInput, Text, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, TextInput, Text, ScrollView, ToastAndroid } from 'react-native';
 import { ButtonGroup } from 'react-native-elements';
 import StepBar from './StepBar';
-import BUTTON_COLORS from '../Constants/Utilities/index';
-import Utilities from '../Components/UtilitiesButton/index';
+import BUTTON_COLORS from '../../Constants/Utilities/index';
+import Utilities from '../../Components/UtilitiesButton/index';
+import { useDispatch, useSelector } from 'react-redux';
+import { infoScreenData, infoScreenUpdate } from '../../redux/actions';
+import { addPostSelector, utilitiesColorSelector } from '../../redux/selectors';
+
+const postTypes = ['Cho thuê', 'Tìm người ở ghép'];
+const postTypes_data = ['renting', 'share'];
+const roomTypes = ['Phòng', 'Căn hộ', 'Căn hộ mini', 'Nguyên căn'];
+const utilities = [
+    "wifi",
+    "toilet",
+    "motorcycle",
+    "clock",
+    "food",
+    "air-conditioner",
+    "ice-cream",
+    "washing-machine"
+];
 
 export default function Info() {
-    const [post, setPost] = useState(0);
+    const dispatch = useDispatch();
+    const addPostData = useSelector(addPostSelector);
+    const [post, setPost] = useState(postTypes_data.indexOf(addPostData.postType));
     const [room, setRoom] = useState(0);
-    const [roomPrice, setRoomPrice] = useState('');
+    const [roomPrice, setRoomPrice] = useState(addPostData.rentalPrice.toString() === '0' ? '' : addPostData.rentalPrice.toString());
     const [area, setArea] = useState('');
-    const utilities = [
-        "wifi",
-        "toilet",
-        "motorcycle",
-        "clock",
-        "food",
-        "air-conditioner",
-        "ice-cream",
-        "washing-machine"
-    ]
+    const utilitiesColor = useSelector(utilitiesColorSelector);
+    
+    const countSelectedUtilities = () => {
+        let count = 0;
+        for (const utility in utilitiesColor) {
+            if (utilitiesColor[utility] === BUTTON_COLORS.colorPicked) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    useEffect(() => {
+        if (roomPrice > 1000000 && area !== 0) {
+            dispatch(infoScreenUpdate(true));
+            dispatch(infoScreenData({
+                postType: postTypes_data[post],
+                // Loai phong?
+                rentalPrice: parseInt(roomPrice),
+                // Dien tich?
+            }));
+        } else {
+            dispatch(infoScreenUpdate(false));
+        }
+    },[roomPrice, area])
 
     return (
         <>
@@ -28,7 +62,7 @@ export default function Info() {
                 <Text style={styles.text}>Loại tin</Text>
                 <View style={styles.buttonGroup}>
                     <ButtonGroup
-                        buttons={['Cho thuê', 'Tìm người ở ghép']}
+                        buttons={postTypes}
                         selectedIndex={post}
                         onPress={(value) => {
                             setPost(value);
@@ -40,7 +74,7 @@ export default function Info() {
                 <Text style={styles.text}>Loại phòng</Text>
                 <View style={styles.buttonGroup}>
                     <ButtonGroup
-                        buttons={['Phòng', 'Căn hộ', 'Căn hộ mini', 'Nguyên căn']}
+                        buttons={roomTypes}
                         selectedIndex={room}
                         onPress={(value) => {
                             setRoom(value);
@@ -59,12 +93,12 @@ export default function Info() {
                     </View>
                 </View>
                 <View style={styles.utilitiesField}>
-                    <Text style={{...styles.utilitiesTitle, color: BUTTON_COLORS.colorPicked}}>{`Tiện ích(${utilities.length})`}</Text>
+                    <Text style={{...styles.utilitiesTitle, color: BUTTON_COLORS.colorPicked}}>{`Tiện ích (${countSelectedUtilities()})`}</Text>
                     <View style={styles.utilities}>
                         {utilities.map((element, index) => {
                             return (
                                 <View style={styles.utilitiesItem}>
-                                    <Utilities key={index} size={45} color={BUTTON_COLORS.colorBasic} name={element} iconClicked/>
+                                    <Utilities key={index} size={45} name={element} iconClicked/>
                                 </View>
                             )
                         })}

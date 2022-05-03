@@ -17,7 +17,7 @@ const Profile = () => {
                 <Text style={styles.username}>{`Phí Mạnh Hải`}</Text>
             </View>
             <View style={styles.buttonField}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={() => {nav.navigate('MyPostScreen')}}>
                     <Text style={styles.postedRoom}>{`Phòng đã đăng`}</Text>
                     <Icon size={24} color={BUTTON_COLORS.colorPicked} name="right" />
                 </TouchableOpacity>

@@ -2,17 +2,25 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import React, { useState } from 'react';
+import React from 'react';
 import BUTTON_COLORS from '../../Constants/Utilities/index';
 import { StyleSheet, Text } from "react-native";
+import { useDispatch, useSelector } from 'react-redux';
+import { utilitiesColorUpdate } from '../../redux/actions';
+import { utilitiesColorSelector } from '../../redux/selectors';
 
 const Utilities = (props) => {
     const { name, iconClicked, size } = props;
-    const [color, setColor] = useState(props.color);
+    const dispatch = useDispatch();
+    const utilities = useSelector(utilitiesColorSelector);
 
-    const changeIconColor = () => {
+    const changeIconColor = (name) => {
         if (iconClicked) {
-            setColor(color == BUTTON_COLORS.colorBasic ? BUTTON_COLORS.colorPicked : BUTTON_COLORS.colorBasic);
+            let newColor = utilities[name] === BUTTON_COLORS.colorBasic ? BUTTON_COLORS.colorPicked : BUTTON_COLORS.colorBasic;
+            dispatch(utilitiesColorUpdate({
+                ...utilities,
+                [name]: newColor
+            }));
         }
     }
 
@@ -21,14 +29,14 @@ const Utilities = (props) => {
             <>
                 <FontAwesome.Button 
                     name="wifi" 
-                    color={color} 
+                    color={utilities[name]}
                     backgroundColor="transparent" 
                     underlayColor="transparent" 
                     onPress={() => changeIconColor(name)}
                     size={size} 
                     style={styles.buttonIcon}
                 />
-                <Text style={{...styles.textIcon, color: color}}>Wifi</Text>
+                <Text style={{...styles.textIcon, color: utilities[name]}}>Wifi</Text>
             </>
         );
     }
@@ -37,14 +45,14 @@ const Utilities = (props) => {
             <>
                 <FontAwesome5.Button 
                     name="toilet" 
-                    color={color} 
+                    color={utilities[name]} 
                     backgroundColor="transparent" 
                     underlayColor="transparent" 
                     onPress={() => changeIconColor(name)}
                     size={size} 
                     style={styles.buttonIcon}
                 />
-                <Text style={{...styles.textIcon, color: color}}>WC riêng</Text>
+                <Text style={{...styles.textIcon, color: utilities[name]}}>WC riêng</Text>
             </>
         );
     }
@@ -53,14 +61,14 @@ const Utilities = (props) => {
             <>
                 <Fontisto.Button 
                     name="motorcycle" 
-                    color={color} 
+                    color={utilities[name]} 
                     backgroundColor="transparent" 
                     underlayColor="transparent" 
                     onPress={() => changeIconColor(name)}
                     size={size} 
                     style={styles.buttonIcon}
                 />
-                <Text style={{...styles.textIcon, color: color}}>Chỗ để xe</Text>
+                <Text style={{...styles.textIcon, color: utilities[name]}}>Chỗ để xe</Text>
             </>
         );
     }
@@ -69,14 +77,14 @@ const Utilities = (props) => {
             <>
                 <FontAwesome5.Button 
                     name="clock" 
-                    color={color} 
+                    color={utilities[name]} 
                     backgroundColor="transparent" 
                     underlayColor="transparent" 
                     onPress={() => changeIconColor(name)}
                     size={size} 
                     style={styles.buttonIcon}
                 />
-                <Text style={{...styles.textIcon, color: color}}>Tự do</Text>
+                <Text style={{...styles.textIcon, color: utilities[name]}}>Tự do</Text>
             </>
         );
     }
@@ -85,14 +93,14 @@ const Utilities = (props) => {
             <>
                 <MaterialCommunityIcons.Button 
                     name="food" 
-                    color={color} 
+                    color={utilities[name]} 
                     backgroundColor="transparent" 
                     underlayColor="transparent" 
                     onPress={() => changeIconColor(name)}
                     size={size} 
                     style={styles.buttonIcon}
                 />
-                <Text style={{...styles.textIcon, color: color}}>Bếp</Text>
+                <Text style={{...styles.textIcon, color: utilities[name]}}>Bếp</Text>
             </>
         );
     }
@@ -101,14 +109,14 @@ const Utilities = (props) => {
             <>
                 <MaterialCommunityIcons.Button 
                     name="air-conditioner" 
-                    color={color} 
+                    color={utilities[name]} 
                     backgroundColor="transparent" 
                     underlayColor="transparent" 
                     onPress={() => changeIconColor(name)}
                     size={size} 
                     style={styles.buttonIcon}
                 />
-                <Text style={{...styles.textIcon, color: color}}>Điều hòa</Text>
+                <Text style={{...styles.textIcon, color: utilities[name]}}>Điều hòa</Text>
             </>
         );
     }
@@ -117,14 +125,14 @@ const Utilities = (props) => {
             <>
                 <FontAwesome5.Button 
                     name="ice-cream" 
-                    color={color} 
+                    color={utilities[name]} 
                     backgroundColor="transparent" 
                     underlayColor="transparent" 
                     onPress={() => changeIconColor(name)}
                     size={size} 
                     style={styles.buttonIcon}
                 />
-                <Text style={{...styles.textIcon, color: color}}>Tủ lạnh</Text>
+                <Text style={{...styles.textIcon, color: utilities[name]}}>Tủ lạnh</Text>
             </>
         );
     }
@@ -133,14 +141,14 @@ const Utilities = (props) => {
         <>
             <MaterialCommunityIcons.Button 
                     name="washing-machine" 
-                    color={color} 
+                    color={utilities[name]} 
                     backgroundColor="transparent" 
                     underlayColor="transparent" 
                     onPress={() => changeIconColor(name)}
                     size={size} 
                     style={styles.buttonIcon}
                 />
-                <Text style={{...styles.textIcon, color: color}}>Máy giặt</Text>
+                <Text style={{...styles.textIcon, color: utilities[name]}}>Máy giặt</Text>
             </>
         );
     } else {

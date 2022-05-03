@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, ImageBackground, ToastAndroid, Pressable } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as ImagePicker from 'expo-image-picker';
 import StepBar from './StepBar';
-import BUTTON_COLORS from '../Constants/Utilities/index';
+import BUTTON_COLORS from '../../Constants/Utilities/index';
+import { useDispatch } from 'react-redux';
+import { imagesScreenUpdate, imagesScreenData } from '../../redux/actions';
 
 export default function Images() {
+    const dispatch = useDispatch();
     const [images, setImages] = useState([]);
     const [thumbnail, setThumbnail] = useState(0);
     const [countUploadedImages, setCountUploadedImages] = useState(0);
@@ -39,6 +42,15 @@ export default function Images() {
         }
     };
     
+    useEffect(() => {
+        if (countUploadedImages != 0) {
+            dispatch(imagesScreenUpdate(true));
+            // dispatch();
+        } else {
+            dispatch(imagesScreenUpdate(false));
+        }
+    },[countUploadedImages])
+
     const handleUploadImages = () => {
         console.log("Upload images")
     };
