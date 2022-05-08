@@ -54,7 +54,6 @@ export default function Info() {
             dispatch(infoScreenUpdate(false));
         }
     },[roomPrice, area])
-
     return (
         <>
             <StepBar step={1}/>
