@@ -3,24 +3,24 @@ import { StyleSheet, TextInput, Text, ScrollView } from 'react-native';
 import StepBar from './StepBar';
 import BUTTON_COLORS from '../../Constants/Utilities/index';
 import { useDispatch, useSelector } from 'react-redux';
-import { addPostSelector } from '../../redux/selectors';
-import { AddPostSlice } from './AddPostSlice';
+import { postSelector } from '../../redux/selectors';
+import { UpdatePostSlice } from './UpdatePostSlice';
 
 export default function Confirm() {
     const dispatch = useDispatch();
-    const addPostData = useSelector(addPostSelector);
-    const [title, setTitle] = useState(addPostData.title);
-    const [contactName, setContactName] = useState(addPostData.contactName);
-    const [phoneNumber, setPhoneNumber] = useState(addPostData.contactPhone);
-    const [description, setDescription] = useState(addPostData.description);
+    const PostData = useSelector(postSelector);
+    const [title, setTitle] = useState(PostData.title);
+    const [contactName, setContactName] = useState(PostData.contactName);
+    const [phoneNumber, setPhoneNumber] = useState(PostData.contactPhone);
+    const [description, setDescription] = useState(PostData.description);
 
     useEffect(() => {
         if (title !== '' && contactName !== '' && phoneNumber !== '' && description !== '') {
-            dispatch(AddPostSlice.actions.confirmScreenUpdate(true));
+            dispatch(UpdatePostSlice.actions.confirmScreenUpdate(true));
         } else {
-            dispatch(AddPostSlice.actions.confirmScreenUpdate(false));
+            dispatch(UpdatePostSlice.actions.confirmScreenUpdate(false));
         }
-        dispatch(AddPostSlice.actions.confirmScreenData({
+        dispatch(UpdatePostSlice.actions.confirmScreenData({
             title: title,
             contactName: contactName,
             contactPhone: phoneNumber,

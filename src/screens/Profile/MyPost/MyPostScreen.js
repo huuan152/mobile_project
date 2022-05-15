@@ -1,27 +1,74 @@
-import React from 'react';
-import { View, StyleSheet, ScrollView, Text } from "react-native";
+import React, {useState, useEffect} from 'react';
+import { View, StyleSheet, ScrollView, Modal, ActivityIndicator } from "react-native";
 import Item from './Item';
 import BUTTON_COLORS from '../../../Constants/Utilities/index';
+import myMotelApi from '../../../api/myMotelApi';
+import { useSelector } from 'react-redux';
+import { isDeleted, isUpdated } from '../../../redux/selectors';
 
 const MyPostScreen = () => {
-    const mock_data = {
-        price: 4,
-        address: 'tòa nhà số 36, Phạm Hùng, quận Cầu Giấy',
-        area: 40,
-        title: "Ưu đãi căn hộ"
-    }
-    const number = [0, 1, 2, 3, 4 ,5 ,6 ,7, 8];
+    const [data, setData] = useState([]);
+    const [modalVisible, setModalVisible] = useState(false);
+
+    useEffect(async() => {
+        try {
+            setModalVisible(true);
+            await myMotelApi.getAllMyMotels().then((response) => {
+                let motels = response;
+                for (const motel in motels) {
+                    delete motels[motel]["__v"]
+                    //delete motels[motel]["_id"]
+                    delete motels[motel]["censored"]
+                    delete motels[motel]["createdAt"]
+                    delete motels[motel]["owner"]
+                    delete motels[motel]["rate"]
+                    delete motels[motel]["updatedAt"]
+                    delete motels[motel]["zoomType"]
+                    let color = {
+                        "wifi": BUTTON_COLORS.colorBasic,
+                        "toilet": BUTTON_COLORS.colorBasic,
+                        "motorcycle": BUTTON_COLORS.colorBasic,
+                        "clock": BUTTON_COLORS.colorBasic,
+                        "food": BUTTON_COLORS.colorBasic,
+                        "air-conditioner": BUTTON_COLORS.colorBasic,
+                        "ice-cream": BUTTON_COLORS.colorBasic,
+                        "washing-machine": BUTTON_COLORS.colorBasic
+                    }
+                    for (const utility in motels[motel]["utilities"]) {
+                        color[motels[motel]["utilities"][utility]] = BUTTON_COLORS.colorPicked
+                    }
+                    motels[motel]["utilities"] = color;
+                }
+                setData(motels);
+            });
+            setModalVisible(false);
+        } catch (e) {
+            console.log(e.message);
+        }
+    },[useSelector(isDeleted), useSelector(isUpdated)])
+
+    const number = Array.from(Array(data.length).keys())
+
     return (
         <ScrollView 
             stickyHeaderIndices={[0]}
             //showsVerticalScrollIndicator={false} 
             style={styles.container}
         >
+            <Modal
+                animationType="none"
+                transparent={true}
+                visible={modalVisible}
+            >
+                <View style={styles.centeredView}>
+                    <ActivityIndicator size="large" color={BUTTON_COLORS.colorPicked} />
+                </View>
+            </Modal>
             <View></View>
             <View style={styles.list}>
                 {number.map((element, index) => {
                     return (
-                        <Item {...mock_data} key={index}/>
+                        <Item {...data[index]} key={index}/>
                     )
                 })}
             </View>
@@ -53,7 +100,14 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: BUTTON_COLORS.colorPicked,
         fontWeight: 'bold'
-    }
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        alignContent: "center",
+        backgroundColor: "rgba(255, 255, 255, 0.6)",
+      }
 })
 
 export default MyPostScreen; 

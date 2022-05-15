@@ -4,6 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Entypo';
 import IconRec from 'react-native-vector-icons/MaterialCommunityIcons';
 import BUTTON_COLORS from '../../../Constants/Utilities';
+
+const testImage = "https://picsum.photos/id/11/200/300";
+
 const Item = (props) => {
     const nav = useNavigation();
     const { price, address, area, title } = props;
@@ -13,7 +16,7 @@ const Item = (props) => {
             <View style={styles.content}>
                 <View style={styles.imageField}>
                     <Text style={styles.price}>{`${price} triệu`}</Text>
-                    <Image source={require('../../../images/phong_tro.png')} style={styles.image}/>
+                    <Image source={{uri: props.images === undefined ? testImage : props.images[0].url}} style={styles.image}/>
                 </View>
                 <View style={styles.infoField}>
                     <View style={styles.titleField}>

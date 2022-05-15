@@ -1,8 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from "./reducer";
+import { AddPostSlice } from "../screens/AddPost/AddPostSlice";
+import { UpdatePostSlice } from "../screens/UpdatePost/UpdatePostSlice";
 
 const store = configureStore({
-    reducer: rootReducer
+    reducer: {
+        addPost: AddPostSlice.reducer,
+        updatePost: UpdatePostSlice.reducer
+    }
 });
 
 export default store;
