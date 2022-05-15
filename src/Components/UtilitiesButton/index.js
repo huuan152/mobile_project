@@ -6,21 +6,30 @@ import React from 'react';
 import BUTTON_COLORS from '../../Constants/Utilities/index';
 import { StyleSheet, Text } from "react-native";
 import { useDispatch, useSelector } from 'react-redux';
-import { utilitiesColorUpdate } from '../../redux/actions';
-import { utilitiesColorSelector } from '../../redux/selectors';
+import { addPostUtilitiesColorSelector, postUtilitiesColorSelector } from '../../redux/selectors';
+import { AddPostSlice } from '../../screens/AddPost/AddPostSlice';
+import { UpdatePostSlice } from '../../screens/UpdatePost/UpdatePostSlice';
 
 const Utilities = (props) => {
-    const { name, iconClicked, size } = props;
+    const { name, iconClicked, size, addPost } = props;
     const dispatch = useDispatch();
-    const utilities = useSelector(utilitiesColorSelector);
+    const utilities = useSelector((addPost !== undefined && addPost) ? addPostUtilitiesColorSelector : postUtilitiesColorSelector);
+    console.log(utilities);
 
     const changeIconColor = (name) => {
         if (iconClicked) {
             let newColor = utilities[name] === BUTTON_COLORS.colorBasic ? BUTTON_COLORS.colorPicked : BUTTON_COLORS.colorBasic;
-            dispatch(utilitiesColorUpdate({
-                ...utilities,
-                [name]: newColor
-            }));
+            if (addPost) {
+                dispatch(AddPostSlice.actions.utilitiesColorUpdate({
+                    ...utilities,
+                    [name]: newColor
+                }));
+            } else {
+                dispatch(UpdatePostSlice.actions.utilitiesColorUpdate({
+                    ...utilities,
+                    [name]: newColor
+                }));
+            }
         }
     }
 

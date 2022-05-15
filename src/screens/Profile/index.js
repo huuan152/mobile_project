@@ -3,9 +3,21 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import BUTTON_COLORS from '../../Constants/Utilities/index';
 import { useNavigation } from '@react-navigation/native';
+import userApi from '../../api/userApi';
 
 const Profile = () => {
     const nav = useNavigation();
+
+    const signOut = async () => {
+        try {
+          await userApi.signOut().then(() => {
+            console.log("Đăng xuất thành công!");
+            nav.navigate('SignInSignUpStack', {screen: 'SignIn'});
+          });
+        } catch (error) {
+            console.log(error.message);
+        }
+      }
 
     return (
         <View style={styles.container}>
@@ -26,7 +38,7 @@ const Profile = () => {
                     <Icon size={24} color={BUTTON_COLORS.colorPicked} name="right" />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}>
-                    <Text style={styles.logout}>{`Đăng xuất`}</Text>
+                    <Text style={styles.logout} onPress={() => signOut()}>{`Đăng xuất`}</Text>
                     <Icon size={24} color={BUTTON_COLORS.colorPicked} name="right" />
                 </TouchableOpacity>
             </View>

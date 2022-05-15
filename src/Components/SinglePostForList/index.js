@@ -4,18 +4,38 @@ import Icon from 'react-native-vector-icons/Entypo';
 import IconRec from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import BUTTON_COLORS from '../../Constants/Utilities/index';
+import { useDispatch } from 'react-redux';
+import { UpdatePostSlice } from '../../screens/UpdatePost/UpdatePostSlice';
 
 //import { styles } from './style';
+
+const testImage = "https://picsum.photos/id/11/200/300";
+
 const Post = (props) => {
     const nav = useNavigation();
-    const { price, address, area, isOdd, favoritePage } = props;
+    const dispatch = useDispatch();
+    const { rentalPrice, address, area, isOdd, favoritePage } = props;
+
+    const formatPrice = () => {
+        let price = rentalPrice;
+        price = price.toString().substring(0, price.toString().length - 5);
+        price = parseInt(price);
+        price /= 10;
+        price = price.toString() + " triệu"
+        return price
+    }
+
+    const viewPostDetail = () => {
+        dispatch(UpdatePostSlice.actions.updatePostDetail(props));
+        nav.navigate('Post')
+    }
 
     return (
-        <TouchableOpacity style={styles.containerForHomePage} onPress={() => {nav.navigate('Post')}}>
+        <TouchableOpacity style={styles.containerForHomePage} onPress={() => viewPostDetail()}>
             <View style={isOdd ? styles.oddCard : styles.evenCard}>
                 <View style={styles.imageField}>
-                    <Image source={require('../../images/phong_tro.png')} style={styles.image}/>
-                    <Text style={styles.price}>{`${price} triệu`}</Text>
+                    <Image source={{uri: props.images[0] === undefined ? testImage : props.images[0].url}} style={styles.image}/>
+                    <Text style={styles.price}>{formatPrice()}</Text>
                 </View>
                 <View style={styles.addressField}>
                     <Icon size={16} color={BUTTON_COLORS.colorPicked} name="location" />

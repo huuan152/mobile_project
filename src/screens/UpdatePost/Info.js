@@ -5,8 +5,8 @@ import StepBar from './StepBar';
 import BUTTON_COLORS from '../../Constants/Utilities/index';
 import Utilities from '../../Components/UtilitiesButton/index';
 import { useDispatch, useSelector } from 'react-redux';
-import { addPostSelector, addPostUtilitiesColorSelector } from '../../redux/selectors';
-import { AddPostSlice } from './AddPostSlice';
+import { postSelector, postUtilitiesColorSelector } from '../../redux/selectors';
+import { UpdatePostSlice } from './UpdatePostSlice';
 
 const postTypes = ['Cho thuê', 'Tìm người ở ghép'];
 const roomTypes = ['Phòng', 'Căn hộ', 'Căn hộ mini', 'Nguyên căn'];
@@ -23,13 +23,13 @@ const utilities = [
 
 export default function Info() {
     const dispatch = useDispatch();
-    const addPostData = useSelector(addPostSelector);
-    console.log(addPostData);
-    const [post, setPost] = useState(parseInt(addPostData.postType));
-    const [room, setRoom] = useState(addPostData.roomType);
-    const [roomPrice, setRoomPrice] = useState(addPostData.rentalPrice.toString() === '0' ? '' : addPostData.rentalPrice.toString());
-    const [area, setArea] = useState(addPostData.area.toString() === '0' ? '' : addPostData.area.toString());
-    const utilitiesColor = useSelector(addPostUtilitiesColorSelector);
+    const PostData = useSelector(postSelector);
+    console.log(PostData);
+    const [post, setPost] = useState(parseInt(PostData.postType));
+    const [room, setRoom] = useState(PostData.roomType);
+    const [roomPrice, setRoomPrice] = useState(PostData.rentalPrice.toString() === '0' ? '' : PostData.rentalPrice.toString());
+    const [area, setArea] = useState(PostData.area.toString() === '0' ? '' : PostData.area.toString());
+    const utilitiesColor = useSelector(postUtilitiesColorSelector);
     
     const countSelectedUtilities = () => {
         let count = 0;
@@ -44,15 +44,15 @@ export default function Info() {
 
     useEffect(() => {
         if (roomPrice >= 1000000 && area !== 0) {
-            dispatch(AddPostSlice.actions.infoScreenUpdate(true));
-            dispatch(AddPostSlice.actions.infoScreenData({
+            dispatch(UpdatePostSlice.actions.infoScreenUpdate(true));
+            dispatch(UpdatePostSlice.actions.infoScreenData({
                 postType: post,
                 roomType: room,
                 rentalPrice: parseInt(roomPrice),
                 area: area
             }));
         } else {
-            dispatch(AddPostSlice.actions.infoScreenUpdate(false));
+            dispatch(UpdatePostSlice.actions.infoScreenUpdate(false));
         }
     },[roomPrice, area, room, post])
 
@@ -93,8 +93,8 @@ export default function Info() {
                     <View style={styles.utilities}>
                         {utilities.map((element, index) => {
                             return (
-                                <View style={styles.utilitiesItem} key={index}>
-                                    <Utilities key={index} size={45} name={element} iconClicked addPost/>
+                                <View style={styles.utilitiesItem}>
+                                    <Utilities key={index} size={45} name={element} iconClicked addPost={false}/>
                                 </View>
                             )
                         })}

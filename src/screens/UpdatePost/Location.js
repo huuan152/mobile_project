@@ -6,16 +6,16 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import BUTTON_COLORS from '../../Constants/Utilities/index';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { addPostSelector } from '../../redux/selectors';
-import { AddPostSlice } from './AddPostSlice';
+import { postSelector } from '../../redux/selectors';
+import { UpdatePostSlice } from './UpdatePostSlice';
 
 export default function Location() {    
     const dispatch = useDispatch();
     const [loading, setLoading] = useState("transparent");
-    const [location, setLocation] = useState(useSelector(addPostSelector).address);
+    const [location, setLocation] = useState(useSelector(postSelector).address);
     const [errorMsg, setErrorMsg] = useState(null);
     const [data, setData] = useState([]);
-    const [search, setSearch] = useState(useSelector(addPostSelector).address);
+    const [search, setSearch] = useState(useSelector(postSelector).address);
 
     const getCurrentLocation = async () => {
         setLoading(BUTTON_COLORS.colorPicked);
@@ -30,8 +30,8 @@ export default function Location() {
         .then(function (response) {
             setLocation(response.data.results[0].formatted_address);
             setSearch(response.data.results[0].formatted_address);
-            dispatch(AddPostSlice.actions.locationScreenUpdate(true));
-            dispatch(AddPostSlice.actions.locationScreenData(response.data.results[0].formatted_address));
+            dispatch(UpdatePostSlice.actions.locationScreenUpdate(true));
+            dispatch(UpdatePostSlice.actions.locationScreenData(response.data.results[0].formatted_address));
         })
         .catch (function (error) { 
             console.log(error);
@@ -68,10 +68,10 @@ export default function Location() {
 
     useEffect(() => {
         if (search === location && search !== '') {
-            dispatch(AddPostSlice.actions.locationScreenUpdate(true));
-            dispatch(AddPostSlice.actions.locationScreenData(location));
+            dispatch(UpdatePostSlice.actions.locationScreenUpdate(true));
+            dispatch(UpdatePostSlice.actions.locationScreenData(location));
         } else {
-            dispatch(AddPostSlice.actions.locationScreenUpdate(false));
+            dispatch(UpdatePostSlice.actions.locationScreenUpdate(false));
         }
     },[search]);
 

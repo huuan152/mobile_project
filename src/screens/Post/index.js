@@ -8,7 +8,7 @@ const PostScreen = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen options={{headerShown: false}} name="List Post" component={ListPost} />
-            <Stack.Screen options={{headerShown: false}} name="Post" component={PostDetail} />
+            <Stack.Screen options={{headerShown: false}} name="Post" component={PostDetail} initialParams={{prev: 'List Post'}}/>
         </Stack.Navigator>
     );
 }
