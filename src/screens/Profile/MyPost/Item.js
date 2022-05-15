@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, StyleSheet, Text, Modal, TouchableOpacity, ToastAndroid, Pressable, Alert } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -6,45 +6,32 @@ import IconRec from 'react-native-vector-icons/MaterialCommunityIcons';
 import BUTTON_COLORS from '../../../Constants/Utilities';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch } from 'react-redux';
-import { updatePostDetail } from '../../../redux/actions';
+import myMotelApi from '../../../api/myMotelApi';
+import { UpdatePostSlice } from '../../UpdatePost/UpdatePostSlice';
+
+const testImage = "https://picsum.photos/id/11/200/300";
 
 const Item = (props) => {
-    const { price, address, area, title } = props;
+    const { rentalPrice, address, area, title } = props;
     const nav = useNavigation();
-    const postDetail = {
-        address: '121 P. Phúc Tân, Phúc Tân, Hoàn Kiếm, Hà Nội, Vietnam',
-        postType: 'renting',
-        // Loai phong?
-        rentalPrice: 3000000,
-        // Dien tich?
-        utilities: {
-            "wifi": BUTTON_COLORS.colorBasic,
-            "toilet": BUTTON_COLORS.colorBasic,
-            "motorcycle": BUTTON_COLORS.colorBasic,
-            "clock": BUTTON_COLORS.colorBasic,
-            "food": BUTTON_COLORS.colorBasic,
-            "air-conditioner": BUTTON_COLORS.colorBasic,
-            "ice-cream": BUTTON_COLORS.colorBasic,
-            "washing-machine": BUTTON_COLORS.colorBasic
-        },
-        title: "Cần rao bán nhà gấp",
-        // lien he voi
-        // so dien thoai
-        description: "Đến xem thì biết"
-    }
+
     const dispatch = useDispatch();
     const [modalVisible, setModalVisible] = useState(false);
 
-    const ItemClicked = (text) => {
-        ToastAndroid.show(text,ToastAndroid.SHORT);
-    }
-
-    const SeePost = () => {
-
+    const ViewPost = () => {
+        let motelDetail = {...props};
+        delete motelDetail["_id"];
+        dispatch(UpdatePostSlice.actions.updatePostDetail(motelDetail));
+        setModalVisible(false);
+        nav.navigate('MyPostDetail');
     }
 
     const UpdatePost = () => {
-        dispatch(updatePostDetail(postDetail));
+        let motelDetail = {...props};
+        dispatch(UpdatePostSlice.actions.updateMotelID(motelDetail["_id"]));
+        delete motelDetail["_id"];
+        dispatch(UpdatePostSlice.actions.updatePostDetail(motelDetail));
+        setModalVisible(false);
         nav.navigate('UpdatePostStack');
     }
 
@@ -60,10 +47,27 @@ const Item = (props) => {
                 },
                 { 
                     text: "Đồng ý", 
-                    onPress: () => ToastAndroid.show("OK Pressed",ToastAndroid.SHORT)
+                    onPress: async () => {
+                        try {
+                            await myMotelApi.deleteMyMotel(props._id);
+                            dispatch(UpdatePostSlice.actions.deleteMotels());
+                            ToastAndroid.show("Xoá thành công!",ToastAndroid.SHORT)
+                        } catch (e) {
+                            console.log(e.message);
+                        }
+                    }
                 }
             ]
         );
+    }
+
+    const formatPrice = () => {
+        let price = rentalPrice;
+        price = price.toString().substring(0, price.toString().length - 5);
+        price = parseInt(price);
+        price /= 10;
+        price = price.toString() + " triệu"
+        return price
     }
 
     return (
@@ -79,7 +83,7 @@ const Item = (props) => {
             >
                 <Pressable style={styles.centeredView} onPress={() => setModalVisible(!modalVisible)}>
                     <View style={styles.modalView}>
-                        <TouchableOpacity onPress={() => ItemClicked('Xem')} style={{...styles.options, paddingBottom: 25}}>
+                        <TouchableOpacity onPress={() => ViewPost()} style={{...styles.options, paddingBottom: 25}}>
                             <FontAwesome 
                                 name="eye" 
                                 color={BUTTON_COLORS.colorPicked}
@@ -120,8 +124,8 @@ const Item = (props) => {
             <TouchableOpacity style={styles.container} onPress={() => setModalVisible(true)}>
                 <View style={styles.content}>
                     <View style={styles.imageField}>
-                        <Text style={styles.price}>{`${price} triệu`}</Text>
-                        <Image source={require('../../../images/phong_tro.png')} style={styles.image}/>
+                        <Text style={styles.price}>{formatPrice()}</Text>
+                        <Image source={{uri: props.images[0] === undefined ? testImage : props.images[0].url}} style={styles.image}/>
                     </View>
                     <View style={styles.infoField}>
                         <View style={styles.titleField}>

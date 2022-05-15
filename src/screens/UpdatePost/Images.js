@@ -6,15 +6,15 @@ import * as ImagePicker from 'expo-image-picker';
 import StepBar from './StepBar';
 import BUTTON_COLORS from '../../Constants/Utilities/index';
 import { useDispatch,useSelector } from 'react-redux';
-import { addPostSelector } from '../../redux/selectors';
-import { AddPostSlice } from './AddPostSlice';
+import { postSelector } from '../../redux/selectors';
+import { UpdatePostSlice } from './UpdatePostSlice';
 import * as DocumentPicker from 'expo-document-picker';
 
 export default function Images() {
     const dispatch = useDispatch();
-    const [images, setImages] = useState(useSelector(addPostSelector).images);
-    const [thumbnail, setThumbnail] = useState(useSelector(addPostSelector).thumbnail);
-    const [countUploadedImages, setCountUploadedImages] = useState(useSelector(addPostSelector).images.length);
+    const [images, setImages] = useState(useSelector(postSelector).images);
+    const [thumbnail, setThumbnail] = useState(0);
+    const [countUploadedImages, setCountUploadedImages] = useState(useSelector(postSelector).images.length);
 
     const deleteImage = (index) => {
         var imgs = [...images];
@@ -68,7 +68,7 @@ export default function Images() {
     },[countUploadedImages])
 
     useEffect(() => {
-        dispatch(AddPostSlice.actions.imagesScreenData({
+        dispatch(UpdatePostSlice.actions.imagesScreenData({
             images: images,
             thumbnail: thumbnail
         }));

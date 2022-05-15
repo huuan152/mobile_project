@@ -9,38 +9,39 @@ import Carousel, { Pagination } from 'react-native-snap-carousel';
 import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../../../Components/CarouselImage/CarouselCardItem';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
-// import data from '../../../Components/CarouselImage/data';
+import { useSelector } from 'react-redux';
+import { postSelector } from '../../../redux/selectors';
+import { addPostSelector } from '../../../redux/selectors';
+import { useDispatch } from 'react-redux';
+import { UpdatePostSlice } from '../../UpdatePost/UpdatePostSlice';
 
-const mock_data = {
-    price: "5.5",
-    title: "Gần lotte mart quận 7",
-    addressText: "tòa nhà số 36, Phạm Hùng, quận Cầu Giấy",
-    area: 40,
-    phoneNumber: "0967326546",
-    utilities: [
-        "wifi",
-        "toilet",
-        "motorcycle",
-        "clock",
-        "food",
-        "air-conditioner",
-        "ice-cream",
-        "washing-machine"
-    ],
-    detailInfo: "While it may not be obvious to everyone, there are a number of reasons creating random paragraphs can be useful. A few examples of how some people use this generator are listed in the following paragraphs."
-}
+const utilitiesItem = ["wifi", "toilet", "motorcycle", "clock", "food", "air-conditioner", "ice-cream", "washing-machine"];
 
-const PostDetail = (props) => {
-    const { price, title, addressText, area, phoneNumber, utilities, detailInfo } = mock_data;
+const PostDetail = ({route}) => {
+    console.log("Here1", useSelector(addPostSelector));
+    console.log("Here",useSelector(postSelector));
+    const { rentalPrice, title, address, area, contactName, contactPhone, utilities, description, images } = useSelector(postSelector);
     const [isFavorite, setIsFavorite] = useState(false);
     const [index, setIndex] = React.useState(0);
     const isCarousel = React.useRef(null);
     const nav = useNavigation();
+    const dispatch = useDispatch();
+
     const onPressBackButton = () => {
-        nav.navigate('List Post');
+        dispatch(UpdatePostSlice.actions.updateMotelID(""));
+        nav.navigate(route.params.prev);
     }
     const onPressFavoriteButton = () => {
         setIsFavorite(!isFavorite);
+    }
+    const countSelectedUtilities = () => {
+        let count = 0;
+        for (const utility in utilities) {
+            if (utilities[utility] === BUTTON_COLORS.colorPicked) {
+                count++;
+            }
+        }
+        return `Tiện ích (${count})`
     }
     return (
         <ScrollView>
@@ -53,7 +54,7 @@ const PostDetail = (props) => {
                       color={BUTTON_COLORS.colorPicked}
                     />
                 </TouchableOpacity>
-                <Text style={styles.priceText}>{`${price} triệu/tháng `}</Text>
+                <Text style={styles.priceText}>{`${rentalPrice} triệu/tháng `}</Text>
                 <TouchableOpacity onPress={onPressFavoriteButton}>
                     {isFavorite ? 
                     <Icon 
@@ -73,7 +74,7 @@ const PostDetail = (props) => {
                     layout="tinder"
                     layoutCardOffset={9}
                     ref={isCarousel}
-                    data={data}
+                    data={images}
                     renderItem={CarouselCardItem}
                     sliderWidth={SLIDER_WIDTH}
                     itemWidth={ITEM_WIDTH}
@@ -82,7 +83,7 @@ const PostDetail = (props) => {
                 />
                 <View style={styles.paginationImages}>
                     <Pagination
-                        dotsLength={data.length}
+                        dotsLength={images.length}
                         activeDotIndex={index}
                         carouselRef={isCarousel}
                         dotStyle={{
@@ -103,7 +104,7 @@ const PostDetail = (props) => {
                     <Text style={styles.title}>{title}</Text>
                     <View style={styles.info}>
                         <Icon size={24} color={BUTTON_COLORS.colorPicked} name="location" />
-                        <Text style={styles.infoText}>{addressText}</Text>
+                        <Text style={styles.infoText}>{address}</Text>
                     </View>
                     <View style={styles.info}>
                         <IconRec size={24} color={BUTTON_COLORS.colorPicked} name="vector-rectangle" />
@@ -111,23 +112,23 @@ const PostDetail = (props) => {
                     </View>
                     <View style={styles.info}>
                         <Icon size={24} color={BUTTON_COLORS.colorPicked} name="phone" />
-                        <Text style={styles.infoText}>{phoneNumber}</Text>
+                        <Text style={styles.infoText}>{contactPhone}</Text>
                     </View>
                 </View>
                 <View style={styles.utilitiesField}>
-                    <Text style={{...styles.utilitiesTitle, color: BUTTON_COLORS.colorPicked}}>{`Tiện ích(${utilities.length})`}</Text>
+                    <Text style={{...styles.utilitiesTitle, color: BUTTON_COLORS.colorPicked}}>{countSelectedUtilities()}</Text>
                     <View style={styles.utilities}>
-                        {utilities.map((element, index) => {
+                        {utilitiesItem.map((element, index) => {
                             return (
                                 <View key={index} style={styles.utilitiesItem}>
-                                    <Utilities size={45} color={BUTTON_COLORS.colorPicked} name={element} iconClicked={false}/>
+                                    <Utilities size={45} color={utilities[element]} name={element} iconClicked={false}/>
                                 </View>
                             )
                         })}
                     </View>
                 </View>
                 <View style={styles.detailInfo}>
-                    <Text style={styles.detailInfo}>{detailInfo}</Text>
+                    <Text style={styles.detailInfo}>{description}</Text>
                 </View>
             </View>
         </View>
@@ -205,23 +206,5 @@ const styles = StyleSheet.create({
     }
 
 })
-
-const data = [
-    {
-      title: "Aenean leo",
-      body: "Ut tincidunt tincidunt erat. Sed cursus turpis vitae tortor. Quisque malesuada placerat nisl. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.",
-      imgUrl: "https://picsum.photos/id/11/200/300"
-    },
-    {
-      title: "In turpis",
-      body: "Aenean ut eros et nisl sagittis vestibulum. Donec posuere vulputate arcu. Proin faucibus arcu quis ante. Curabitur at lacus ac velit ornare lobortis. ",
-      imgUrl: "https://picsum.photos/id/10/200/300"
-    },
-    {
-      title: "Lorem Ipsum",
-      body: "Phasellus ullamcorper ipsum rutrum nunc. Nullam quis ante. Etiam ultricies nisi vel augue. Aenean tellus metus, bibendum sed, posuere ac, mattis non, nunc.",
-      imgUrl: "https://picsum.photos/id/12/200/300"
-    }
-];
 
 export default PostDetail; 

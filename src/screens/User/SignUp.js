@@ -1,11 +1,11 @@
-import { StyleSheet, View, TextInput, Text, Image, Pressable, ScrollView, ToastAndroid } from 'react-native';
+import { StyleSheet, View, TextInput, Text, Image, Pressable, ScrollView, ToastAndroid, TouchableOpacity, ActivityIndicator, Modal } from 'react-native';
 import React, { useState } from 'react';
 import images from '../../../assets/images';
-import axios from 'axios';
 import { RadioButton } from 'react-native-paper';
 import BUTTON_COLORS from '../../Constants/Utilities/index';
+import userApi from '../../api/userApi';
+import { useNavigation } from '@react-navigation/native';
 
-const URL = "https://motel-app.herokuapp.com";
 const emailRegex = /\S+@\S+\.\S+/;
 const phoneNumberRegex = /((^(\+84|84|0|0084){1})(3|5|7|8|9))+([0-9]{8})$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -17,15 +17,23 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [role, setRole] = useState("lessor");
+  const [modalVisible, setModalVisible] = useState(false);
+  const nav = useNavigation();
 
   const registerUser = async () => {
     try {
-      await axios.post(`${URL}/api/user/register`, {
+      setModalVisible(true);
+      await userApi.signUp({
         "email": email,
         "password": password,
+        "name": name,
+        "phone": phoneNumber,
         "role": role
+      }).then(() => {
+        console.log("Đăng ký thành công!");
+        ToastAndroid.show("Đăng ký thành công!", ToastAndroid.SHORT);
+        nav.navigate('SignIn');
       });
-      console.log(role);
     } catch (error) {
       if (error.message === "Request failed with status code 400") {
         ToastAndroid.show("Tài khoản đã tồn tại", ToastAndroid.SHORT);
@@ -33,13 +41,14 @@ export default function SignUp() {
         console.log(error.message);
       }
     }
+    setModalVisible(false);
   }
 
   const signUp = async () => {
     if (email === "" || name === "" || phoneNumber === "" || password === "" || passwordConfirm === "") {
-      console.log("Không được bỏ trống trường nào!");
+      ToastAndroid.show("Không được bỏ trống trường nào!", ToastAndroid.SHORT);
     } else if (password !== passwordConfirm) {
-      console.log("Xác nhận mật khẩu không đúng!");
+      ToastAndroid.show("Xác nhận mật khẩu không đúng!", ToastAndroid.SHORT);
     } else {
       if (!emailRegex.test(email)) {
         ToastAndroid.show("Email sai định dạng!", ToastAndroid.SHORT);
@@ -55,13 +64,22 @@ export default function SignUp() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'center', justifyContent: 'center',}}>
-      <Image source={images.logo}></Image>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={modalVisible}
+      >
+        <View style={styles.centeredView}>
+          <ActivityIndicator size="large" color={BUTTON_COLORS.colorPicked} />
+        </View>
+      </Modal>
+      <Image source={images.logo} style={{marginBottom: 15, marginTop: 60}}></Image>
       <TextInput placeholder='Email' style={styles.input} value={email} onChangeText={text => setEmail(text)} keyboardType="email-address"></TextInput>
       <TextInput placeholder='Họ và tên' style={styles.input} value={name} onChangeText={text => setName(text)}></TextInput>
       <TextInput placeholder='Số điện thoại' style={styles.input} value={phoneNumber} onChangeText={text => setPhoneNumber(text)} keyboardType="phone-pad"></TextInput>
       <TextInput placeholder='Mật khẩu' style={styles.input} value={password} secureTextEntry={true} onChangeText={text => setPassword(text)}></TextInput>
       <TextInput placeholder='Xác nhận mật khẩu' style={styles.input} value={passwordConfirm} secureTextEntry={true} onChangeText={text => setPasswordConfirm(text)}></TextInput>
-      <View style={{flexDirection: "row", alignItems: "center"}}>
+      <View style={{flexDirection: "row", alignItems: "center", marginTop: 10}}>
         <RadioButton
           value="lessor"
           status={ role === 'lessor' ? 'checked' : 'unchecked' }
@@ -77,9 +95,9 @@ export default function SignUp() {
         />
         <Text style={{ fontSize: 17 }}>Người cho thuê</Text>
       </View>
-      <Pressable style={styles.button} onPress={signUp}>
+      <TouchableOpacity style={styles.button} onPress={signUp}>
         <Text style={styles.buttonText}>ĐĂNG KÝ</Text>
-      </Pressable>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -118,4 +136,11 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: 'white',
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.6)",
+  }
 });

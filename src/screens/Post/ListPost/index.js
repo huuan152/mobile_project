@@ -1,23 +1,68 @@
-import React from 'react';
-import { View, StyleSheet, ScrollView, Text } from 'react-native'
+import React, {useState, useEffect} from 'react';
+import { View, StyleSheet, ScrollView, Text, Modal, ActivityIndicator } from 'react-native'
 import Post from '../../../Components/SinglePostForList';
 import BUTTON_COLORS from '../../../Constants/Utilities/index';
-
-const mock_data = {
-    price: 4,
-    address: 'tòa nhà số 36, Phạm Hùng, quận Cầu Giấy',
-    area: 40,
-}
-const data = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+import myMotelApi from '../../../api/myMotelApi';
 
 const ListPost = () => {
+    const [data, setData] = useState([]);
+    const [modalVisible, setModalVisible] = useState(false);
+
+    useEffect(async() => {
+        try {
+            setModalVisible(true);
+            await myMotelApi.getAllMotels().then((response) => {
+                let motels = response;
+                for (const motel in motels) {
+                    delete motels[motel]["__v"]
+                    //delete motels[motel]["_id"]
+                    delete motels[motel]["censored"]
+                    delete motels[motel]["createdAt"]
+                    delete motels[motel]["owner"]
+                    delete motels[motel]["rate"]
+                    delete motels[motel]["updatedAt"]
+                    delete motels[motel]["zoomType"]
+                    let color = {
+                        "wifi": BUTTON_COLORS.colorBasic,
+                        "toilet": BUTTON_COLORS.colorBasic,
+                        "motorcycle": BUTTON_COLORS.colorBasic,
+                        "clock": BUTTON_COLORS.colorBasic,
+                        "food": BUTTON_COLORS.colorBasic,
+                        "air-conditioner": BUTTON_COLORS.colorBasic,
+                        "ice-cream": BUTTON_COLORS.colorBasic,
+                        "washing-machine": BUTTON_COLORS.colorBasic
+                    }
+                    for (const utility in motels[motel]["utilities"]) {
+                        color[motels[motel]["utilities"][utility]] = BUTTON_COLORS.colorPicked
+                    }
+                    motels[motel]["utilities"] = color;
+                }
+                setData(motels);
+            });
+            setModalVisible(false);
+        } catch (e) {
+            console.log(e.message);
+        }
+    },[])
+
+    const number = Array.from(Array(data.length).keys())
+
     return (
         <ScrollView style={styles.listPostContainer}>
+            <Modal
+                animationType="none"
+                transparent={true}
+                visible={modalVisible}
+            >
+                <View style={styles.centeredView}>
+                    <ActivityIndicator size="large" color={BUTTON_COLORS.colorPicked} />
+                </View>
+            </Modal>
             <View style={styles.container}>
                 <Text style={styles.appName}>{'Nhà trọ 360'}</Text>
                 <View style={styles.row1}>
-                    {data.map((element, index) => {
-                        return <Post key={index} isOdd={index % 2 === 1 ? true : false} {...mock_data} />
+                    {number.map((element, index) => {
+                        return <Post key={index} isOdd={index % 2 === 1 ? true : false} {...data[index]} />
                     })}
                 </View>
             </View>
@@ -50,7 +95,14 @@ const styles = StyleSheet.create({
     // },
     addPostButton: {
         marginRight: 18
-    }
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        alignContent: "center",
+        backgroundColor: "rgba(255, 255, 255, 0.6)",
+      }
 })
 
 export default ListPost
