@@ -80,6 +80,8 @@ export const AddPostSlice = createSlice({
         },
         resetPostDetail: (state) => {
             state = initStates
+            state.addPost.contactName = getUserName()
+            state.addPost.contactPhone = getUserPhone()
         }
     }
 });

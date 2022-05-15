@@ -22,6 +22,8 @@ export default function SignIn() {
         "email": username,
         "password": password
       }).then(() => {
+        dispatch(AddPostSlice.actions.resetPostDetail());
+        dispatch(UpdatePostSlice.actions.resetPostDetail());
         nav.navigate('ContentNavigator', {screen: 'home'});
         console.log("Đăng nhập thành công!");
         ToastAndroid.show("Đăng nhập thành công!", ToastAndroid.SHORT);

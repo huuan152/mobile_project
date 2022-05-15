@@ -57,11 +57,11 @@ export default function Images() {
     
     useEffect(() => {
         if (countUploadedImages !== 0) {
-            dispatch(UpdatePostSlice.actions.imagesScreenUpdate(true));
+            dispatch(AddPostSlice.actions.imagesScreenUpdate(true));
         } else {
-            dispatch(UpdatePostSlice.actions.imagesScreenUpdate(false));
+            dispatch(AddPostSlice.actions.imagesScreenUpdate(false));
         }
-        dispatch(UpdatePostSlice.actions.imagesScreenData({
+        dispatch(AddPostSlice.actions.imagesScreenData({
             images: images,
             thumbnail: thumbnail
         }));
