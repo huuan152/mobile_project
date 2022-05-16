@@ -24,7 +24,7 @@ const utilities = [
 export default function Info() {
     const dispatch = useDispatch();
     const addPostData = useSelector(addPostSelector);
-    console.log(addPostData);
+    // console.log(addPostData);
     const [post, setPost] = useState(parseInt(addPostData.postType));
     const [room, setRoom] = useState(addPostData.roomType);
     const [roomPrice, setRoomPrice] = useState(addPostData.rentalPrice.toString() === '0' ? '' : addPostData.rentalPrice.toString());
@@ -38,7 +38,7 @@ export default function Info() {
                 count++;
             }
         }
-        console.log(count);
+        // console.log(count);
         return count;
     }
 

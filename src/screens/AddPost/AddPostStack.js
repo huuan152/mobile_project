@@ -73,11 +73,18 @@ export default function AddPostStack() {
                     images.unshift(thumbnailImg);
                     
                     for (const image in images) {
-                        data.append('images', images[image].uri);
+                        console.log(images[image])
+                        data.append('images', {
+                            name: images[image].name,
+                            type: images[image].mimeType,
+                            uri: Platform.OS === 'ios' ?  images[image].uri.replace('file://', '') :  images[image].uri,
+                          }
+                       );
+                    
                     }
 
-                    console.log(data);
-                    createMyNewMotelImages("627f5edc27fe1aea6972f333", data);
+                    console.log("dATA", data);
+                    await createMyNewMotelImages("627f5edc27fe1aea6972f333", data);
                     // dispatch(AddPostSlice.actions.resetPostDetail());
                     // navigation.navigate("Location");
                     // ToastAndroid.show('Đăng tin thành công',ToastAndroid.SHORT);

@@ -3,9 +3,9 @@ import queryString from 'query-string';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const axiosClient = axios.create({
-    baseURL: "https://mtapp-a.herokuapp.com/api",
+    baseURL: "https://mtapp-a.herokuapp.com/api/",
     headers: {
-        'content-type': 'application/json',
+        'content-type': 'aplication/json',
     },
     paramsSerializer: params => queryString.stringify(params),
 });

@@ -14,7 +14,7 @@ const Utilities = (props) => {
     const { name, iconClicked, size, addPost } = props;
     const dispatch = useDispatch();
     const utilities = useSelector((addPost !== undefined && addPost) ? addPostUtilitiesColorSelector : postUtilitiesColorSelector);
-    console.log(utilities);
+    // console.log(utilities);
 
     const changeIconColor = (name) => {
         if (iconClicked) {
