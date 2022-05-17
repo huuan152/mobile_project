@@ -6,7 +6,7 @@ const signUp = async (user) => {
 }
 
 const signIn = async (user) => {
-    return axiosClient.post('/user/login', user)
+    return await axiosClient.post('/user/login', user)
     .then((response) => {
         if (response.jwt) {
             AsyncStorage.setItem("user", JSON.stringify(response));

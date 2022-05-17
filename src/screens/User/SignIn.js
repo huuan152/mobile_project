@@ -9,8 +9,8 @@ import { AddPostSlice } from '../AddPost/AddPostSlice';
 import { UpdatePostSlice } from '../UpdatePost/UpdatePostSlice';
 
 export default function SignIn() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('admin@gmail.com');
+  const [password, setPassword] = useState('Admin@123');
   const [modalVisible, setModalVisible] = useState(false);
   const nav = useNavigation();
   const dispatch = useDispatch();
@@ -32,8 +32,9 @@ export default function SignIn() {
       if (error.message === "Request failed with status code 400") {
         ToastAndroid.show("Tài khoản hoặc mật khẩu không đúng", ToastAndroid.SHORT);
       } else {
-        console.log(error.message);
+        console.log("Lỗi", error.message);
       }
+      nav.navigate('ContentNavigator', {screen: 'home'});
     }
     setModalVisible(false);
   }

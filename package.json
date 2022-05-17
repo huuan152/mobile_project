@@ -20,7 +20,7 @@
     "@reduxjs/toolkit": "^1.8.1",
     "@rneui/base": "^4.0.0-rc.1",
     "@rneui/themed": "^4.0.0-rc.1",
-    "axios": "^0.26.1",
+    "axios": "0.19.2",
     "bluebird": "^3.7.2",
     "expo": "~44.0.0",
     "expo-document-picker": "~10.1.3",
