@@ -2,17 +2,22 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import BUTTON_COLORS from '../../Constants/Utilities/index';
-import { useNavigation } from '@react-navigation/native';
 import userApi from '../../api/userApi';
+import { AppSlice } from '../AppSlice';
+import { AddPostSlice } from '../AddPost/AddPostSlice';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 
 const Profile = () => {
     const nav = useNavigation();
+    const dispatch = useDispatch();
 
     const signOut = async () => {
         try {
           await userApi.signOut().then(() => {
             console.log("Đăng xuất thành công!");
-            nav.navigate('SignInSignUpStack', {screen: 'SignIn'});
+            dispatch(AddPostSlice.actions.resetAddPost())
+            dispatch(AppSlice.actions.logIn(false))
           });
         } catch (error) {
             console.log(error.message);
@@ -37,8 +42,8 @@ const Profile = () => {
                     <Text style={styles.postedRoom}>{`Theo dõi khu vực`}</Text>
                     <Icon size={24} color={BUTTON_COLORS.colorPicked} name="right" />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.logout} onPress={() => signOut()}>{`Đăng xuất`}</Text>
+                <TouchableOpacity style={styles.button} onPress={() => signOut()}>
+                    <Text style={styles.logout}>{`Đăng xuất`}</Text>
                     <Icon size={24} color={BUTTON_COLORS.colorPicked} name="right" />
                 </TouchableOpacity>
             </View>

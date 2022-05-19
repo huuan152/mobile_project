@@ -6,16 +6,16 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import BUTTON_COLORS from '../../Constants/Utilities/index';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { addPostSelector } from '../../redux/selectors';
+import { addPostSelector, addPostSearchSelector } from '../../redux/selectors';
 import { AddPostSlice } from './AddPostSlice';
 
 export default function Location() {    
-    const dispatch = useDispatch();
-    const [loading, setLoading] = useState("transparent");
-    const [location, setLocation] = useState(useSelector(addPostSelector).address);
-    const [errorMsg, setErrorMsg] = useState(null);
-    const [data, setData] = useState([]);
-    const [search, setSearch] = useState(useSelector(addPostSelector).address);
+    const dispatch = useDispatch()
+    const [loading, setLoading] = useState("transparent")
+    const location = useSelector(addPostSelector).address
+    const [errorMsg, setErrorMsg] = useState(null)
+    const [data, setData] = useState([])
+    const search = useSelector(addPostSearchSelector)
 
     const getCurrentLocation = async () => {
         setLoading(BUTTON_COLORS.colorPicked);
@@ -28,10 +28,10 @@ export default function Location() {
         let currentLocation = await CurrentLocation.getCurrentPositionAsync({accuracy: CurrentLocation.Accuracy.Highest});
         await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${currentLocation.coords.latitude},${currentLocation.coords.longitude}&key=AIzaSyC_8ZzcEbucSlkDlE7GTiLHNhFvfGHDMlQ`)
         .then(function (response) {
-            setLocation(response.data.results[0].formatted_address);
-            setSearch(response.data.results[0].formatted_address);
             dispatch(AddPostSlice.actions.locationScreenUpdate(true));
-            dispatch(AddPostSlice.actions.locationScreenData(response.data.results[0].formatted_address));
+            dispatch(AddPostSlice.actions.setLocation(response.data.results[0].formatted_address));
+            dispatch(AddPostSlice.actions.setSearch(response.data.results[0].formatted_address));
+            setLoading("transparent");
         })
         .catch (function (error) { 
             console.log(error);
@@ -41,14 +41,8 @@ export default function Location() {
         }
     }
 
-    useEffect(() => {
-        if (location != null) {
-            setLoading("transparent");
-        }
-    },[location])
-
     const searchLocation = async(input) => {
-        setSearch(input);
+        dispatch(AddPostSlice.actions.setSearch(input));
         if (input != '') {
             var newItems = [];    
             await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&language=vi&components=country:vn&types=address&key=AIzaSyC_8ZzcEbucSlkDlE7GTiLHNhFvfGHDMlQ`)
@@ -69,15 +63,14 @@ export default function Location() {
     useEffect(() => {
         if (search === location && search !== '') {
             dispatch(AddPostSlice.actions.locationScreenUpdate(true));
-            dispatch(AddPostSlice.actions.locationScreenData(location));
         } else {
             dispatch(AddPostSlice.actions.locationScreenUpdate(false));
         }
     },[search]);
 
     const ItemClicked = (item) => {
-        setSearch(item);
-        setLocation(item);
+        dispatch(AddPostSlice.actions.setLocation(item));
+        dispatch(AddPostSlice.actions.setSearch(item));
         searchLocation(item);
     }
 

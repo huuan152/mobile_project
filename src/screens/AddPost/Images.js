@@ -6,24 +6,24 @@ import * as ImagePicker from 'expo-image-picker';
 import StepBar from './StepBar';
 import BUTTON_COLORS from '../../Constants/Utilities/index';
 import { useDispatch,useSelector } from 'react-redux';
-import { addPostSelector } from '../../redux/selectors';
+import { addPostSelector, addPostThumbnailSelector } from '../../redux/selectors';
 import { AddPostSlice } from './AddPostSlice';
 import * as DocumentPicker from 'expo-document-picker';
 
 export default function Images() {
     const dispatch = useDispatch();
-    const [images, setImages] = useState(useSelector(addPostSelector).images);
-    const [thumbnail, setThumbnail] = useState(useSelector(addPostSelector).thumbnail);
-    const [countUploadedImages, setCountUploadedImages] = useState(useSelector(addPostSelector).images.length);
+    const images = useSelector(addPostSelector).images;
+    const thumbnail = useSelector(addPostThumbnailSelector);
+    const countUploadedImages = useSelector(addPostSelector).images.length;
 
     const deleteImage = (index) => {
         var imgs = [...images];
         if (index == thumbnail) {
-            setThumbnail(0);
+            dispatch(AddPostSlice.actions.setThumbnail(0))
         }
         imgs.splice(index,1);
-        setImages(imgs);
-        setCountUploadedImages(countUploadedImages - 1);
+        dispatch(AddPostSlice.actions.setImages(imgs))
+        dispatch(AddPostSlice.actions.setThumbnail(0))
     }
 
     const addImages = async () => {
@@ -38,14 +38,11 @@ export default function Images() {
                 let result = await DocumentPicker.getDocumentAsync({
                     type: 'image/*'
                 });
-                console.log(result.uri);
-                console.log(result);
                 
                 if (result.type !== 'cancel') {
                     var imgs = images.slice();
                     imgs.push(result);
-                    setImages(imgs);
-                    setCountUploadedImages(countUploadedImages + 1);
+                    dispatch(AddPostSlice.actions.setImages(imgs))
                 }
             } else {
                 ToastAndroid.show("Số ảnh được đăng tải vượt quá giới hạn!", ToastAndroid.SHORT);
@@ -61,21 +58,10 @@ export default function Images() {
         } else {
             dispatch(AddPostSlice.actions.imagesScreenUpdate(false));
         }
-        dispatch(AddPostSlice.actions.imagesScreenData({
-            images: images,
-            thumbnail: thumbnail
-        }));
     },[countUploadedImages])
 
-    useEffect(() => {
-        dispatch(AddPostSlice.actions.imagesScreenData({
-            images: images,
-            thumbnail: thumbnail
-        }));
-    }, [thumbnail])
-
     const isThumbnail = (index) => {
-        setThumbnail(index);
+        dispatch(AddPostSlice.actions.setThumbnail(index))
     }
 
     return (

@@ -6,24 +6,24 @@ import * as ImagePicker from 'expo-image-picker';
 import StepBar from './StepBar';
 import BUTTON_COLORS from '../../Constants/Utilities/index';
 import { useDispatch,useSelector } from 'react-redux';
-import { postSelector } from '../../redux/selectors';
+import { postSelector, postThumbnailSelector } from '../../redux/selectors';
 import { UpdatePostSlice } from './UpdatePostSlice';
 import * as DocumentPicker from 'expo-document-picker';
 
 export default function Images() {
     const dispatch = useDispatch();
-    const [images, setImages] = useState(useSelector(postSelector).images);
-    const [thumbnail, setThumbnail] = useState(0);
-    const [countUploadedImages, setCountUploadedImages] = useState(useSelector(postSelector).images.length);
+    const images = useSelector(postSelector).images;
+    const thumbnail = useSelector(postThumbnailSelector);
+    const countUploadedImages = useSelector(postSelector).images.length;
 
     const deleteImage = (index) => {
         var imgs = [...images];
         if (index == thumbnail) {
-            setThumbnail(0);
+            dispatch(UpdatePostSlice.actions.setThumbnail(0))
         }
         imgs.splice(index,1);
-        setImages(imgs);
-        setCountUploadedImages(countUploadedImages - 1);
+        dispatch(UpdatePostSlice.actions.setImages(imgs))
+        dispatch(UpdatePostSlice.actions.setThumbnail(0))
     }
 
     const addImages = async () => {
@@ -38,14 +38,11 @@ export default function Images() {
                 let result = await DocumentPicker.getDocumentAsync({
                     type: 'image/*'
                 });
-                console.log(result.uri);
-                console.log(result);
                 
                 if (result.type !== 'cancel') {
-                    var imgs = images.slice();
-                    imgs.push(result);
-                    setImages(imgs);
-                    setCountUploadedImages(countUploadedImages + 1);
+                    var imgs = images.slice()
+                    imgs.push(result)
+                    dispatch(UpdatePostSlice.actions.setImages(imgs))
                 }
             } else {
                 ToastAndroid.show("Số ảnh được đăng tải vượt quá giới hạn!", ToastAndroid.SHORT);
@@ -61,21 +58,10 @@ export default function Images() {
         } else {
             dispatch(UpdatePostSlice.actions.imagesScreenUpdate(false));
         }
-        dispatch(UpdatePostSlice.actions.imagesScreenData({
-            images: images,
-            thumbnail: thumbnail
-        }));
     },[countUploadedImages])
 
-    useEffect(() => {
-        dispatch(UpdatePostSlice.actions.imagesScreenData({
-            images: images,
-            thumbnail: thumbnail
-        }));
-    }, [thumbnail])
-
     const isThumbnail = (index) => {
-        setThumbnail(index);
+        dispatch(UpdatePostSlice.actions.setThumbnail(index))
     }
 
     return (
@@ -92,7 +78,7 @@ export default function Images() {
                 <View style={{borderWidth: 1, height: 490, width: 330, alignSelf: 'center'}}>
                     <View style={{flexDirection: 'row'}}>
                         {images[0] && 
-                            <ImageBackground source={{ uri: images[0].uri }} style={{ width: 150, height: 150, marginTop: 10, marginLeft: 10}} resizeMode='cover' onPress={() => isThumbnail(0)}>
+                            <ImageBackground source={{ uri: images[0].url ? images[0].url : images[0].uri }} style={{ width: 150, height: 150, marginTop: 10, marginLeft: 10}} resizeMode='cover' onPress={() => isThumbnail(0)}>
                                 <Pressable style={{justifyContent: 'space-between', alignItems: 'flex-end', width: 150, height: 150}} onPress={() => isThumbnail(0)}>
                                     <Ionicons name='close-circle' size={35} color={BUTTON_COLORS.colorPicked} onPress={() => deleteImage(0)}/>
                                     { thumbnail == 0 &&
@@ -102,7 +88,7 @@ export default function Images() {
                             </ImageBackground>
                         }
                         {images[1] && 
-                            <ImageBackground source={{ uri: images[1].uri }} style={{ width: 150, height: 150, marginTop: 10, marginLeft: 10 }} resizeMode='cover'>
+                            <ImageBackground source={{ uri: images[1].url ? images[1].url : images[1].uri }} style={{ width: 150, height: 150, marginTop: 10, marginLeft: 10 }} resizeMode='cover'>
                                 <Pressable style={{justifyContent: 'space-between', alignItems: 'flex-end', width: 150, height: 150}} onPress={() => isThumbnail(1)}>
                                     <Ionicons name='close-circle' size={35} color={BUTTON_COLORS.colorPicked} onPress={() => deleteImage(1)}/>
                                     { thumbnail == 1 &&
@@ -114,7 +100,7 @@ export default function Images() {
                     </View>
                     <View style={{flexDirection: 'row'}}>
                         {images[2] && 
-                            <ImageBackground source={{ uri: images[2].uri }} style={{ width: 150, height: 150, marginTop: 10, marginLeft: 10}} resizeMode='cover' onPress={() => isThumbnail(2)}>
+                            <ImageBackground source={{ uri: images[2].url ? images[2].url : images[2].uri }} style={{ width: 150, height: 150, marginTop: 10, marginLeft: 10}} resizeMode='cover' onPress={() => isThumbnail(2)}>
                                 <Pressable style={{justifyContent: 'space-between', alignItems: 'flex-end', width: 150, height: 150}} onPress={() => isThumbnail(2)}>
                                     <Ionicons name='close-circle' size={35} color={BUTTON_COLORS.colorPicked} onPress={() => deleteImage(2)}/>
                                     { thumbnail == 2 &&
@@ -124,7 +110,7 @@ export default function Images() {
                             </ImageBackground>
                         }
                         {images[3] && 
-                            <ImageBackground source={{ uri: images[3].uri }} style={{ width: 150, height: 150, marginTop: 10, marginLeft: 10 }} resizeMode='cover' onPress={() => isThumbnail(3)}>
+                            <ImageBackground source={{ uri: images[3].url ? images[3].url : images[3].uri }} style={{ width: 150, height: 150, marginTop: 10, marginLeft: 10 }} resizeMode='cover' onPress={() => isThumbnail(3)}>
                                 <Pressable style={{justifyContent: 'space-between', alignItems: 'flex-end', width: 150, height: 150}} onPress={() => isThumbnail(3)}>
                                     <Ionicons name='close-circle' size={35} color={BUTTON_COLORS.colorPicked} onPress={() => deleteImage(3)}/>
                                     { thumbnail == 3 &&
@@ -136,7 +122,7 @@ export default function Images() {
                     </View>
                     <View style={{flexDirection: 'row'}}>
                         {images[4] && 
-                            <ImageBackground source={{ uri: images[4].uri }} style={{ width: 150, height: 150, marginTop: 10, marginLeft: 10}} resizeMode='cover' onPress={() => isThumbnail(4)}>
+                            <ImageBackground source={{ uri: images[4].url ? images[4].url : images[4].uri }} style={{ width: 150, height: 150, marginTop: 10, marginLeft: 10}} resizeMode='cover' onPress={() => isThumbnail(4)}>
                                 <Pressable style={{justifyContent: 'space-between', alignItems: 'flex-end', width: 150, height: 150}} onPress={() => isThumbnail(4)}>
                                     <Ionicons name='close-circle' size={35} color={BUTTON_COLORS.colorPicked} onPress={() => deleteImage(4)}/>
                                     { thumbnail == 4 &&
@@ -146,7 +132,7 @@ export default function Images() {
                             </ImageBackground>
                         }
                         {images[5] && 
-                            <ImageBackground source={{ uri: images[5].uri }} style={{ width: 150, height: 150, marginTop: 10, marginLeft: 10}} resizeMode='cover' onPress={() => isThumbnail(5)}>
+                            <ImageBackground source={{ uri: images[5].url ? images[5].url : images[5].uri }} style={{ width: 150, height: 150, marginTop: 10, marginLeft: 10}} resizeMode='cover' onPress={() => isThumbnail(5)}>
                                 <Pressable style={{justifyContent: 'space-between', alignItems: 'flex-end', width: 150, height: 150}} onPress={() => isThumbnail(5)}>
                                     <Ionicons name='close-circle' size={35} color={BUTTON_COLORS.colorPicked} onPress={() => deleteImage(5)}/>
                                     { thumbnail == 5 &&

@@ -1,49 +1,56 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import { View, StyleSheet, ScrollView, Text, Modal, ActivityIndicator } from 'react-native'
 import Post from '../../../Components/SinglePostForList';
 import BUTTON_COLORS from '../../../Constants/Utilities/index';
 import myMotelApi from '../../../api/myMotelApi';
+import { useFocusEffect } from '@react-navigation/native';
 
 const ListPost = () => {
     const [data, setData] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
 
-    useEffect(async() => {
-        try {
-            setModalVisible(true);
-            await myMotelApi.getAllMotels().then((response) => {
-                let motels = response;
-                for (const motel in motels) {
-                    delete motels[motel]["__v"]
-                    //delete motels[motel]["_id"]
-                    delete motels[motel]["censored"]
-                    delete motels[motel]["createdAt"]
-                    delete motels[motel]["owner"]
-                    delete motels[motel]["rate"]
-                    delete motels[motel]["updatedAt"]
-                    delete motels[motel]["zoomType"]
-                    let color = {
-                        "wifi": BUTTON_COLORS.colorBasic,
-                        "toilet": BUTTON_COLORS.colorBasic,
-                        "motorcycle": BUTTON_COLORS.colorBasic,
-                        "clock": BUTTON_COLORS.colorBasic,
-                        "food": BUTTON_COLORS.colorBasic,
-                        "air-conditioner": BUTTON_COLORS.colorBasic,
-                        "ice-cream": BUTTON_COLORS.colorBasic,
-                        "washing-machine": BUTTON_COLORS.colorBasic
-                    }
-                    for (const utility in motels[motel]["utilities"]) {
-                        color[motels[motel]["utilities"][utility]] = BUTTON_COLORS.colorPicked
-                    }
-                    motels[motel]["utilities"] = color;
+    useFocusEffect(
+        useCallback(() => {
+            async function fetchData() {
+                try {
+                    setModalVisible(true);
+                    await myMotelApi.getAllMotels().then((response) => {
+                        let motels = response;
+                        for (const motel in motels) {
+                            delete motels[motel]["__v"]
+                            //delete motels[motel]["_id"]
+                            delete motels[motel]["censored"]
+                            delete motels[motel]["createdAt"]
+                            delete motels[motel]["owner"]
+                            delete motels[motel]["rate"]
+                            delete motels[motel]["updatedAt"]
+                            delete motels[motel]["zoomType"]
+                            let color = {
+                                "wifi": BUTTON_COLORS.colorBasic,
+                                "toilet": BUTTON_COLORS.colorBasic,
+                                "motorcycle": BUTTON_COLORS.colorBasic,
+                                "clock": BUTTON_COLORS.colorBasic,
+                                "food": BUTTON_COLORS.colorBasic,
+                                "air-conditioner": BUTTON_COLORS.colorBasic,
+                                "ice-cream": BUTTON_COLORS.colorBasic,
+                                "washing-machine": BUTTON_COLORS.colorBasic
+                            }
+                            for (const utility in motels[motel]["utilities"]) {
+                                color[motels[motel]["utilities"][utility]] = BUTTON_COLORS.colorPicked
+                            }
+                            motels[motel]["utilities"] = color;
+                        }
+                        setData(motels);
+                        console.log(motels)
+                    });
+                } catch (e) {
+                    console.log(e.message);
                 }
-                setData(motels);
-            });
-            setModalVisible(false);
-        } catch (e) {
-            console.log(e.message);
-        }
-    },[])
+                setModalVisible(false);
+            }
+            fetchData();
+        },[])
+    )
 
     const number = Array.from(Array(data.length).keys())
 

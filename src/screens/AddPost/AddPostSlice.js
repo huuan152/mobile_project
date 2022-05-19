@@ -1,22 +1,13 @@
 import BUTTON_COLORS from '../../Constants/Utilities/index'
 import { createSlice } from '@reduxjs/toolkit';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const getUserName = async () => { 
-    return await AsyncStorage.getItem('name');
-}
-
-const getUserPhone = async () => { 
-    return await AsyncStorage.getItem('phone');
-}
 
 const initStates = {
     addPost: {
         address: "",
         postType: 0,
         roomType: 0,
-        rentalPrice: 0,
-        area: 0,
+        rentalPrice: "",
+        area: "",
         utilities: {
             "wifi": BUTTON_COLORS.colorBasic,
             "toilet": BUTTON_COLORS.colorBasic,
@@ -28,7 +19,6 @@ const initStates = {
             "washing-machine": BUTTON_COLORS.colorBasic
         },
         images: [],
-        thumbnail: 0,
         title: "",
         contactName: "",
         contactPhone: "",
@@ -38,15 +28,15 @@ const initStates = {
     infoScreen: false,
     imagesScreen: false,
     confirmScreen: false,
+    search: "",
+    thumbnail: 0,
+    sending: false
 }
 
 export const AddPostSlice = createSlice({
     name: 'addPost',
     initialState: initStates,
     reducers: {
-        utilitiesColorUpdate: (state, action) => {
-            state.addPost.utilities = action.payload
-        },
         locationScreenUpdate: (state, action) => {
             state.locationScreen = action.payload
         },
@@ -59,29 +49,50 @@ export const AddPostSlice = createSlice({
         confirmScreenUpdate: (state, action) => {
             state.confirmScreen = action.payload
         },
-        locationScreenData: (state, action) => {
+        setLocation: (state, action) => {
             state.addPost.address = action.payload
         },
-        infoScreenData: (state, action) => {
-            state.addPost.postType = action.payload.postType,
-            state.addPost.roomType = action.payload.roomType,
-            state.addPost.rentalPrice = action.payload.rentalPrice,
-            state.addPost.area = action.payload.area
+        setSearch: (state, action) => {
+            state.search = action.payload
         },
-        imagesScreenData: (state, action) => {
-            state.addPost.images = action.payload.images,
-            state.addPost.thumbnail = action.payload.thumbnail
+        setPostType: (state, action) => {
+            state.addPost.postType = action.payload
         },
-        confirmScreenData: (state, action) => {
-            state.addPost.title = action.payload.title,
-            state.addPost.contactName = action.payload.contactName,
-            state.addPost.contactPhone = action.payload.contactPhone,
-            state.addPost.description = action.payload.description
+        setRoomType: (state, action) => {
+            state.addPost.roomType = action.payload
         },
-        resetPostDetail: (state) => {
-            state = initStates
-            state.addPost.contactName = getUserName()
-            state.addPost.contactPhone = getUserPhone()
-        }
+        setRentalPrice: (state, action) => {
+            state.addPost.rentalPrice = action.payload
+        },
+        setArea: (state, action) => {
+            state.addPost.area = action.payload
+        },
+        utilitiesColorUpdate: (state, action) => {
+            state.addPost.utilities = action.payload
+        },
+        setImages: (state, action) => {
+            state.addPost.images = action.payload
+        },
+        setThumbnail: (state, action) => {
+            state.thumbnail = action.payload
+        },
+        setTitle: (state, action) => {
+            state.addPost.title = action.payload
+        },
+        setContactName: (state, action) => {
+            state.addPost.contactName = action.payload
+        },
+        setContactPhone: (state, action) => {
+            state.addPost.contactPhone = action.payload
+        },
+        setDescription: (state, action) => {
+            state.addPost.description = action.payload
+        },
+        setSendingState: (state, action) => {
+            state.sending = action.payload
+        },
+        resetAddPost: (state) => {
+            return initStates
+        },
     }
 });

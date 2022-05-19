@@ -6,7 +6,8 @@ import userApi from '../../api/userApi';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { AddPostSlice } from '../AddPost/AddPostSlice';
-import { UpdatePostSlice } from '../UpdatePost/UpdatePostSlice';
+import { AppSlice } from '../AppSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function SignIn() {
   const [username, setUsername] = useState('');
@@ -21,30 +22,32 @@ export default function SignIn() {
       await userApi.signIn({
         "email": username,
         "password": password
-      }).then(() => {
-        dispatch(AddPostSlice.actions.resetPostDetail());
-        dispatch(UpdatePostSlice.actions.resetPostDetail());
-        nav.navigate('ContentNavigator', {screen: 'home'});
-        console.log("Đăng nhập thành công!");
-        ToastAndroid.show("Đăng nhập thành công!", ToastAndroid.SHORT);
-      });
+      })
+      let name = await AsyncStorage.getItem('name')
+      let phone = await AsyncStorage.getItem('phone')
+      dispatch(AddPostSlice.actions.setContactName(name.substring(1, name.length - 1)))
+      dispatch(AddPostSlice.actions.setContactPhone(phone.substring(1, phone.length - 1)))
+      setModalVisible(false);
+      dispatch(AppSlice.actions.logIn(true))
+      console.log("Đăng nhập thành công!");
+      ToastAndroid.show("Đăng nhập thành công!", ToastAndroid.SHORT);
     } catch (error) {
+      setModalVisible(false);
       if (error.message === "Request failed with status code 400") {
         ToastAndroid.show("Tài khoản hoặc mật khẩu không đúng", ToastAndroid.SHORT);
       } else {
         console.log(error.message);
       }
     }
-    setModalVisible(false);
   }
 
-  const signIn = () => {
+  const validate = () => {
     if (username === "" || password === "") {
       ToastAndroid.show("Tài khoản hoặc mật khẩu bỏ trống!", ToastAndroid.SHORT);
     } else {
       var re = /\S+@\S+\.\S+/;
       if (re.test(username)) {
-        logIn();
+        logIn()
       } else {
         ToastAndroid.show("Tài khoản sai định dạng!", ToastAndroid.SHORT);
       }
@@ -65,7 +68,7 @@ export default function SignIn() {
       <Image source={images.logo} style={{marginBottom: 15, marginTop: 150}}></Image>
       <TextInput placeholder='Tài khoản' style={styles.input} value={username} onChangeText={text => setUsername(text)}></TextInput>
       <TextInput placeholder='Mật khẩu' style={styles.input} value={password} secureTextEntry={true} onChangeText={text => setPassword(text)}></TextInput>
-      <TouchableOpacity style={styles.button} onPress={signIn}>
+      <TouchableOpacity style={styles.button} onPress={validate}>
         <Text style={styles.buttonText}>ĐĂNG NHẬP</Text>
       </TouchableOpacity>
       <Pressable>

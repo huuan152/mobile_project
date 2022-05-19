@@ -5,7 +5,7 @@ import StepBar from './StepBar';
 import BUTTON_COLORS from '../../Constants/Utilities/index';
 import Utilities from '../../Components/UtilitiesButton/index';
 import { useDispatch, useSelector } from 'react-redux';
-import { postSelector, postUtilitiesColorSelector } from '../../redux/selectors';
+import { postSelector } from '../../redux/selectors';
 import { UpdatePostSlice } from './UpdatePostSlice';
 
 const postTypes = ['Cho thuê', 'Tìm người ở ghép'];
@@ -23,13 +23,12 @@ const utilities = [
 
 export default function Info() {
     const dispatch = useDispatch();
-    const PostData = useSelector(postSelector);
-    console.log(PostData);
-    const [post, setPost] = useState(parseInt(PostData.postType));
-    const [room, setRoom] = useState(PostData.roomType);
-    const [roomPrice, setRoomPrice] = useState(PostData.rentalPrice.toString() === '0' ? '' : PostData.rentalPrice.toString());
-    const [area, setArea] = useState(PostData.area.toString() === '0' ? '' : PostData.area.toString());
-    const utilitiesColor = useSelector(postUtilitiesColorSelector);
+    const postData = useSelector(postSelector)
+    const post = parseInt(postData.postType)
+    const room = postData.roomType
+    const roomPrice = postData.rentalPrice.toString()
+    const area = postData.area.toString()
+    const utilitiesColor = useSelector(postSelector).utilities
     
     const countSelectedUtilities = () => {
         let count = 0;
@@ -38,19 +37,12 @@ export default function Info() {
                 count++;
             }
         }
-        console.log(count);
         return count;
     }
 
     useEffect(() => {
-        if (roomPrice >= 1000000 && area !== 0) {
-            dispatch(UpdatePostSlice.actions.infoScreenUpdate(true));
-            dispatch(UpdatePostSlice.actions.infoScreenData({
-                postType: post,
-                roomType: room,
-                rentalPrice: parseInt(roomPrice),
-                area: area
-            }));
+        if (parseInt(roomPrice) >= 1000000 && parseInt(area) !== 0) {
+            dispatch(UpdatePostSlice.actions.infoScreenUpdate(true))
         } else {
             dispatch(UpdatePostSlice.actions.infoScreenUpdate(false));
         }
@@ -65,7 +57,7 @@ export default function Info() {
                     <ButtonGroup
                         buttons={postTypes}
                         selectedIndex={post}
-                        onPress={(value) => setPost(value)}
+                        onPress={(value) => dispatch(UpdatePostSlice.actions.setPostType(value))}
                         textStyle={{fontSize: 15, fontWeight: 'bold'}}
                 />
                 </View>
@@ -74,18 +66,18 @@ export default function Info() {
                     <ButtonGroup
                         buttons={roomTypes}
                         selectedIndex={room}
-                        onPress={(value) => setRoom(value)}
+                        onPress={(value) => dispatch(UpdatePostSlice.actions.setRoomType(value))}
                         textStyle={{fontSize: 15, fontWeight: 'bold'}}
                 />
                 </View>
                 <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
                     <View style={{flex: 1}}>
                         <Text style={{fontSize: 17, paddingLeft: 25}}>Giá phòng (VND)</Text>
-                        <TextInput placeholder='3000000' style={styles.input} value={roomPrice} onChangeText={text => setRoomPrice(text)} keyboardType="phone-pad"></TextInput>
+                        <TextInput placeholder='3000000' style={styles.input} value={roomPrice} onChangeText={text => dispatch(UpdatePostSlice.actions.setRentalPrice(text))} keyboardType="phone-pad"></TextInput>
                     </View>
                     <View style={{flex: 1}}>
                         <Text style={{fontSize: 17, paddingLeft: 25}}>Diện tích (m2)</Text>
-                        <TextInput placeholder='20' style={styles.input} value={area} onChangeText={text => setArea(text)} keyboardType="phone-pad"></TextInput>
+                        <TextInput placeholder='20' style={styles.input} value={area} onChangeText={text => dispatch(UpdatePostSlice.actions.setArea(text))} keyboardType="phone-pad"></TextInput>
                     </View>
                 </View>
                 <View style={styles.utilitiesField}>
@@ -93,7 +85,7 @@ export default function Info() {
                     <View style={styles.utilities}>
                         {utilities.map((element, index) => {
                             return (
-                                <View style={styles.utilitiesItem}>
+                                <View style={styles.utilitiesItem} key={index}>
                                     <Utilities key={index} size={45} name={element} iconClicked addPost={false}/>
                                 </View>
                             )

@@ -6,12 +6,16 @@ import Favorite from './Favorite';
 import ProfileStack from './Profile/ProfileStack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useDispatch } from 'react-redux';
+import { AppSlice } from './AppSlice';
 
 const Tab = createBottomTabNavigator();
 
 export default function ContentNavigator() {
+    const dispatch = useDispatch()
+
   return (
-    <Tab.Navigator>
+    <Tab.Navigator initialRouteName='List Posts'>
         <Tab.Screen options={{headerShown: false, tabBarLabel: 'Trang chủ',
         tabBarIcon: ({ color, size }) => (
             <FontAwesome name="home" color={color} size={size}/>
