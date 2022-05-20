@@ -5,6 +5,8 @@ import {
   ScrollView,
   Modal,
   ActivityIndicator,
+  RefreshControl,
+  Platform,
 } from "react-native";
 import Item from "./Item";
 import BUTTON_COLORS from "../../../Constants/Utilities/index";
@@ -21,11 +23,16 @@ import { UpdatePostSlice } from "../../UpdatePost/UpdatePostSlice";
 const MyPostScreen = () => {
   const [data, setData] = useState([]);
   const modalVisible = useSelector(postSendingStateSelector);
+  const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
 
-  useEffect(async () => {
+  const fetchData = async (refresh) => {
     try {
-      dispatch(UpdatePostSlice.actions.setSendingState(true));
+      if (refresh) {
+        setRefreshing(true);
+      } else {
+        dispatch(UpdatePostSlice.actions.setSendingState(true));
+      }
       await myMotelApi.getAllMyMotels().then((response) => {
         let motels = response;
         for (const motel in motels) {
@@ -55,10 +62,19 @@ const MyPostScreen = () => {
         }
         setData(motels);
       });
-      dispatch(UpdatePostSlice.actions.setSendingState(false));
     } catch (e) {
       console.log(e.message);
     }
+    if (refresh) {
+      setRefreshing(false);
+    } else {
+      dispatch(UpdatePostSlice.actions.setSendingState(false));
+    }
+  };
+
+  useEffect(() => {
+    // params === false: actively fetch data
+    fetchData(false);
   }, [useSelector(isDeleted), useSelector(isUpdated)]);
 
   const number = Array.from(Array(data.length).keys());
@@ -68,6 +84,21 @@ const MyPostScreen = () => {
       stickyHeaderIndices={[0]}
       //showsVerticalScrollIndicator={false}
       style={styles.container}
+      refreshControl={
+        Platform.OS !== "ios" ? (
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => fetchData(true)}
+            colors={[BUTTON_COLORS.colorPicked]}
+          />
+        ) : (
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => fetchData(true)}
+            tintColor={BUTTON_COLORS.colorPicked}
+          />
+        )
+      }
     >
       <Modal animationType="none" transparent={true} visible={modalVisible}>
         <View style={styles.centeredView}>

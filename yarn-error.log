@@ -44,7 +44,6 @@ npm manifest:
       "@react-navigation/stack": "^6.1.1",
       "@rneui/base": "^4.0.0-rc.1",
       "@rneui/themed": "^4.0.0-rc.1",
-      "axios": "^0.26.1",
       "expo": "~44.0.0",
       "expo-image-picker": "~12.0.1",
       "expo-status-bar": "~1.2.0",
@@ -1799,13 +1798,6 @@ Lockfile:
     version "2.1.2"
     resolved "https://registry.npmjs.org/atob/-/atob-2.1.2.tgz"
     integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
-  
-  axios@^0.26.1:
-    version "0.26.1"
-    resolved "https://registry.npmjs.org/axios/-/axios-0.26.1.tgz"
-    integrity sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==
-    dependencies:
-      follow-redirects "^1.14.8"
   
   babel-core@^7.0.0-bridge.0:
     version "7.0.0-bridge.0"

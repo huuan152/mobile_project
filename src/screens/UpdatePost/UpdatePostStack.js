@@ -55,26 +55,34 @@ export default function UpdatePostStack() {
         ...myNewMotel,
         utilities: utilities,
       };
+
+      // edit motel info
       await myMotelApi.editMyMotelInfo(myNewMotel, motelID);
+
       const data = new FormData();
 
       const thumbnailImg = PostData.images[thumbnail];
       images.splice(thumbnail, 1);
       images.unshift(thumbnailImg);
 
+      const existImages = [];
       for (const image in images) {
-        let path = images[image].uri ? images[image].uri : images[image].url;
         if (images[image].uri) {
           data.append("images", {
-            uri: Platform.OS === "ios" ? path.replace("file://", "") : path,
+            uri:
+              Platform.OS === "ios"
+                ? images[image].uri.replace("file://", "")
+                : images[image].uri,
           });
         } else {
-          data.append("images", {
-            url: Platform.OS === "ios" ? path.replace("file://", "") : path,
-          });
+          existImages.push(images[image]._id);
         }
       }
+      let imgs = existImages.join(" ");
+      data.append("currents", imgs);
       console.log("bef upload", data);
+
+      // edit motel images
       await myMotelApi.myNewMotelImages(motelID, data);
       dispatch(UpdatePostSlice.actions.updateMotels());
       nav.navigate("MyPostScreen");
