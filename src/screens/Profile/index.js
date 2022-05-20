@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import BUTTON_COLORS from '../../Constants/Utilities/index';
@@ -7,6 +7,7 @@ import { AppSlice } from '../AppSlice';
 import { AddPostSlice } from '../AddPost/AddPostSlice';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
+const io = require('socket.io-client/dist/socket.io');
 
 const Profile = () => {
     const nav = useNavigation();
@@ -24,6 +25,22 @@ const Profile = () => {
         }
       }
 
+    useEffect(() => {
+        const socket = io(
+            `https://mtapp-a.herokuapp.com`,
+            {
+              transports: ['websocket'], // you need to explicitly tell it to use websockets
+            },
+          );
+         
+          socket.on('connect', () => {
+            console.log('connected --------------- socket ---------------');
+          });
+         
+          socket.on('connect_error', err => {
+            console.log(err.message);
+        });
+    }, [])
     return (
         <View style={styles.container}>
             <View style={styles.headerField}>
