@@ -2,14 +2,14 @@
 
 ## Cách chạy
 ### Bước 1:
-Mở VSCode clone project về và chạy câu lệnh:
+Mở VSCode clone project về và chạy lần lượt các câu lệnh:
 ```
 npm install
 npm start
 ```
 ### Bước 2:
-Mở Android Studio => More Actions (Nút 3 chấm dọc góc phải bên trên) => Virtual Device Manager => Chạy giả lập 1 thiết bị
-### Bước 3:
-Truy cập http://localhost:19002/ và chọn Run on Android device/emulator
+Chạy giả lập 1 thiết bị di động bằng Android Studio, Genymotion, BlueStack..., sau đó gõ phím "a" vào cửa sổ Terminal để chương trình kết nối với thiết bị.
+<br>Hoặc sử dụng một thiết bị di động cài đặt ứng dụng Expo Go, sau đó mở ứng dụng, quét mã QR hiển thị trên cửa sổ Terminal khi chạy code để chương trình kết nối với thiết bị.
+
 
 
