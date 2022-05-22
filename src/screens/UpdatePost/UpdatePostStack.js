@@ -13,8 +13,8 @@ import {
   postImagesScreenSelector,
   postConfirmScreenSelector,
   postSelector,
-  postThumbnailSelector,
   motelUpdateID,
+  postThumbnailSelector,
 } from "../../redux/selectors";
 import myMotelApi from "../../api/myMotelApi";
 import { useNavigation } from "@react-navigation/native";
@@ -61,14 +61,16 @@ export default function UpdatePostStack() {
 
       const data = new FormData();
 
-      const thumbnailImg = PostData.images[thumbnail];
-      images.splice(thumbnail, 1);
-      images.unshift(thumbnailImg);
-
+      const thumbnailImage = PostData.images[thumbnail];
       const existImages = [];
+      const newImages = [];
+
       for (const image in images) {
         if (images[image].uri) {
+          newImages.push(images[image]);
           data.append("images", {
+            name: images[image].name,
+            type: images[image].mimeType,
             uri:
               Platform.OS === "ios"
                 ? images[image].uri.replace("file://", "")
@@ -76,14 +78,24 @@ export default function UpdatePostStack() {
           });
         } else {
           existImages.push(images[image]._id);
+          if (images[image] === thumbnailImage) {
+            data.append("thumbnail", images[image]._id);
+          }
         }
       }
+
+      for (const image in newImages) {
+        if (newImages[image] === thumbnailImage) {
+          data.append("thumbnail", parseInt(image));
+          break;
+        }
+      }
+
       let imgs = existImages.join(" ");
       data.append("currents", imgs);
-      console.log("bef upload", data);
 
-      // edit motel images
-      await myMotelApi.myNewMotelImages(motelID, data);
+      //edit motel images
+      await myMotelApi.editMyMotelImages(motelID, data);
       dispatch(UpdatePostSlice.actions.updateMotels());
       nav.navigate("MyPostScreen");
       ToastAndroid.show("Cập nhật thành công!", ToastAndroid.SHORT);

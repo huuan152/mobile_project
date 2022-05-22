@@ -59,6 +59,19 @@ const MyPostScreen = () => {
               BUTTON_COLORS.colorPicked;
           }
           motels[motel]["utilities"] = color;
+          let imgs = motels[motel].images;
+          let thumbnail = motels[motel].thumbnail;
+          if (imgs.length !== 1) {
+            for (const image in imgs) {
+              if (imgs[image]._id === thumbnail) {
+                let img = imgs[image];
+                imgs.splice(parseInt(image), 1);
+                imgs.unshift(img);
+                break;
+              }
+            }
+          }
+          motels[motel].images = imgs;
         }
         setData(motels);
       });
@@ -73,7 +86,7 @@ const MyPostScreen = () => {
   };
 
   useEffect(() => {
-    // params === false: actively fetch data
+    // params === false: fetch data after update motels
     fetchData(false);
   }, [useSelector(isDeleted), useSelector(isUpdated)]);
 

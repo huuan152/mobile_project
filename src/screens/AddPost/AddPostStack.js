@@ -81,6 +81,8 @@ export default function AddPostStack() {
         });
       }
 
+      data.append("thumbnail", "0");
+
       await myMotelApi.myNewMotelImages(motelID, data);
       resetAddPost();
       navigation.navigate("Location");

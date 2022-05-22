@@ -71,9 +71,7 @@ export default function Location() {
           `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&language=vi&components=country:vn&types=address&key=AIzaSyC_8ZzcEbucSlkDlE7GTiLHNhFvfGHDMlQ`
         )
         .then(function (response) {
-          console.log(response);
           response.data.predictions.forEach((element, index) => {
-            console.log(element.description);
             newItems.push(element.description);
           });
           setData(newItems);
