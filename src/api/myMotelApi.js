@@ -32,6 +32,14 @@ const editMyMotelInfo = async (motel, _id) => {
   return await axiosClient.put(`/motel/${_id}`, motel);
 };
 
+const editMyMotelImages = async (_id, images) => {
+  return await axiosClient.put(`/motel/${_id}/update-image`, images, {
+    headers: {
+      "content-type": "multipart/form-data",
+    },
+  });
+};
+
 const deleteMyMotel = async (_id) => {
   return await axiosClient.delete(`/motel/${_id}`);
 };
@@ -43,6 +51,7 @@ const myMotelApi = {
   deleteMyMotel,
   getAllMotels,
   editMyMotelInfo,
+  editMyMotelImages,
 };
 
 export default myMotelApi;

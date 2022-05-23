@@ -20,7 +20,6 @@ export default function Map(props) {
         `https://maps.googleapis.com/maps/api/geocode/json?address=${props.address}&key=AIzaSyC_8ZzcEbucSlkDlE7GTiLHNhFvfGHDMlQ`
       )
       .then(function (response) {
-        console.log(response);
         var lng = response.data.results[0].geometry.location.lng;
         var lat = response.data.results[0].geometry.location.lat;
         var northeastLat =
