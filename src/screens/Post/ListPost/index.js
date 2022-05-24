@@ -10,8 +10,11 @@ import {
 import Post from "../../../Components/SinglePostForList";
 import BUTTON_COLORS from "../../../Constants/Utilities/index";
 import myMotelApi from "../../../api/myMotelApi";
+import { useDispatch } from "react-redux";
+import { postSlice } from "../../../redux/slice/postSlice";
 
 const ListPost = () => {
+  const dispatch = useDispatch()
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -20,6 +23,7 @@ const ListPost = () => {
     try {
       await myMotelApi.getAllMotels().then((response) => {
         let motels = response;
+        dispatch(postSlice.actions.getListPost(response));
         for (const motel in motels) {
           delete motels[motel]["__v"];
           //delete motels[motel]["_id"]

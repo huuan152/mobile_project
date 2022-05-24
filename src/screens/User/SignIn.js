@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { AddPostSlice } from '../AddPost/AddPostSlice';
 import { AppSlice } from '../AppSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { userSlice } from '../../redux/slice/userSlice';
 
 export default function SignIn() {
   const [username, setUsername] = useState('');
@@ -19,7 +20,7 @@ export default function SignIn() {
   const logIn = async () => {
     try {
       setModalVisible(true);
-      await userApi.signIn({
+      let response = await userApi.signIn({
         "email": username,
         "password": password
       })
@@ -28,7 +29,8 @@ export default function SignIn() {
       dispatch(AddPostSlice.actions.setContactName(name.substring(1, name.length - 1)))
       dispatch(AddPostSlice.actions.setContactPhone(phone.substring(1, phone.length - 1)))
       setModalVisible(false);
-      dispatch(AppSlice.actions.logIn(true))
+      dispatch(AppSlice.actions.logIn(true));
+      dispatch(userSlice.actions.logIn(response.user));
       console.log("Đăng nhập thành công!");
       ToastAndroid.show("Đăng nhập thành công!", ToastAndroid.SHORT);
     } catch (error) {

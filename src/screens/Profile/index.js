@@ -6,41 +6,59 @@ import userApi from '../../api/userApi';
 import { AppSlice } from '../AppSlice';
 import { AddPostSlice } from '../AddPost/AddPostSlice';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
-const io = require('socket.io-client/dist/socket.io');
+import { useDispatch, useSelector } from 'react-redux';
+import { listPostSelector, userSelector } from '../../redux/selectors';
+import { userSlice } from '../../redux/slice/userSlice';
+const io = require('socket.io-client');
 
 const Profile = () => {
     const nav = useNavigation();
     const dispatch = useDispatch();
+    const { user } = useSelector(userSelector)
+    const { post } = useSelector(listPostSelector);
 
     const signOut = async () => {
         try {
           await userApi.signOut().then(() => {
             console.log("Đăng xuất thành công!");
             dispatch(AddPostSlice.actions.resetAddPost())
-            dispatch(AppSlice.actions.logIn(false))
+            dispatch(AppSlice.actions.logIn(false));
+            dispatch(userSlice.actions.logOut());
           });
         } catch (error) {
             console.log(error.message);
         }
       }
 
-    useEffect(() => {
-        const socket = io(
-            `https://mtapp-a.herokuapp.com`,
-            {
-              transports: ['websocket'], // you need to explicitly tell it to use websockets
-            },
-          );
-         
-          socket.on('connect', () => {
-            console.log('connected --------------- socket ---------------');
-          });
-         
-          socket.on('connect_error', err => {
-            console.log(err.message);
-        });
-    }, [])
+    // useEffect(() => {
+    //     console.log('Current user', user);
+    // }, []);
+    // ///////////////////////////////////////
+    // useEffect(() => {
+    //     console.log('List post', post);
+    // }, []);
+
+    // useEffect(() => {
+    //     const socket = io(
+    //         `https://mtapp-a.herokuapp.com`,
+    //       );
+    //         socket.emit('connection');
+    //         console.log('connect socket');
+    //         socket.emit('created-motel', '62884e4b9ca74fcff0779754');
+    //         socket.on('new-motel', (motel) => {
+    //             console.log('New motel', motel);
+    //         });
+    //         // socket.on('connect', () => {
+    //         //     console.log('connected --------------- socket ---------------');
+    //         //     socket.emit('created-motel', '62874122e276563f4d254af8');
+    //         //     socket.on('new-motel', (motel) => {
+    //         //         console.log(motel);
+    //         //     });
+    //         // });
+    //         socket.on('connect_error', err => {
+    //             console.log(err.message);
+    //         });
+    // }, [])
     return (
         <View style={styles.container}>
             <View style={styles.headerField}>

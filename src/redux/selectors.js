@@ -27,3 +27,7 @@ export const postSendingStateSelector = (state) => state.updatePost.sending;
 export const isDeleted = (state) => state.updatePost.deleteMotels;
 export const isUpdated = (state) => state.updatePost.updateMotels;
 export const motelUpdateID = (state) => state.updatePost.motelUpdateID;
+
+export const userSelector = (state) => state.user;
+
+export const listPostSelector = (state) => state.post;

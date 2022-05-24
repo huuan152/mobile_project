@@ -9,14 +9,13 @@ const testImage = "https://picsum.photos/id/11/200/300";
 
 const Item = (props) => {
     const nav = useNavigation();
-    const { price, address, area, title } = props;
-
+    const { address, area, title, rentalPrice, images } = props;
     return (
         <TouchableOpacity style={styles.container}>
             <View style={styles.content}>
                 <View style={styles.imageField}>
-                    <Text style={styles.price}>{`${price} triệu`}</Text>
-                    <Image source={{uri: props.images === undefined ? testImage : props.images[0].url}} style={styles.image}/>
+                    <Text style={styles.price}>{`${rentalPrice} triệu`}</Text>
+                    <Image source={{uri: images && images.length > 0 ? images[0].url : testImage}} style={styles.image}/>
                 </View>
                 <View style={styles.infoField}>
                     <View style={styles.titleField}>

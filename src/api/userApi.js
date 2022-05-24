@@ -13,6 +13,7 @@ const signIn = async (user) => {
       AsyncStorage.setItem("owner", JSON.stringify(response.user._id));
       AsyncStorage.setItem("name", JSON.stringify(response.user.name));
       AsyncStorage.setItem("phone", JSON.stringify(response.user.phone));
+      AsyncStorage.setItem("favoriteAreas", JSON.stringify(response.user.favoriteAreas))
     }
     return response;
   });
