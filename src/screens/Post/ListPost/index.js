@@ -23,7 +23,6 @@ const ListPost = () => {
     try {
       await myMotelApi.getAllMotels().then((response) => {
         let motels = response;
-        dispatch(postSlice.actions.getListPost(response));
         for (const motel in motels) {
           delete motels[motel]["__v"];
           //delete motels[motel]["_id"]
@@ -73,6 +72,16 @@ const ListPost = () => {
   useEffect(() => {
     onRefresh();
   }, []);
+
+  useEffect(() => {
+    const getList = async () => {
+      const list  = await myMotelApi.getAllMotels((response) => {
+        return response
+      });
+      dispatch(postSlice.actions.getListPost(list));
+    }
+    getList();
+  }, [])
 
   const number = Array.from(Array(data.length).keys());
 

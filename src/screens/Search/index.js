@@ -24,8 +24,8 @@ Notifications.setNotificationHandler({
 
 const SeachScreen = () => {
   const dispatch = useDispatch();
-  const { searchPost } = useSelector(listPostSelector);
-  console.log('Search Post', searchPost);
+  const { post, searchPost } = useSelector(listPostSelector);
+  console.log('All Post', post);
     // const [selectedItems, setSelectedItems] = useState({});
     // const [items, setItems] = useState([]);
 
