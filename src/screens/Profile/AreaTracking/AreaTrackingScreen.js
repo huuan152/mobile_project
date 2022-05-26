@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, Text, FlatList, Pressable } from "react-native";
+import { View, StyleSheet, TextInput, Text, FlatList, TouchableOpacity, Alert } from "react-native";
 import IconMaterial from 'react-native-vector-icons/MaterialIcons'
 import BUTTON_COLORS from '../../../Constants/Utilities/index';
-import City from '../../../Constants/Areas/tinh_tp.json';
 import District from '../../../Constants/Areas/quan_huyen.json';
 import SubDistrict from '../../../Constants/Areas/xa_phuong.json';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const AreaTrackingScreen = (props) => {
     const [search, setSearch] = useState('');
@@ -17,35 +15,36 @@ const AreaTrackingScreen = (props) => {
         var result = [];
         if (input !== '') {
             var enoughData = false;
-            City.every(x => {
-                if (result.length > 10) {
-                    enoughData = true;
-                    return false;
-                }
-                if (x.name.startsWith(input)) {
-                    result.push(x.name_with_type);
-                }
-                return true;
-            });
+            if (area.length === 0) {
+                result.push("Thành phố Hà Nội");
+            } else if (area[0] === "Thành phố Hà Nội") {
+                enoughData = true;
+                return false;
+            }
             if (enoughData === false) {
-                District.every(x => {
+                District.every(item => {
                     if (result.length > 10) {
                         enoughData = true;
                         return false;
                     }
-                    if (x.name.startsWith(input)) {
-                        result.push(x.path_with_type);
+                    if (item.name.startsWith(input)) {
+                        area.includes(item.name_with_type)
+                        if (!area.includes(item.path_with_type)) {
+                            result.push(item.path_with_type);
+                        }
                     }
                     return true;
                 });
             }
             if (enoughData === false) {
-                SubDistrict.every(x => {
+                SubDistrict.every(item => {
                     if (result.length > 10) {
                         return false;
                     }
-                    if (result.length < 10 && x.name.startsWith(input)) {
-                        result.push(x.path_with_type);
+                    if (result.length < 10 && item.name.startsWith(input)) {
+                        if (!area.includes(item.path_with_type)) {
+                            result.push(item.path_with_type);
+                        }
                     }
                     return true;
                 });
@@ -55,14 +54,49 @@ const AreaTrackingScreen = (props) => {
     }
 
     const ItemClicked = (item) => {
-        searchArea(item);
+        setArea([...area, item]);
+        setSearch('');
+        setData([]);
     }
 
-    const ItemView = ({item}) => {
+    const deleteArea = (item) => {
+        Alert.alert(
+            "Hủy theo dõi khu vực",
+            "Bạn có chắc chắn muốn hủy theo dõi khu vực này không?",
+            [
+              {
+                text: "Hủy",
+                style: "cancel",
+              },
+              {
+                text: "Đồng ý",
+                onPress: async () => {
+                    const newAreas = [];
+                    for (const location of area) {
+                        if (location !== item) {
+                            newAreas.push(location);
+                        };
+                    }
+                    setArea(newAreas);
+                },
+              },
+            ]
+        );
+    }
+
+    const ItemViewSearch = ({item}) => {
         return (
-            <Pressable onPress={() => ItemClicked(item)}>
-                <Text style={styles.itemStyle}>{item}</Text>
-            </Pressable>
+            <TouchableOpacity onPress={() => ItemClicked(item)}>
+                <Text style={styles.itemStyle}>{`${item}`}</Text>
+            </TouchableOpacity>
+        );
+    }
+
+    const ItemView = ({item, index}) => {
+        return (
+            <TouchableOpacity onPress={() => deleteArea(item)}>
+                <Text style={styles.itemStyle}>{`${index + 1}. ${item}`}</Text>
+            </TouchableOpacity>
         );
     }
 
@@ -72,36 +106,28 @@ const AreaTrackingScreen = (props) => {
         );
     }
 
-    const addNewAreaTracking = () => {
-        setArea([...area, search]);
-        setSearch('');
-    }
-
     return (
         <View style={styles.container}>
             <View style={{marginHorizontal: 24}}>
                 <Text style={styles.inputTitle}>Theo dõi khu vực</Text>
                 <View style={styles.inputArea}>
                     <TextInput placeholder='Nhập khu vực muốn theo dõi' style={styles.input} value={search} onChangeText={text => searchArea(text)}></TextInput>
-                    <TouchableOpacity style={{backgroundColor: BUTTON_COLORS.colorPicked, padding: 10, borderRadius: 5}} onPress={addNewAreaTracking}>
-                        <Text style={{color: 'white'}}>Thêm</Text>
-                    </TouchableOpacity>
                 </View>
                 <FlatList
                     data={data}
                     keyExtractor={(item, index) => index.toString()}
                     ItemSeparatorComponent={ItemSeparatorView}
-                    renderItem={ItemView}
+                    renderItem={ItemViewSearch}
                 >
                 </FlatList>
-                { data.length === 0 &&
+                { area.length !== 0 && data.length === 0 &&
                     <View style={{marginVertical: 15}}>
                         <Text style={styles.inputTitle}>Khu vực được theo dõi</Text>
                         <FlatList
                             data={area}
                             keyExtractor={(item, index) => index.toString()}
                             ItemSeparatorComponent={ItemSeparatorView}
-                            renderItem={ItemView}
+                            renderItem={(item, index) => ItemView(item, index)}
                         ></FlatList>
                     </View>
                 }
@@ -138,7 +164,7 @@ const styles = StyleSheet.create({
         borderColor: BUTTON_COLORS.colorBasic,
         borderRadius: 5,
         backgroundColor: 'white',
-        width: '80%'
+        width: '100%'
     },
     itemStyle: {
         padding: 10,

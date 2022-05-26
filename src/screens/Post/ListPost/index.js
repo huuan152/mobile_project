@@ -24,14 +24,14 @@ const ListPost = () => {
       await myMotelApi.getAllMotels().then((response) => {
         let motels = response;
         for (const motel in motels) {
-          delete motels[motel]["__v"];
-          //delete motels[motel]["_id"]
-          delete motels[motel]["censored"];
-          delete motels[motel]["createdAt"];
-          delete motels[motel]["owner"];
-          delete motels[motel]["rate"];
-          delete motels[motel]["updatedAt"];
-          delete motels[motel]["zoomType"];
+          // delete motels[motel]["__v"];
+          // //delete motels[motel]["_id"]
+          // delete motels[motel]["censored"];
+          // delete motels[motel]["createdAt"];
+          // delete motels[motel]["owner"];
+          // delete motels[motel]["rate"];
+          // delete motels[motel]["updatedAt"];
+          // delete motels[motel]["zoomType"];
           let color = {
             wifi: BUTTON_COLORS.colorBasic,
             toilet: BUTTON_COLORS.colorBasic,
@@ -105,7 +105,7 @@ const ListPost = () => {
       }
     >
       <View style={styles.container}>
-        <Text style={styles.appName}>{"Nhà trọ 360"}</Text>
+        <Text style={styles.appName}>{"Tìm nhà trọ"}</Text>
         <View style={styles.row1}>
           {number.map((element, index) => {
             return (

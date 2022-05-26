@@ -71,6 +71,7 @@ export default function Location() {
           `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&language=vi&components=country:vn&types=address&key=AIzaSyC_8ZzcEbucSlkDlE7GTiLHNhFvfGHDMlQ`
         )
         .then(function (response) {
+          console.log("response.data.predictions", response.data);
           response.data.predictions.forEach((element, index) => {
             newItems.push(element.description);
           });
@@ -79,6 +80,8 @@ export default function Location() {
         .catch(function (error) {
           console.log(error);
         });
+    } else {
+      setData([]);
     }
   };
 
@@ -93,7 +96,8 @@ export default function Location() {
   const ItemClicked = (item) => {
     dispatch(AddPostSlice.actions.setLocation(item));
     dispatch(AddPostSlice.actions.setSearch(item));
-    searchLocation(item);
+    setData([]);
+    //searchLocation(item);
   };
 
   const ItemView = ({ item }) => {
