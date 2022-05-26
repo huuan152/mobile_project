@@ -41,7 +41,7 @@ export default function Info() {
     }
 
     useEffect(() => {
-        if (parseInt(roomPrice) >= 1000000 && parseInt(area) !== 0) {
+        if (parseInt(roomPrice) !== 0 && parseInt(area) !== 0) {
             dispatch(AddPostSlice.actions.infoScreenUpdate(true))
         } else {
             dispatch(AddPostSlice.actions.infoScreenUpdate(false));

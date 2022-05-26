@@ -3,7 +3,6 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import BUTTON_COLORS from '../../Constants/Utilities/index';
 import userApi from '../../api/userApi';
-import { AppSlice } from '../AppSlice';
 import { AddPostSlice } from '../AddPost/AddPostSlice';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +13,7 @@ const io = require('socket.io-client');
 const Profile = () => {
     const nav = useNavigation();
     const dispatch = useDispatch();
-    const { user } = useSelector(userSelector)
+    const { user } = useSelector(userSelector);
     const { post } = useSelector(listPostSelector);
 
     const signOut = async () => {
@@ -22,7 +21,7 @@ const Profile = () => {
           await userApi.signOut().then(() => {
             console.log("Đăng xuất thành công!");
             dispatch(AddPostSlice.actions.resetAddPost())
-            dispatch(AppSlice.actions.logIn(false));
+            dispatch(userSlice.actions.logInState(false));
             dispatch(userSlice.actions.logOut());
           });
         } catch (error) {
@@ -66,7 +65,7 @@ const Profile = () => {
             </View>
             <View style={styles.profileImageField}>
                 <Image source={require('../../images/profile_image.png')} style={styles.profileImage} />
-                <Text style={styles.username}>{`Phí Mạnh Hải`}</Text>
+                <Text style={styles.username}>{user.name}</Text>
             </View>
             <View style={styles.buttonField}>
                 <TouchableOpacity style={styles.button} onPress={() => {nav.navigate('MyPostScreen')}}>
@@ -101,7 +100,7 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 18,
-        color: '#2089dc',
+        color: BUTTON_COLORS.colorPicked,
         fontWeight: 'bold'
     },
     profileImageField: {

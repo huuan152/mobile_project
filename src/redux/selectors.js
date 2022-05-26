@@ -11,8 +11,6 @@ export const addPostThumbnailSelector = (state) => state.addPost.thumbnail;
 export const addPostSendingStateSelector = (state) => state.addPost.sending;
 export const isCreated = (state) => state.addPost.createMotels;
 
-export const isLogIn = (state) => state.app.isLogIn;
-
 export const postLocationScreenSelector = (state) =>
   state.updatePost.locationScreen;
 export const postInfoScreenSelector = (state) => state.updatePost.infoScreen;
@@ -29,5 +27,8 @@ export const isUpdated = (state) => state.updatePost.updateMotels;
 export const motelUpdateID = (state) => state.updatePost.motelUpdateID;
 
 export const userSelector = (state) => state.user;
+export const isLogIn = (state) => state.user.isLogIn;
+export const userSendingStateSelector = (state) => state.user.sending;
+export const favoriteMotels = (state) => state.user.user.favoriteMotels;
 
 export const listPostSelector = (state) => state.post;

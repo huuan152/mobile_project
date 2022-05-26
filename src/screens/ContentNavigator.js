@@ -2,12 +2,11 @@ import React, {useEffect} from 'react';
 import AddPostStack from './AddPost/AddPostStack';
 import PostScreen from './Post';
 import SeachScreen from './Search';
-import Favorite from './Favorite';
+import FavoriteStack from './Favorite/FavoriteStack';
 import ProfileStack from './Profile/ProfileStack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch } from 'react-redux';
-import { AppSlice } from './AppSlice';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,7 +30,7 @@ export default function ContentNavigator() {
         <Tab.Screen options={{headerShown: false, tabBarLabel: 'Yêu thích',
         tabBarIcon: ({ color, size }) => (
             <FontAwesome name="heart" color={color} size={size}/>
-        )}} name="Favorite" component={Favorite} />
+        )}} name="FavoriteStack" component={FavoriteStack} />
         <Tab.Screen options={{headerShown: false, tabBarLabel: 'Tài khoản',
         tabBarIcon: ({ color, size }) => (
             <FontAwesome name="user" color={color} size={size}/>

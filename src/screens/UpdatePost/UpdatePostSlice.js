@@ -118,6 +118,7 @@ export const UpdatePostSlice = createSlice({
       state.confirmScreen = true;
       state.search = action.payload.address;
       state.sending = false;
+      state.motelUpdateID = action.payload._id;
     },
     resetPostDetail: (state) => {
       return initStates;

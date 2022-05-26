@@ -3,7 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     user: null,
     isLoading: false,
-    error: ''
+    isLogIn: false,
+    error: '',
+    sending: false,
 }
 
 export const userSlice = createSlice({
@@ -15,6 +17,15 @@ export const userSlice = createSlice({
         },
         logOut: (state, action) => {
             state.user = null
+        },
+        logInState: (state, action) => {
+            state.isLogIn = action.payload
+        },
+        updateFavoriteMotels: (state, action) => {
+            state.user.favoriteMotels = action.payload
+        },
+        setSendingState: (state, action) => {
+            state.sending = action.payload;
         }
     }
 });

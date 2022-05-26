@@ -6,7 +6,6 @@ import userApi from '../../api/userApi';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { AddPostSlice } from '../AddPost/AddPostSlice';
-import { AppSlice } from '../AppSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { userSlice } from '../../redux/slice/userSlice';
 
@@ -24,12 +23,10 @@ export default function SignIn() {
         "email": username,
         "password": password
       })
-      let name = await AsyncStorage.getItem('name')
-      let phone = await AsyncStorage.getItem('phone')
-      dispatch(AddPostSlice.actions.setContactName(name.substring(1, name.length - 1)))
-      dispatch(AddPostSlice.actions.setContactPhone(phone.substring(1, phone.length - 1)))
+      dispatch(AddPostSlice.actions.setContactName(response.user.name))
+      dispatch(AddPostSlice.actions.setContactPhone(response.user.phone))
       setModalVisible(false);
-      dispatch(AppSlice.actions.logIn(true));
+      dispatch(userSlice.actions.logInState(true));
       dispatch(userSlice.actions.logIn(response.user));
       console.log("Đăng nhập thành công!");
       ToastAndroid.show("Đăng nhập thành công!", ToastAndroid.SHORT);

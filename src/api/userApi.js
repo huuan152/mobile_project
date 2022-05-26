@@ -23,10 +23,20 @@ const signOut = async () => {
   return await AsyncStorage.removeItem("user");
 };
 
+const toggleFavoriteMotel = async (_id) => {
+  return await axiosClient.post(`/motel/${_id}/toggle-favorite`);
+}
+
+const getAllMyFavoriteMotels = async () => {
+  return await axiosClient.get(`/motel/my-favorite`);
+}
+
 const userApi = {
   signUp,
   signIn,
   signOut,
+  toggleFavoriteMotel,
+  getAllMyFavoriteMotels
 };
 
 export default userApi;

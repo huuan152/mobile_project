@@ -10,16 +10,27 @@ import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../../../Components/
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { postSelector } from '../../../redux/selectors';
+import { postSelector, motelUpdateID, favoriteMotels } from '../../../redux/selectors';
 import { useDispatch } from 'react-redux';
 import { UpdatePostSlice } from '../../UpdatePost/UpdatePostSlice';
+import userApi from '../../../api/userApi';
 import Map from '../../../Components/map';
 
 const utilitiesItem = ["wifi", "toilet", "motorcycle", "clock", "food", "air-conditioner", "ice-cream", "washing-machine"];
 
 const PostDetail = ({route}) => {
     const { rentalPrice, title, address, area, contactName, contactPhone, utilities, description, images } = useSelector(postSelector)
-    const [isFavorite, setIsFavorite] = useState(false)
+    const motelID = useSelector(motelUpdateID);
+    const myFavoriteMotels = useSelector(favoriteMotels);
+    const [isFavorite, setIsFavorite] = useState(() => {
+        for (const motel of myFavoriteMotels) {
+            console.log("here", motel, motelID);
+            if (motel._id === motelID) {
+                return true;
+            }
+        }
+        return false;
+    })
     const [index, setIndex] = React.useState(0)
     const isCarousel = React.useRef(null)
     const nav = useNavigation()
@@ -27,10 +38,15 @@ const PostDetail = ({route}) => {
 
     const onPressBackButton = () => {
         dispatch(UpdatePostSlice.actions.updateMotelID(""));
-        nav.navigate(route.params.prev);
+        nav.goBack();
     }
-    const onPressFavoriteButton = () => {
-        setIsFavorite(!isFavorite);
+    const onPressFavoriteButton = async () => {
+        try {
+            setIsFavorite(!isFavorite);
+            await userApi.toggleFavoriteMotel(motelID);
+        } catch (error) {
+            console.log(error);
+        }
     }
     const countSelectedUtilities = () => {
         let count = 0;
