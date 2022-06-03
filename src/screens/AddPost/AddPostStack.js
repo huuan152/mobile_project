@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { TouchableOpacity, Text, StyleSheet, ToastAndroid } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Location from "./Location";
@@ -18,6 +18,25 @@ import {
 import myMotelApi from "../../api/myMotelApi";
 import { AddPostSlice } from "./AddPostSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
+import {
+  registerForPushNotificationsAsync,
+  sendPushNotification,
+} from "../../Components/Notifications";
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
+import District from "../../Constants/Areas/quan_huyen.json";
+import SubDistrict from "../../Constants/Areas/xa_phuong.json";
+
+const io = require("socket.io-client");
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const Stack = createStackNavigator();
 
@@ -29,6 +48,57 @@ export default function AddPostStack() {
   const addPostData = useSelector(addPostSelector);
   const thumbnail = useSelector(addPostThumbnailSelector);
   const dispatch = useDispatch();
+  /// Notification
+  const [expoPushToken, setExpoPushToken] = useState("");
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+  const nav = useNavigation();
+  const socket = io(`https://mtapp-a.herokuapp.com`);
+
+  useEffect(async () => {
+    const favoriteAreas = await AsyncStorage.getItem("favoriteAreas");
+    const listFavoriteAreas = JSON.parse(favoriteAreas);
+    //console.log("Favorite area from storage", JSON.parse(favoriteAreas));
+    const list = District.concat(SubDistrict);
+    let a = [];
+    for (let i = 0; i < listFavoriteAreas.length; i++) {
+      const item = list.find(
+        (element) => element.path_with_type === listFavoriteAreas[i]
+      );
+      if (item) {
+        a.push(item.name);
+      }
+    }
+    console.log(a);
+  }, []);
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token)
+    );
+
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        nav.navigate("Favorite");
+        console.log(response);
+      });
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+  ////////////////////
 
   const resetAddPost = async () => {
     dispatch(AddPostSlice.actions.resetAddPost());
@@ -63,6 +133,31 @@ export default function AddPostStack() {
         utilities: utilities,
       };
       const motelID = await myMotelApi.myNewMotelInfo(myNewMotel);
+      console.log("motelID", motelID);
+      socket.emit("created-motel", motelID);
+      socket.on("new-motel", async (motel) => {
+        console.log("New socket motel", motel);
+        const favoriteAreas = await AsyncStorage.getItem("favoriteAreas");
+        const listFavoriteAreas = JSON.parse(favoriteAreas);
+        const owner = await AsyncStorage.getItem("owner");
+        const ownerId = JSON.parse(owner);
+        const list = District.concat(SubDistrict);
+        let a = [];
+        for (let i = 0; i < listFavoriteAreas.length; i++) {
+          const item = list.find(
+            (element) => element.path_with_type === listFavoriteAreas[i]
+          );
+          if (item) {
+            a.push(item.name);
+          }
+        }
+        for (let i = 0; i < a.length; i++) {
+          if (motel.address.includes(a[i]) && motel.owner !== ownerId) {
+            await sendPushNotification(expoPushToken);
+            break;
+          }
+        }
+      });
 
       const data = new FormData();
 

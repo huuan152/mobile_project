@@ -13,7 +13,10 @@ const signIn = async (user) => {
       AsyncStorage.setItem("owner", JSON.stringify(response.user._id));
       AsyncStorage.setItem("name", JSON.stringify(response.user.name));
       AsyncStorage.setItem("phone", JSON.stringify(response.user.phone));
-      AsyncStorage.setItem("favoriteAreas", JSON.stringify(response.user.favoriteAreas))
+      AsyncStorage.setItem(
+        "favoriteAreas",
+        JSON.stringify(response.user.favoriteAreas)
+      );
     }
     return response;
   });
@@ -25,18 +28,30 @@ const signOut = async () => {
 
 const toggleFavoriteMotel = async (_id) => {
   return await axiosClient.post(`/motel/${_id}/toggle-favorite`);
-}
+};
 
 const getAllMyFavoriteMotels = async () => {
   return await axiosClient.get(`/motel/my-favorite`);
-}
+};
+
+const updateMyFavoriteAreas = async (obj) => {
+  let owner = await AsyncStorage.getItem("owner");
+  owner = owner.substring(1, owner.length - 1);
+  return await axiosClient.put(`/user/${owner}`, obj);
+};
+
+const getCurrentUserInfo = async () => {
+  return await axiosClient.get(`/user/my-info`);
+};
 
 const userApi = {
   signUp,
   signIn,
   signOut,
   toggleFavoriteMotel,
-  getAllMyFavoriteMotels
+  getAllMyFavoriteMotels,
+  updateMyFavoriteAreas,
+  getCurrentUserInfo,
 };
 
 export default userApi;
