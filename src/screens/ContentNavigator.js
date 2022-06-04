@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import AddPostStack from './AddPost/AddPostStack';
 import PostScreen from './Post';
-import SeachScreen from './Search';
+import SearchStack from './Search/SearchStack';
 import FavoriteStack from './Favorite/FavoriteStack';
 import ProfileStack from './Profile/ProfileStack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -22,7 +22,7 @@ export default function ContentNavigator() {
         <Tab.Screen options={{headerShown: false, tabBarLabel: 'Tìm kiếm',
         tabBarIcon: ({ color, size }) => (
             <FontAwesome name="search" color={color} size={size}/>
-        )}} name="Search Tab" component={SeachScreen} />
+        )}} name="Search Tab" component={SearchStack} />
         <Tab.Screen options={{headerShown: false, tabBarLabel: 'Đăng bài', unmountOnBlur: true,
         tabBarIcon: ({ color, size }) => (
             <FontAwesome name="plus-square" color={color} size={size}/>

@@ -24,7 +24,6 @@ const PostDetail = ({route}) => {
     const myFavoriteMotels = useSelector(favoriteMotels);
     const [isFavorite, setIsFavorite] = useState(() => {
         for (const motel of myFavoriteMotels) {
-            console.log("here", motel, motelID);
             if (motel._id === motelID) {
                 return true;
             }

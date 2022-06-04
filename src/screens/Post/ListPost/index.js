@@ -62,6 +62,7 @@ const ListPost = () => {
           motels[motel].images = imgs;
         }
         setData(motels);
+        dispatch(postSlice.actions.getListPost(motels));
       });
     } catch (e) {
       console.log(e.message);
@@ -72,16 +73,6 @@ const ListPost = () => {
   useEffect(() => {
     onRefresh();
   }, []);
-
-  useEffect(() => {
-    const getList = async () => {
-      const list  = await myMotelApi.getAllMotels((response) => {
-        return response
-      });
-      dispatch(postSlice.actions.getListPost(list));
-    }
-    getList();
-  }, [])
 
   const number = Array.from(Array(data.length).keys());
 
