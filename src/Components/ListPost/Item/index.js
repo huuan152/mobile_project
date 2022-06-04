@@ -4,17 +4,37 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Entypo';
 import IconRec from 'react-native-vector-icons/MaterialCommunityIcons';
 import BUTTON_COLORS from '../../../Constants/Utilities';
+import { useDispatch } from 'react-redux';
+import { UpdatePostSlice } from '../../../screens/UpdatePost/UpdatePostSlice';
 
 const testImage = "https://picsum.photos/id/11/200/300";
 
 const Item = (props) => {
-    const nav = useNavigation();
     const { address, area, title, rentalPrice, images } = props;
+    const dispatch = useDispatch();
+    const nav = useNavigation();
+
+    const ViewPost = () => {
+        let motelDetail = { ...props };
+        dispatch(UpdatePostSlice.actions.updatePostDetail(motelDetail));
+        dispatch(UpdatePostSlice.actions.updateMotelID(props._id));
+        nav.navigate("MyPostDetail_Search");
+    };  
+
+    const formatPrice = () => {
+        let price = rentalPrice;
+        price = price.toString().substring(0, price.toString().length - 5);
+        price = parseInt(price);
+        price /= 10;
+        price = price.toString() + " triệu";
+        return price;
+      };
+
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={() => ViewPost()}>
             <View style={styles.content}>
                 <View style={styles.imageField}>
-                    <Text style={styles.price}>{`${rentalPrice} triệu`}</Text>
+                    <Text style={styles.price}>{formatPrice()}</Text>
                     <Image source={{uri: images && images.length > 0 ? images[0].url : testImage}} style={styles.image}/>
                 </View>
                 <View style={styles.infoField}>
