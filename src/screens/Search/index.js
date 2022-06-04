@@ -43,16 +43,6 @@ const SeachScreen = () => {
     var result = [];
     if (input !== "") {
       var enoughData = false;
-      City.every((x) => {
-        if (result.length > 10) {
-          enoughData = true;
-          return false;
-        }
-        if (x.name.startsWith(input)) {
-          result.push(x.name_with_type);
-        }
-        return true;
-      });
       if (enoughData === false) {
         District.every((x) => {
           if (result.length > 10) {
