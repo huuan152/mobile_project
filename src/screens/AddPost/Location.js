@@ -38,7 +38,7 @@ export default function Location() {
     });
     await axios
       .get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${currentLocation.coords.latitude},${currentLocation.coords.longitude}&key=AIzaSyC_8ZzcEbucSlkDlE7GTiLHNhFvfGHDMlQ`
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${currentLocation.coords.latitude},${currentLocation.coords.longitude}&key=AIzaSyBlVNkuwYlvdnVHJ587cal6v_lFUNp_5Hk`
       )
       .then(function (response) {
         dispatch(AddPostSlice.actions.locationScreenUpdate(true));
@@ -68,7 +68,7 @@ export default function Location() {
       var newItems = [];
       await axios
         .get(
-          `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&language=vi&components=country:vn&types=address&key=AIzaSyC_8ZzcEbucSlkDlE7GTiLHNhFvfGHDMlQ`
+          `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&language=vi&components=country:vn&types=address&key=AIzaSyBlVNkuwYlvdnVHJ587cal6v_lFUNp_5Hk`
         )
         .then(function (response) {
           console.log("response.data.predictions", response.data);
