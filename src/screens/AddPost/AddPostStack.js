@@ -54,8 +54,9 @@ export default function AddPostStack() {
   const [favoriteAreas, setFavoriteAreas] = useState([]);
   const notificationListener = useRef();
   const responseListener = useRef();
+  const socketRef = useRef();
   const nav = useNavigation();
-  const socket = io(`https://mtapp-a.herokuapp.com`);
+  //const socket = io(`https://mtapp-a.herokuapp.com`);
 
   useEffect(async () => {
     const favoriteAreas = await AsyncStorage.getItem("favoriteAreas");
@@ -75,45 +76,62 @@ export default function AddPostStack() {
   }, []);
 
   useEffect(() => {
-    console.log(favoriteAreas);
+    console.log("Favorite", favoriteAreas);
   }, [favoriteAreas]);
 
   useEffect(() => {
-    socket.on("new-motel", async (motel) => {
+    socketRef.current = io.connect("https://mtapp-a.herokuapp.com");
+    socketRef.current.on("new-motel", async (motel) => {
       console.log("New socket motel", motel);
-      //const favoriteAreas = await AsyncStorage.getItem("favoriteAreas");
-      //const listFavoriteAreas = JSON.parse(favoriteAreas);
       const owner = await AsyncStorage.getItem("owner");
       const ownerId = JSON.parse(owner);
-      // const list = District.concat(SubDistrict);
-      // let a = [];
-      // for (let i = 0; i < listFavoriteAreas.length; i++) {
-      //   const item = list.find(
-      //     (element) => element.path_with_type === listFavoriteAreas[i]
-      //   );
-      //   if (item) {
-      //     a.push(item.name);
-      //   }
-      // }
-      // console.log("a", a);
       console.log("motel address", motel.address);
       console.log("so sanh motel owner va ownerId", motel.owner !== ownerId);
       for (let i = 0; i < favoriteAreas.length; i++) {
-        // if (
-        //   motel.address.includes(favoriteAreas[i]) &&
-        //   motel.owner !== ownerId
-        // ) {
-        //   // console.log("Checked", favoriteAreas[i]);
-        //   // await sendPushNotification(expoPushToken);
-        //   // break;
-        //   console.log("true");
-        // } else {
-        //   console.log("false");
-        // }
         console.log(favoriteAreas[i]);
       }
     });
-  }, [socket]);
+    return () => {
+      socketRef.current.disconnect();
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   socket.on("new-motel", async (motel) => {
+  //     console.log("New socket motel", motel);
+  //     //const favoriteAreas = await AsyncStorage.getItem("favoriteAreas");
+  //     //const listFavoriteAreas = JSON.parse(favoriteAreas);
+  //     const owner = await AsyncStorage.getItem("owner");
+  //     const ownerId = JSON.parse(owner);
+  //     // const list = District.concat(SubDistrict);
+  //     // let a = [];
+  //     // for (let i = 0; i < listFavoriteAreas.length; i++) {
+  //     //   const item = list.find(
+  //     //     (element) => element.path_with_type === listFavoriteAreas[i]
+  //     //   );
+  //     //   if (item) {
+  //     //     a.push(item.name);
+  //     //   }
+  //     // }
+  //     // console.log("a", a);
+  //     console.log("motel address", motel.address);
+  //     console.log("so sanh motel owner va ownerId", motel.owner !== ownerId);
+  //     for (let i = 0; i < favoriteAreas.length; i++) {
+  //       // if (
+  //       //   motel.address.includes(favoriteAreas[i]) &&
+  //       //   motel.owner !== ownerId
+  //       // ) {
+  //       //   // console.log("Checked", favoriteAreas[i]);
+  //       //   // await sendPushNotification(expoPushToken);
+  //       //   // break;
+  //       //   console.log("true");
+  //       // } else {
+  //       //   console.log("false");
+  //       // }
+  //       console.log(favoriteAreas[i]);
+  //     }
+  //   });
+  // }, [socket]);
 
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) =>
