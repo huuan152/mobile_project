@@ -130,6 +130,7 @@ const FilterPost = ({ setModalVisible }) => {
         >
           <Text style={styles.textStyle}>{`Hủy`}</Text>
         </Pressable>
+        <View style={{ width: 10 }}></View>
         <Pressable
           style={[styles.button, styles.buttonFilter]}
           onPress={() => handleFiltered()}
@@ -142,34 +143,34 @@ const FilterPost = ({ setModalVisible }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    width: "100%",
+  },
   buttonGroup: {
     marginVertical: 5,
-    minWidth: 400,
   },
   buttonGroupType: {
     marginVertical: 5,
-    minWidth: 400,
   },
   sliderStyle: {
-    minWidth: 160,
     marginVertical: 5,
   },
   titleSliderStyle: {
-    flexDirection: "row",
+    flexDirection: "column",
     marginHorizontal: 12,
-    alignItems: "center",
+    alignItems: "flex-start",
   },
   sliderTitle: {
     fontSize: 16,
     fontWeight: "700",
     color: "#4f5157",
     marginRight: 24,
-    width: 72,
+    marginBottom: 10,
   },
   buttonField: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "center",
+    marginTop: 10,
   },
   button: {
     borderRadius: 20,

@@ -18,10 +18,17 @@ const Post = (props) => {
 
   const formatPrice = () => {
     let price = rentalPrice;
-    price = price.toString().substring(0, price.toString().length - 5);
-    price = parseInt(price);
-    price /= 10;
-    price = price.toString() + " triệu";
+    console.log(typeof price);
+    if (price < 1000000) {
+      price = price.toString().substring(0, price.toString().length - 3);
+      price = parseInt(price);
+      price = price.toString() + " nghìn";
+    } else {
+      price = price.toString().substring(0, price.toString().length - 5);
+      price = parseInt(price);
+      price /= 10;
+      price = price.toString() + " triệu";
+    }
     return price;
   };
 
@@ -46,17 +53,21 @@ const Post = (props) => {
           />
           <Text style={styles.price}>{formatPrice()}</Text>
         </View>
-        <View style={styles.addressField}>
-          <Icon size={16} color={BUTTON_COLORS.colorPicked} name="location" />
-          <Text style={styles.addressText}>{address}</Text>
-        </View>
-        <View style={styles.areaField}>
-          <IconRec
-            size={16}
-            color={BUTTON_COLORS.colorPicked}
-            name="vector-rectangle"
-          />
-          <Text style={styles.addressText}>{`${area} m2`}</Text>
+        <View style={{ paddingHorizontal: 5 }}>
+          <View style={styles.addressField}>
+            <Icon size={16} color={BUTTON_COLORS.colorPicked} name="location" />
+            <Text style={styles.addressText} numberOfLines={2}>
+              {address}
+            </Text>
+          </View>
+          <View style={styles.areaField}>
+            <IconRec
+              size={16}
+              color={BUTTON_COLORS.colorPicked}
+              name="vector-rectangle"
+            />
+            <Text style={styles.addressText}>{`${area} m2`}</Text>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -84,23 +95,23 @@ const styles = StyleSheet.create({
     height: 140,
   },
   price: {
-    marginTop: -32,
+    marginTop: -31,
     paddingVertical: 6,
-    paddingHorizontal: 22,
+    textAlign: "center",
     backgroundColor: BUTTON_COLORS.colorPicked,
-    width: "45%",
+    width: "50%",
     color: "#ffffff",
-    borderRadius: 4,
+  },
+  addressText: {
+    paddingLeft: 5,
+    width: "90%",
   },
   addressField: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     marginTop: 8,
-  },
-  addressText: {
-    paddingLeft: 8,
   },
   areaField: {
     display: "flex",

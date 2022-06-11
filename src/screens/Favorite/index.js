@@ -7,17 +7,14 @@ import {
   ActivityIndicator,
   RefreshControl,
   Platform,
-  Text
+  Text,
 } from "react-native";
 import Item from "./Item";
 import BUTTON_COLORS from "../../Constants/Utilities/index";
 import userApi from "../../api/userApi";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import {
-  isToggled,
-  userSendingStateSelector,
-} from "../../redux/selectors";
+import { isToggled, userSendingStateSelector } from "../../redux/selectors";
 import { userSlice } from "../../redux/slice/userSlice";
 
 const Favorite = () => {
@@ -95,41 +92,38 @@ const Favorite = () => {
 
   return (
     <View style={styles.container}>
-        <View style={styles.headerField}>
-            <Text style={styles.header}>{`Yêu thích`}</Text>
-        </View>
-        <ScrollView
+      <ScrollView
         stickyHeaderIndices={[0]}
         //showsVerticalScrollIndicator={false}
         style={styles.scroll}
         refreshControl={
-            Platform.OS !== "ios" ? (
+          Platform.OS !== "ios" ? (
             <RefreshControl
-                refreshing={refreshing}
-                onRefresh={() => fetchData(true)}
-                colors={[BUTTON_COLORS.colorPicked]}
+              refreshing={refreshing}
+              onRefresh={() => fetchData(true)}
+              colors={[BUTTON_COLORS.colorPicked]}
             />
-            ) : (
+          ) : (
             <RefreshControl
-                refreshing={refreshing}
-                onRefresh={() => fetchData(true)}
-                tintColor={BUTTON_COLORS.colorPicked}
+              refreshing={refreshing}
+              onRefresh={() => fetchData(true)}
+              tintColor={BUTTON_COLORS.colorPicked}
             />
-            )
+          )
         }
-        >
+      >
         <Modal animationType="none" transparent={true} visible={modalVisible}>
-            <View style={styles.centeredView}>
+          <View style={styles.centeredView}>
             <ActivityIndicator size="large" color={BUTTON_COLORS.colorPicked} />
-            </View>
+          </View>
         </Modal>
         <View></View>
         <View style={styles.list}>
-            {number.map((element, index) => {
-              return <Item {...data[index]} key={index} />;
-            })}
+          {number.map((element, index) => {
+            return <Item {...data[index]} key={index} />;
+          })}
         </View>
-        </ScrollView>
+      </ScrollView>
     </View>
   );
 };
@@ -145,8 +139,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   container: {
-    flex: 1
-    },
+    flex: 1,
+  },
   headerField: {
     paddingTop: 24,
     paddingBottom: 18,
@@ -163,22 +157,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   container: {
-    flex: 1
-    },
-    headerField: {
-        paddingTop: 24,
-        paddingBottom: 18,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        borderBottomColor: '#bdbdbd',
-        borderBottomWidth: 1
-    },
-    header: {
-        fontSize: 18,
-        color: BUTTON_COLORS.colorPicked,
-        fontWeight: 'bold'
-    },
+    flex: 1,
+  },
+  headerField: {
+    paddingTop: 24,
+    paddingBottom: 18,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    borderBottomColor: "#bdbdbd",
+    borderBottomWidth: 1,
+  },
+  header: {
+    fontSize: 18,
+    color: BUTTON_COLORS.colorPicked,
+    fontWeight: "bold",
+  },
   centeredView: {
     flex: 1,
     justifyContent: "center",

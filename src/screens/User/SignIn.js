@@ -113,63 +113,17 @@ export default function SignIn() {
       <Pressable>
         <Text style={styles.clickableText}>Quên mật khẩu?</Text>
       </Pressable>
-      <View
-        style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}
-      >
-        <View style={{ flex: 1, height: 1.5, backgroundColor: "grey" }} />
-        <View>
-          <Text
-            style={{
-              width: 250,
-              textAlign: "center",
-              fontSize: 17,
-              color: "grey",
-            }}
-          >
-            Hoặc đăng nhập với tài khoản
+      <View style={{ marginTop: 50, flex: 1, alignItems: "center" }}>
+        <View style={{ height: 1, backgroundColor: "black" }} />
+        <Pressable onPress={() => nav.navigate("SignUp")}>
+          <Text style={styles.clickableText}>
+            Chưa có tài khoản? Đăng ký tại đây
           </Text>
-        </View>
-        <View style={{ flex: 1, height: 1.5, backgroundColor: "grey" }} />
+        </Pressable>
+        <Pressable>
+          <Text style={styles.clickableText}>Điều khoản và chính sách</Text>
+        </Pressable>
       </View>
-      <View style={{ flexDirection: "row", marginBottom: 20 }}>
-        <TouchableOpacity
-          style={{
-            ...styles.button,
-            backgroundColor: BUTTON_COLORS.colorPicked,
-            flex: 1,
-            marginRight: 10,
-          }}
-          onPress={() =>
-            ToastAndroid.show(
-              "Tính năng đang được phát triển!",
-              ToastAndroid.SHORT
-            )
-          }
-        >
-          <Image source={images.facebook} style={styles.buttonIcon}></Image>
-          <Text style={styles.buttonText}>Facebook</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ ...styles.button, backgroundColor: "white", flex: 1 }}
-          onPress={() =>
-            ToastAndroid.show(
-              "Tính năng đang được phát triển!",
-              ToastAndroid.SHORT
-            )
-          }
-        >
-          <Image source={images.google} style={styles.buttonIcon}></Image>
-          <Text style={{ ...styles.buttonText, color: "black" }}>Google</Text>
-        </TouchableOpacity>
-      </View>
-      <Pressable onPress={() => nav.navigate("SignUp")}>
-        <Text style={styles.clickableText}>
-          Chưa có tài khoản? Đăng ký tại đây
-        </Text>
-      </Pressable>
-      <Pressable>
-        <Text style={styles.clickableText}>Điều khoản và chính sách</Text>
-      </Pressable>
     </ScrollView>
   );
 }

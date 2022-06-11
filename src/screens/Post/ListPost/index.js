@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { postSlice } from "../../../redux/slice/postSlice";
 
 const ListPost = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -96,7 +96,6 @@ const ListPost = () => {
       }
     >
       <View style={styles.container}>
-        <Text style={styles.appName}>{"Tìm nhà trọ"}</Text>
         <View style={styles.row1}>
           {number.map((element, index) => {
             return (
@@ -114,12 +113,10 @@ const ListPost = () => {
 };
 
 const styles = StyleSheet.create({
-  listPostContainer: {
-    marginTop: 36,
-  },
   container: {
     flexDirection: "row",
     flexWrap: "wrap",
+    backgroundColor: "white",
   },
   row1: {
     flexDirection: "row",
