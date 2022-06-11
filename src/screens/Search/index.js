@@ -12,20 +12,15 @@ import {
   ScrollView,
   Modal,
 } from "react-native";
-import SearchableDropdown from "react-native-searchable-dropdown";
 import BUTTON_COLORS from "../../Constants/Utilities/index";
-// import { useNavigation } from '@react-navigation/native';
-import City from "../../Constants/Areas/tinh_tp.json";
 import District from "../../Constants/Areas/quan_huyen.json";
 import SubDistrict from "../../Constants/Areas/xa_phuong.json";
-import CustomListPost from "../../Components/ListPost";
 import { useDispatch, useSelector } from "react-redux";
 import { listPostSelector } from "../../redux/selectors";
 import { postSlice } from "../../redux/slice/postSlice";
 import ListPostWithAddress from "../../Components/ListPostWithAddress";
 import FilterPost from "../../Components/FilterPost";
 import { useIsFocused } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SeachScreen = () => {
   const dispatch = useDispatch();
@@ -119,7 +114,6 @@ const SeachScreen = () => {
     <>
       <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
-          <Text style={styles.header}>{"Tìm kiếm"}</Text>
           <View style={styles.inputArea}>
             <TextInput
               placeholder="Nhập khu vực muốn tìm kiếm"
@@ -127,6 +121,7 @@ const SeachScreen = () => {
               value={search}
               onChangeText={(text) => searchArea(text)}
             ></TextInput>
+            <View style={{ width: 5 }}></View>
             <TouchableOpacity
               style={{
                 backgroundColor: BUTTON_COLORS.colorPicked,
@@ -196,8 +191,8 @@ const SeachScreen = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 12,
-    marginTop: 48,
     minHeight: 550,
+    backgroundColor: "white",
   },
   header: {
     fontSize: 32,
@@ -212,8 +207,10 @@ const styles = StyleSheet.create({
   },
   inputArea: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
+    paddingHorizontal: 10,
+    width: "100%",
   },
   inputTitle: {
     fontSize: 17,
@@ -238,6 +235,7 @@ const styles = StyleSheet.create({
     left: 12,
     backgroundColor: "white",
     borderRadius: 12,
+    minWidth: "80%",
   },
   buttonShowModalField: {
     position: "absolute",
@@ -264,7 +262,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: 400,
+    width: "90%",
   },
   button: {
     borderRadius: 20,

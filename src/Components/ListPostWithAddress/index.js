@@ -12,7 +12,7 @@ const ListPostWithAddress = ({ data, title }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 24,
+    marginTop: 20,
   },
   title: {
     marginLeft: 12,

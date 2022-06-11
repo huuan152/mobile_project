@@ -61,9 +61,6 @@ const Profile = () => {
   // }, [])
   return (
     <View style={styles.container}>
-      <View style={styles.headerField}>
-        <Text style={styles.header}>{`Tài khoản`}</Text>
-      </View>
       <View style={styles.profileImageField}>
         <Image
           source={require("../../images/profile_image.png")}
@@ -102,6 +99,7 @@ const Profile = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
   },
   headerField: {
     paddingTop: 24,

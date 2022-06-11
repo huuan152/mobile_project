@@ -35,19 +35,23 @@ const Item = (props) => {
 
   const formatPrice = () => {
     let price = rentalPrice;
-    price = price.toString().substring(0, price.toString().length - 5);
-    price = parseInt(price);
-    price /= 10;
-    price = price.toString() + " triệu";
+    console.log(typeof price);
+    if (price < 1000000) {
+      price = price.toString().substring(0, price.toString().length - 3);
+      price = parseInt(price);
+      price = price.toString() + " nghìn";
+    } else {
+      price = price.toString().substring(0, price.toString().length - 5);
+      price = parseInt(price);
+      price /= 10;
+      price = price.toString() + " triệu";
+    }
     return price;
   };
 
   return (
     <>
-      <TouchableOpacity
-        style={styles.container}
-        onPress={() => ViewPost()}
-      >
+      <TouchableOpacity style={styles.container} onPress={() => ViewPost()}>
         <View style={styles.content}>
           <View style={styles.imageField}>
             <Text style={styles.price}>{formatPrice()}</Text>
@@ -105,17 +109,17 @@ const styles = StyleSheet.create({
   },
   infoField: {
     flex: 5,
-    marginTop: 3,
+    marginTop: 10,
     marginRight: 36,
   },
   price: {
-    marginBottom: -32,
-    paddingVertical: 3,
-    paddingHorizontal: 20,
+    marginBottom: -29,
+    paddingVertical: 5,
+    paddingHorizontal: 2,
+    textAlign: "center",
     backgroundColor: BUTTON_COLORS.colorPicked,
-    width: "80%",
+    width: "100%",
     color: "#ffffff",
-    borderRadius: 4,
     zIndex: 99,
   },
   title: {
