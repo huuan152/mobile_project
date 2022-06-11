@@ -20,11 +20,16 @@
     "@reduxjs/toolkit": "^1.8.1",
     "@rneui/base": "^4.0.0-rc.1",
     "@rneui/themed": "^4.0.0-rc.1",
+<<<<<<< HEAD
     "axios": "0.19.2",
+=======
+    "axios": "^0.19.2",
+>>>>>>> 4ec166b9066718a8880941a145bb28a4c9ef809c
     "bluebird": "^3.7.2",
     "expo": "~44.0.0",
-    "expo-document-picker": "~10.1.3",
     "expo-device": "~4.1.0",
+    "expo-document-picker": "~10.1.3",
+    "expo-facebook": "~12.1.0",
     "expo-image-picker": "~12.0.1",
     "expo-location": "~14.0.1",
     "expo-notifications": "~0.14.0",
@@ -48,13 +53,16 @@
     "react-native-maps": "0.29.4",
     "react-native-paper": "^4.11.2",
     "react-native-reanimated": "~2.3.1",
+    "react-native-root-toast": "^3.4.0",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "~3.10.1",
     "react-native-searchable-dropdown": "^1.1.3",
     "react-native-simple-radio-button": "^2.7.4",
+    "react-native-simple-toast": "^1.1.3",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-step-indicator": "^1.0.3",
     "react-native-swiper": "^1.6.0-rc.3",
+    "react-native-toast-message": "^2.1.5",
     "react-native-vector-icons": "^9.1.0",
     "react-native-web": "0.17.1",
     "react-native-webview": "11.15.0",
@@ -64,7 +72,8 @@
     "react-scripts": "^5.0.1",
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
-    "remote-redux-devtools": "^0.5.16"
+    "remote-redux-devtools": "^0.5.16",
+    "socket.io-client": "^4.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

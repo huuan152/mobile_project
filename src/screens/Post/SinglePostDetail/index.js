@@ -11,21 +11,19 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { postSelector } from '../../../redux/selectors';
-import { addPostSelector } from '../../../redux/selectors';
 import { useDispatch } from 'react-redux';
 import { UpdatePostSlice } from '../../UpdatePost/UpdatePostSlice';
+import Map from '../../../Components/map';
 
 const utilitiesItem = ["wifi", "toilet", "motorcycle", "clock", "food", "air-conditioner", "ice-cream", "washing-machine"];
 
 const PostDetail = ({route}) => {
-    console.log("Here1", useSelector(addPostSelector));
-    console.log("Here",useSelector(postSelector));
-    const { rentalPrice, title, address, area, contactName, contactPhone, utilities, description, images } = useSelector(postSelector);
-    const [isFavorite, setIsFavorite] = useState(false);
-    const [index, setIndex] = React.useState(0);
-    const isCarousel = React.useRef(null);
-    const nav = useNavigation();
-    const dispatch = useDispatch();
+    const { rentalPrice, title, address, area, contactName, contactPhone, utilities, description, images } = useSelector(postSelector)
+    const [isFavorite, setIsFavorite] = useState(false)
+    const [index, setIndex] = React.useState(0)
+    const isCarousel = React.useRef(null)
+    const nav = useNavigation()
+    const dispatch = useDispatch()
 
     const onPressBackButton = () => {
         dispatch(UpdatePostSlice.actions.updateMotelID(""));
@@ -127,7 +125,14 @@ const PostDetail = ({route}) => {
                         })}
                     </View>
                 </View>
-                <View style={styles.detailInfo}>
+                <View style={styles.utilitiesField}>
+                    <Text style={{...styles.utilitiesTitle, color: BUTTON_COLORS.colorPicked}}>Bản đồ</Text>
+                    <View style={{height: 200}}>
+                        <Map address={address}></Map>
+                    </View>
+                </View>
+                <View style={{...styles.utilitiesField, marginBottom: 30}}>
+                    <Text style={{...styles.utilitiesTitle, color: BUTTON_COLORS.colorPicked}}>Mô tả chi tiết</Text>
                     <Text style={styles.detailInfo}>{description}</Text>
                 </View>
             </View>

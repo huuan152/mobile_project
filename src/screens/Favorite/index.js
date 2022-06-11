@@ -1,16 +1,18 @@
-import React from 'react';
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
-import Item from './Item';
-import BUTTON_COLORS from '../../Constants/Utilities';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import CustomListPost from '../../Components/ListPost';
+import { ScrollView, View, Text, StyleSheet } from 'react-native';
+import { listPostSelector, postSelector, userSelector } from '../../redux/selectors';
+import { postSlice } from '../../redux/slice/postSlice';
 
 const Favorite = () => {
-    const mock_data = {
-        price: 4,
-        address: 'tòa nhà số 36, Phạm Hùng, quận Cầu Giấy',
-        area: 40,
-        title: "Ưu đãi căn hộ mới toanh."
-    }
-    const number = [0, 1, 2, 3, 4 ,5 ,6 ,7, 8];
+    const dispatch = useDispatch();
+    const { user } = useSelector(userSelector);
+    const { favoritePost } = useSelector(listPostSelector);
+    console.log('This is user', user);
+    useEffect(() => {
+        dispatch(postSlice.actions.getFavoritePost(user.favoriteMotels));
+    }, []);
     return (
         <ScrollView 
             stickyHeaderIndices={[0]}
@@ -20,13 +22,7 @@ const Favorite = () => {
             <View style={styles.headerField}>
                 <Text style={styles.header}>{`Yêu thích`}</Text>
             </View>
-            <View style={styles.list}>
-                {number.map((element, index) => {
-                    return (
-                        <Item {...mock_data} key={index}/>
-                    )
-                })}
-            </View>
+            <CustomListPost data={favoritePost} />
         </ScrollView>
     );
 }
@@ -53,7 +49,7 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 18,
-        color: BUTTON_COLORS.colorPicked,
+        color: '#2089dc',
         fontWeight: 'bold'
     }
 })

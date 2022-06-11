@@ -1,22 +1,19 @@
-import React from 'react'
-import { View, StyleSheet, Dimensions, Image } from "react-native"
+import React from "react";
+import { View, StyleSheet, Dimensions, Image } from "react-native";
 
-export const SLIDER_WIDTH = Dimensions.get('window').width
-export const ITEM_WIDTH = Math.round(SLIDER_WIDTH)
+export const SLIDER_WIDTH = Dimensions.get("window").width;
+export const ITEM_WIDTH = Math.round(SLIDER_WIDTH);
 
 const CarouselCardItem = ({ item, index }) => {
   return (
     <View style={styles.container} key={index}>
-      <Image
-        source={{ uri: item.url }}
-        style={styles.image}
-      />
+      <Image source={{ uri: item.url }} style={styles.image} />
     </View>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 8,
     width: ITEM_WIDTH,
     shadowColor: "#000",
@@ -32,6 +29,6 @@ const styles = StyleSheet.create({
     width: ITEM_WIDTH,
     height: 250,
   },
-})
+});
 
-export default CarouselCardItem
+export default CarouselCardItem;
