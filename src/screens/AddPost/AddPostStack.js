@@ -27,6 +27,7 @@ import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import District from "../../Constants/Areas/quan_huyen.json";
 import SubDistrict from "../../Constants/Areas/xa_phuong.json";
+import socketIOClient from "socket.io-client";
 
 const io = require("socket.io-client");
 
@@ -55,6 +56,20 @@ export default function AddPostStack() {
   const notificationListener = useRef();
   const responseListener = useRef();
   const socketRef = useRef();
+  socketRef.current = socketIOClient.connect("https://mtapp-a.herokuapp.com");
+  socketRef.current.on("new-motel", async (motel) => {
+    console.log("New socket motel", motel);
+    const owner = await AsyncStorage.getItem("owner");
+    const ownerId = JSON.parse(owner);
+    console.log("motel address", motel.address);
+    console.log("so sanh motel owner va ownerId", motel.owner !== ownerId);
+    for (let i = 0; i < favoriteAreas.length; i++) {
+      console.log(favoriteAreas[i]);
+    }
+  });
+  // return () => {
+  //   socketRef.current.disconnect();
+  // };
   const nav = useNavigation();
   //const socket = io(`https://mtapp-a.herokuapp.com`);
 
@@ -79,22 +94,22 @@ export default function AddPostStack() {
     console.log("Favorite", favoriteAreas);
   }, [favoriteAreas]);
 
-  useEffect(() => {
-    socketRef.current = io.connect("https://mtapp-a.herokuapp.com");
-    socketRef.current.on("new-motel", async (motel) => {
-      console.log("New socket motel", motel);
-      const owner = await AsyncStorage.getItem("owner");
-      const ownerId = JSON.parse(owner);
-      console.log("motel address", motel.address);
-      console.log("so sanh motel owner va ownerId", motel.owner !== ownerId);
-      for (let i = 0; i < favoriteAreas.length; i++) {
-        console.log(favoriteAreas[i]);
-      }
-    });
-    return () => {
-      socketRef.current.disconnect();
-    };
-  }, []);
+  // useEffect(() => {
+  //   socketRef.current = socketIOClient.connect("https://mtapp-a.herokuapp.com");
+  //   socketRef.current.on("new-motel", async (motel) => {
+  //     console.log("New socket motel", motel);
+  //     const owner = await AsyncStorage.getItem("owner");
+  //     const ownerId = JSON.parse(owner);
+  //     console.log("motel address", motel.address);
+  //     console.log("so sanh motel owner va ownerId", motel.owner !== ownerId);
+  //     for (let i = 0; i < favoriteAreas.length; i++) {
+  //       console.log(favoriteAreas[i]);
+  //     }
+  //   });
+  //   return () => {
+  //     socketRef.current.disconnect();
+  //   };
+  // }, []);
 
   // useEffect(() => {
   //   socket.on("new-motel", async (motel) => {
@@ -194,7 +209,7 @@ export default function AddPostStack() {
       };
       const motelID = await myMotelApi.myNewMotelInfo(myNewMotel);
       console.log("motelID", motelID);
-      socket.emit("created-motel", motelID);
+      socketRef.current.emit("created-motel", motelID);
       // socket.on("new-motel", async (motel) => {
       //   console.log("New socket motel", motel);
       //   //const favoriteAreas = await AsyncStorage.getItem("favoriteAreas");
