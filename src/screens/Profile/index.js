@@ -18,6 +18,9 @@ const Profile = () => {
 
   const signOut = async () => {
     try {
+      await userApi.clearExpotoken().then(() => {
+        console.log("Xóa token thành công");
+      });
       await userApi.signOut().then(() => {
         console.log("Đăng xuất thành công!");
         dispatch(AddPostSlice.actions.resetAddPost());

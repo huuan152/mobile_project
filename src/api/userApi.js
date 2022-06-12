@@ -40,6 +40,12 @@ const updateMyFavoriteAreas = async (obj) => {
   return await axiosClient.put(`/user/${owner}`, obj);
 };
 
+const clearExpotoken = async () => {
+  let owner = await AsyncStorage.getItem("owner");
+  owner = owner.substring(1, owner.length - 1);
+  return await axiosClient.put(`/user/${owner}`, { expoToken: "" });
+};
+
 const getCurrentUserInfo = async () => {
   return await axiosClient.get(`/user/my-info`);
 };
@@ -52,6 +58,7 @@ const userApi = {
   getAllMyFavoriteMotels,
   updateMyFavoriteAreas,
   getCurrentUserInfo,
+  clearExpotoken,
 };
 
 export default userApi;

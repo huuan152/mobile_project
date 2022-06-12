@@ -37,6 +37,7 @@ export default function SignIn() {
       let response = await userApi.signIn({
         email: username,
         password: password,
+        expoToken: expoPushToken,
       });
       dispatch(AddPostSlice.actions.setContactName(response.user.name));
       dispatch(AddPostSlice.actions.setContactPhone(response.user.phone));
