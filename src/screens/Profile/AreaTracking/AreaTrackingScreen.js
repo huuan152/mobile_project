@@ -246,7 +246,8 @@ const AreaTrackingScreen = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 24,
+    backgroundColor: "white",
+    flex: 1,
   },
   priceField: {
     display: "flex",
@@ -271,17 +272,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderColor: BUTTON_COLORS.colorBasic,
     borderRadius: 5,
-    backgroundColor: "white",
+    backgroundColor: "#c7c8c9",
     width: "100%",
   },
   itemStyle: {
     padding: 10,
+    //backgroundColor: "#c7c8c9",
+    borderRadius: 4,
   },
   itemField: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#d6c69c",
+    backgroundColor: "#719fd1",
     borderRadius: 10,
     borderWidth: 1,
     borderColor: BUTTON_COLORS.colorBasic,
