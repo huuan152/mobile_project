@@ -8,7 +8,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useDispatch } from "react-redux";
 import { Text } from "react-native";
-import BUTTON_COLORS from "../Constants/Utilities/index";
 
 const Tab = createBottomTabNavigator();
 
@@ -16,22 +15,11 @@ export default function ContentNavigator() {
   const dispatch = useDispatch();
 
   return (
-    <Tab.Navigator
-      initialRouteName="List Posts"
-      screenOptions={{
-        title: "Trang chủ",
-        headerTitleStyle: {
-          fontWeight: "bold",
-          fontSize: 23,
-        },
-        headerTintColor: BUTTON_COLORS.colorPicked,
-        headerTitleAlign: "center",
-      }}
-    >
+    <Tab.Navigator initialRouteName="List Posts">
       <Tab.Screen
         options={{
-          headerLeft: () => <Text></Text>,
-          headerRight: () => <Text></Text>,
+          headerShown: false,
+          tabBarLabel: "Trang chủ",
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="home" color={color} size={size} />
           ),

@@ -15,6 +15,7 @@ axiosClient.interceptors.request.use(async (config) => {
     config.headers.Authorization =
       "Bearer " + token.substring(1, token.length - 1);
   }
+  console.log("request config", config);
   return config;
 });
 

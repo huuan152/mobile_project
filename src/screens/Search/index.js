@@ -189,10 +189,12 @@ const SeachScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  scrollView: {
+    backgroundColor: "white",
+  },
   container: {
     padding: 12,
     minHeight: 550,
-    backgroundColor: "white",
   },
   header: {
     fontSize: 32,

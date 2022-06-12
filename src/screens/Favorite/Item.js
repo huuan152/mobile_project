@@ -29,13 +29,11 @@ const Item = (props) => {
   const ViewPost = () => {
     let motelDetail = { ...props };
     dispatch(UpdatePostSlice.actions.updatePostDetail(motelDetail));
-    dispatch(UpdatePostSlice.actions.updateMotelID(props._id));
     nav.navigate("MyPostDetail");
   };
 
   const formatPrice = () => {
     let price = rentalPrice;
-    console.log(typeof price);
     if (price < 1000000) {
       price = price.toString().substring(0, price.toString().length - 3);
       price = parseInt(price);

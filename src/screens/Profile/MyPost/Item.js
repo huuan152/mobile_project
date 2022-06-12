@@ -38,8 +38,6 @@ const Item = (props) => {
 
   const UpdatePost = () => {
     let motelDetail = { ...props };
-    dispatch(UpdatePostSlice.actions.updateMotelID(motelDetail["_id"]));
-    delete motelDetail["_id"];
     dispatch(UpdatePostSlice.actions.updatePostDetail(motelDetail));
     setModalVisible(false);
     nav.navigate("UpdatePostStack");
@@ -73,7 +71,6 @@ const Item = (props) => {
 
   const formatPrice = () => {
     let price = rentalPrice;
-    console.log(typeof price);
     if (price < 1000000) {
       price = price.toString().substring(0, price.toString().length - 3);
       price = parseInt(price);

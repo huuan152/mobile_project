@@ -18,7 +18,6 @@ const Post = (props) => {
 
   const formatPrice = () => {
     let price = rentalPrice;
-    console.log(typeof price);
     if (price < 1000000) {
       price = price.toString().substring(0, price.toString().length - 3);
       price = parseInt(price);

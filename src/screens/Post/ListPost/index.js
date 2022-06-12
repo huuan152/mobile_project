@@ -113,10 +113,12 @@ const ListPost = () => {
 };
 
 const styles = StyleSheet.create({
+  listPostContainer: {
+    backgroundColor: "white",
+  },
   container: {
     flexDirection: "row",
     flexWrap: "wrap",
-    backgroundColor: "white",
   },
   row1: {
     flexDirection: "row",

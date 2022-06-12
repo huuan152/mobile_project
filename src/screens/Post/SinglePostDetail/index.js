@@ -84,7 +84,6 @@ const PostDetail = ({ route }) => {
   };
   const formatPrice = () => {
     let price = rentalPrice;
-    console.log(typeof price);
     if (price < 1000000) {
       price = price.toString().substring(0, price.toString().length - 3);
       price = parseInt(price);
@@ -250,8 +249,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
+    marginVertical: 12,
     marginHorizontal: 9,
-    marginBottom: 12,
   },
   priceText: {
     fontSize: 18,
@@ -269,9 +268,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "700",
     color: BUTTON_COLORS.colorPicked,
+    marginBottom: 8,
   },
   detailField: {
-    padding: 12,
+    paddingHorizontal: 12,
   },
   info: {
     flexDirection: "row",
