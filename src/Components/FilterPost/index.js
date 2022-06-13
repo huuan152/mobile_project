@@ -36,7 +36,6 @@ const FilterPost = ({ setModalVisible }) => {
         minArea: parseInt(minAreaValue),
         maxArea: parseInt(maxAreaValue),
       };
-      console.log("Filter action", action);
       dispatch(postSlice.actions.getSearchFilteredPost(action));
     } else {
       setError(validate().message);

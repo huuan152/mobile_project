@@ -11,6 +11,7 @@ import {
   Pressable,
   ScrollView,
   Modal,
+  SafeAreaView,
 } from "react-native";
 import BUTTON_COLORS from "../../Constants/Utilities/index";
 import District from "../../Constants/Areas/quan_huyen.json";
@@ -112,36 +113,37 @@ const SeachScreen = () => {
 
   return (
     <>
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.container}>
-          <View style={styles.inputArea}>
-            <TextInput
-              placeholder="Nhập khu vực muốn tìm kiếm"
-              style={styles.input}
-              value={search}
-              onChangeText={(text) => searchArea(text)}
-            ></TextInput>
-            <View style={{ width: 5 }}></View>
-            <TouchableOpacity
-              style={{
-                backgroundColor: BUTTON_COLORS.colorPicked,
-                padding: 10,
-                borderRadius: 5,
-              }}
-              onPress={addNewAreaTracking}
-            >
-              <Text style={{ color: "white" }}>Tìm kiếm</Text>
-            </TouchableOpacity>
-          </View>
-          <FlatList
-            data={data}
-            keyExtractor={(item, index) => index.toString()}
-            ItemSeparatorComponent={ItemSeparatorView}
-            renderItem={ItemView}
-            style={styles.flatListStyle}
-          ></FlatList>
-          <ListPostWithAddress title={area} data={searchPost} />
-          {/* <View>
+      <SafeAreaView style={{ flex: 1 }}>
+        <FlatList
+          data={data}
+          keyExtractor={(item, index) => index.toString()}
+          ItemSeparatorComponent={ItemSeparatorView}
+          renderItem={ItemView}
+          style={styles.flatListStyle}
+        ></FlatList>
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.container}>
+            <View style={styles.inputArea}>
+              <TextInput
+                placeholder="Nhập khu vực muốn tìm kiếm"
+                style={styles.input}
+                value={search}
+                onChangeText={(text) => searchArea(text)}
+              ></TextInput>
+              <View style={{ width: 5 }}></View>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: BUTTON_COLORS.colorPicked,
+                  padding: 10,
+                  borderRadius: 5,
+                }}
+                onPress={addNewAreaTracking}
+              >
+                <Text style={{ color: "white" }}>Tìm kiếm</Text>
+              </TouchableOpacity>
+            </View>
+            <ListPostWithAddress title={area} data={searchPost} />
+            {/* <View>
                 <Text>Your expo push token: {expoPushToken}</Text>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <Text>Title: {notification && notification.request.content.title} </Text>
@@ -155,25 +157,26 @@ const SeachScreen = () => {
                     }}
                 />
             </View> */}
-        </View>
-        <View style={styles.centeredView}>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-              setModalVisible(!modalVisible);
-            }}
-          >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <FilterPost setModalVisible={setModalVisible} />
+          </View>
+          <View style={styles.centeredView}>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <FilterPost setModalVisible={setModalVisible} />
+                </View>
               </View>
-            </View>
-          </Modal>
-        </View>
-      </ScrollView>
+            </Modal>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
       {searchPost.length > 0 && (
         <View style={styles.buttonShowModalField}>
           <Pressable
@@ -229,12 +232,13 @@ const styles = StyleSheet.create({
   },
   itemStyle: {
     padding: 10,
+    backgroundColor: "#cccccc",
   },
   flatListStyle: {
     zIndex: 99,
     position: "absolute",
-    top: 98,
-    left: 12,
+    top: 56,
+    left: 18,
     backgroundColor: "white",
     borderRadius: 12,
     minWidth: "80%",

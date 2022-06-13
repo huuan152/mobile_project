@@ -79,9 +79,14 @@ export default function SignIn() {
   };
 
   useEffect(() => {
+    let isMounted = true;
+
     registerForPushNotificationsAsync().then((token) => {
-      setExpoPushToken(token);
+      if (isMounted) setExpoPushToken(token);
     });
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
