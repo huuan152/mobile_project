@@ -21,8 +21,11 @@ import { AddPostSlice } from "../AddPost/AddPostSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { userSlice } from "../../redux/slice/userSlice";
 import { registerForPushNotificationsAsync } from "../../Components/Notifications";
+import notifyMessage from "../../Components/Toast";
+import { useToast } from "react-native-styled-toast";
 
 export default function SignIn() {
+  const { toast } = useToast();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
@@ -45,7 +48,8 @@ export default function SignIn() {
       dispatch(userSlice.actions.logInState(true));
       dispatch(userSlice.actions.logIn(response.user));
       console.log("Đăng nhập thành công!");
-      ToastAndroid.show("Đăng nhập thành công!", ToastAndroid.SHORT);
+      // ToastAndroid.show("Đăng nhập thành công!", ToastAndroid.SHORT);
+      toast({ message: "Xin Chào" });
     } catch (error) {
       setModalVisible(false);
       if (error.message === "Request failed with status code 400") {
@@ -61,16 +65,18 @@ export default function SignIn() {
 
   const validate = () => {
     if (username === "" || password === "") {
-      ToastAndroid.show(
-        "Tài khoản hoặc mật khẩu bỏ trống!",
-        ToastAndroid.SHORT
-      );
+      // ToastAndroid.show(
+      //   "Tài khoản hoặc mật khẩu bỏ trống!",
+      //   ToastAndroid.SHORT
+      // );
+      toast({ message: "Tài khoản hoặc mật khẩu không được bỏ trống!" });
     } else {
       var re = /\S+@\S+\.\S+/;
       if (re.test(username)) {
         logIn();
       } else {
-        ToastAndroid.show("Tài khoản sai định dạng!", ToastAndroid.SHORT);
+        //ToastAndroid.show("Tài khoản sai định dạng!", ToastAndroid.SHORT);
+        toast({ message: "Tài khoản sai định dạng!" });
       }
     }
   };
