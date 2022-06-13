@@ -82,7 +82,9 @@ export default function SignIn() {
     let isMounted = true;
 
     registerForPushNotificationsAsync().then((token) => {
-      if (isMounted) setExpoPushToken(token);
+      if (isMounted) {
+        setExpoPushToken(token);
+      }
     });
     return () => {
       isMounted = false;
