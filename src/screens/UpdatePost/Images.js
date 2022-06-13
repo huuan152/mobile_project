@@ -4,7 +4,6 @@ import {
   View,
   Text,
   ImageBackground,
-  ToastAndroid,
   Pressable,
   Input,
 } from "react-native";
@@ -16,8 +15,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { postSelector, postThumbnailSelector } from "../../redux/selectors";
 import { UpdatePostSlice } from "./UpdatePostSlice";
 import * as DocumentPicker from "expo-document-picker";
+import { useToast } from "react-native-styled-toast";
+import { infoConfigToast } from "../../Constants/toast";
 
 export default function Images() {
+  const { toast } = useToast();
   const dispatch = useDispatch();
   const images = useSelector(postSelector).images;
   const thumbnail = useSelector(postThumbnailSelector);
@@ -52,10 +54,10 @@ export default function Images() {
           dispatch(UpdatePostSlice.actions.setImages(imgs));
         }
       } else {
-        ToastAndroid.show(
-          "Số ảnh được đăng tải vượt quá giới hạn!",
-          ToastAndroid.SHORT
-        );
+        toast({
+          message: "Số ảnh được đăng tải vượt quá giới hạn!",
+          ...infoConfigToast,
+        });
       }
     } catch (e) {
       console.log(e);

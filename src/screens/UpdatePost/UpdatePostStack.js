@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, Text, StyleSheet, ToastAndroid } from "react-native";
+import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Location from "./Location";
 import Info from "./Info";
@@ -19,10 +19,13 @@ import {
 import myMotelApi from "../../api/myMotelApi";
 import { useNavigation } from "@react-navigation/native";
 import { UpdatePostSlice } from "./UpdatePostSlice";
+import { useToast } from "react-native-styled-toast";
+import { infoConfigToast } from "../../Constants/toast";
 
 const Stack = createStackNavigator();
 
 export default function UpdatePostStack() {
+  const { toast } = useToast;
   const LocationScreen = useSelector(postLocationScreenSelector);
   const InfoScreen = useSelector(postInfoScreenSelector);
   const ImagesScreen = useSelector(postImagesScreenSelector);
@@ -98,10 +101,10 @@ export default function UpdatePostStack() {
       await myMotelApi.editMyMotelImages(motelID, data);
       dispatch(UpdatePostSlice.actions.updateMotels());
       nav.navigate("MyPostScreen");
-      ToastAndroid.show("Cập nhật thành công!", ToastAndroid.SHORT);
+      toast({ message: "Cập nhật thành công!" });
     } catch (error) {
       console.log(error.message);
-      ToastAndroid.show("Đã xảy ra lỗi! Thử lại sau!", ToastAndroid.SHORT);
+      toast({ message: "Đã xảy ra lỗi! Thử lại sau!", ...infoConfigToast });
     }
     dispatch(UpdatePostSlice.actions.setSendingState(false));
   };
@@ -116,7 +119,7 @@ export default function UpdatePostStack() {
     } else if (name === "Confirm" && ConfirmScreen) {
       updateMyMotelInfo();
     } else {
-      ToastAndroid.show("Vui lòng điền thông tin hợp lệ!", ToastAndroid.SHORT);
+      toast({ message: "Vui lòng điền thông tin hợp lệ!", ...infoConfigToast });
     }
   };
 

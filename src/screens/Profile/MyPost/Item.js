@@ -6,7 +6,6 @@ import {
   Text,
   Modal,
   TouchableOpacity,
-  ToastAndroid,
   Pressable,
   Alert,
 } from "react-native";

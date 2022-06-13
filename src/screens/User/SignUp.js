@@ -6,7 +6,6 @@ import {
   Image,
   Pressable,
   ScrollView,
-  ToastAndroid,
   TouchableOpacity,
   ActivityIndicator,
   Modal,
@@ -16,6 +15,8 @@ import images from "../../../assets/images";
 import BUTTON_COLORS from "../../Constants/Utilities/index";
 import userApi from "../../api/userApi";
 import { useNavigation } from "@react-navigation/native";
+import { useToast } from "react-native-styled-toast";
+import { infoConfigToast } from "../../Constants/toast";
 
 const emailRegex = /\S+@\S+\.\S+/;
 const phoneNumberRegex = /((^(\+84|84|0|0084){1})(3|5|7|8|9))+([0-9]{8})$/;
@@ -23,6 +24,7 @@ const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 export default function SignUp() {
+  const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -44,12 +46,12 @@ export default function SignUp() {
         })
         .then(() => {
           console.log("Đăng ký thành công!");
-          ToastAndroid.show("Đăng ký thành công!", ToastAndroid.SHORT);
+          toast({ message: "Đăng ký thành công!" });
           nav.navigate("SignIn");
         });
     } catch (error) {
       if (error.message === "Request failed with status code 400") {
-        ToastAndroid.show("Tài khoản đã tồn tại", ToastAndroid.SHORT);
+        toast({ message: "Tài khoản đã tồn tại", ...infoConfigToast });
       } else {
         console.log(error.message);
       }
@@ -65,19 +67,20 @@ export default function SignUp() {
       password === "" ||
       passwordConfirm === ""
     ) {
-      ToastAndroid.show("Không được bỏ trống trường nào!", ToastAndroid.SHORT);
+      toast({ message: "Vui lòng điền đầy đủ thông tin!", ...infoConfigToast });
     } else if (password !== passwordConfirm) {
-      ToastAndroid.show("Xác nhận mật khẩu không đúng!", ToastAndroid.SHORT);
+      toast({ message: "Xác nhận mật khẩu không đúng!", ...infoConfigToast });
     } else {
       if (!emailRegex.test(email)) {
-        ToastAndroid.show("Email sai định dạng!", ToastAndroid.SHORT);
+        toast({ message: "Email sai định dạng!", ...infoConfigToast });
       } else if (!phoneNumberRegex.test(phoneNumber)) {
-        ToastAndroid.show("Số điện thoại sai định dạng!", ToastAndroid.SHORT);
+        toast({ message: "Số điện thoại sai định dạng!", ...infoConfigToast });
       } else if (!passwordRegex.test(password)) {
-        ToastAndroid.show(
-          "Mật khẩu bao gồm ít nhất 8 kí tự, trong đó có 1 chữ cái in hoa, 1 chữ cái in thường, 1 chữ số!",
-          ToastAndroid.LONG
-        );
+        toast({
+          message:
+            "Mật khẩu bao gồm ít nhất 8 kí tự, trong đó có 1 chữ cái in hoa, 1 chữ cái in thường, 1 chữ số!",
+          ...infoConfigToast,
+        });
       } else {
         registerUser();
       }

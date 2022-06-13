@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { TouchableOpacity, Text, StyleSheet, ToastAndroid } from "react-native";
+import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Location from "./Location";
 import Info from "./Info";
@@ -29,6 +29,9 @@ import District from "../../Constants/Areas/quan_huyen.json";
 import SubDistrict from "../../Constants/Areas/xa_phuong.json";
 import socketIOClient from "socket.io-client";
 
+import { useToast } from "react-native-styled-toast";
+import { infoConfigToast } from "../../Constants/toast";
+
 const io = require("socket.io-client");
 
 Notifications.setNotificationHandler({
@@ -42,6 +45,7 @@ Notifications.setNotificationHandler({
 const Stack = createStackNavigator();
 
 export default function AddPostStack() {
+  const { toast } = useToast();
   const LocationScreen = useSelector(addPostLocationScreenSelector);
   const InfoScreen = useSelector(addPostInfoScreenSelector);
   const ImagesScreen = useSelector(addPostImagesScreenSelector);
@@ -267,10 +271,10 @@ export default function AddPostStack() {
       await myMotelApi.myNewMotelImages(motelID, data);
       resetAddPost();
       navigation.navigate("Location");
-      ToastAndroid.show("Đăng tin thành công", ToastAndroid.SHORT);
+      toast({ message: "Đăng bài thành công" });
     } catch (error) {
       console.log(error.message);
-      ToastAndroid.show("Đã xảy ra lỗi! Thử lại sau!", ToastAndroid.SHORT);
+      toast({ message: "Đã xảy ra lỗi! Thử lại sau!", ...infoConfigToast });
     }
     dispatch(AddPostSlice.actions.setSendingState(false));
   };
@@ -285,7 +289,7 @@ export default function AddPostStack() {
     } else if (name === "Confirm" && ConfirmScreen) {
       createMyNewMotel(navigation);
     } else {
-      ToastAndroid.show("Vui lòng điền thông tin hợp lệ!", ToastAndroid.SHORT);
+      toast({ message: "Vui lòng điền thông tin hợp lệ!", ...infoConfigToast });
     }
   };
 

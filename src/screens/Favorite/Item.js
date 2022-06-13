@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  ToastAndroid,
   Pressable,
   Alert,
 } from "react-native";

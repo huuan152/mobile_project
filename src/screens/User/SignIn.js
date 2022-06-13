@@ -6,7 +6,6 @@ import {
   Image,
   ScrollView,
   Pressable,
-  ToastAndroid,
   TouchableOpacity,
   ActivityIndicator,
   Modal,
@@ -23,6 +22,7 @@ import { userSlice } from "../../redux/slice/userSlice";
 import { registerForPushNotificationsAsync } from "../../Components/Notifications";
 import notifyMessage from "../../Components/Toast";
 import { useToast } from "react-native-styled-toast";
+import { infoConfigToast } from "../../Constants/toast";
 
 export default function SignIn() {
   const { toast } = useToast();
@@ -48,15 +48,14 @@ export default function SignIn() {
       dispatch(userSlice.actions.logInState(true));
       dispatch(userSlice.actions.logIn(response.user));
       console.log("Đăng nhập thành công!");
-      // ToastAndroid.show("Đăng nhập thành công!", ToastAndroid.SHORT);
-      toast({ message: "Xin Chào" });
+      toast({ message: "Chào mừng bạn đến với ứng dụng thuê trọ." });
     } catch (error) {
       setModalVisible(false);
       if (error.message === "Request failed with status code 400") {
-        ToastAndroid.show(
-          "Tài khoản hoặc mật khẩu không đúng",
-          ToastAndroid.SHORT
-        );
+        toast({
+          message: "Tài khoản hoặc mật khẩu không đúng",
+          ...infoConfigToast,
+        });
       } else {
         console.log(error.message);
       }
@@ -65,18 +64,16 @@ export default function SignIn() {
 
   const validate = () => {
     if (username === "" || password === "") {
-      // ToastAndroid.show(
-      //   "Tài khoản hoặc mật khẩu bỏ trống!",
-      //   ToastAndroid.SHORT
-      // );
-      toast({ message: "Tài khoản hoặc mật khẩu không được bỏ trống!" });
+      toast({
+        message: "Tài khoản hoặc mật khẩu không được bỏ trống!",
+        ...infoConfigToast,
+      });
     } else {
       var re = /\S+@\S+\.\S+/;
       if (re.test(username)) {
         logIn();
       } else {
-        //ToastAndroid.show("Tài khoản sai định dạng!", ToastAndroid.SHORT);
-        toast({ message: "Tài khoản sai định dạng!" });
+        toast({ message: "Tài khoản sai định dạng!", ...infoConfigToast });
       }
     }
   };
