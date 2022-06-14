@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   StyleSheet,
   View,
@@ -16,6 +16,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { postSelector, postSearchSelector } from "../../redux/selectors";
 import { UpdatePostSlice } from "./UpdatePostSlice";
+import { debounce } from "lodash";
 
 export default function Location() {
   const dispatch = useDispatch();
@@ -63,7 +64,6 @@ export default function Location() {
   };
 
   const searchLocation = async (input) => {
-    dispatch(UpdatePostSlice.actions.setSearch(input));
     if (input != "") {
       var newItems = [];
       await axios
@@ -80,6 +80,16 @@ export default function Location() {
           console.log(error);
         });
     }
+  };
+
+  const debounceLocation = useCallback(
+    debounce((input) => searchLocation(input), 1000),
+    []
+  );
+
+  const changeLocation = (input) => {
+    dispatch(UpdatePostSlice.actions.setSearch(input));
+    debounceLocation(input);
   };
 
   useEffect(() => {
@@ -167,7 +177,7 @@ export default function Location() {
             value={search}
             placeholder="Tìm kiếm"
             underlineColorAndroid="transparent"
-            onChangeText={(text) => searchLocation(text)}
+            onChangeText={(text) => changeLocation(text)}
           ></TextInput>
           <FlatList
             data={data}
