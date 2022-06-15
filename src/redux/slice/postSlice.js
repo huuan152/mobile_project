@@ -3,7 +3,7 @@ import { ROOM_TYPE } from "../../Constants/filter";
 
 const initialState = {
   post: [],
-  searchPost: [],
+  searchPost: null,
   locationSearchText: "",
   favoritePost: [],
   roomType: 0,
@@ -75,6 +75,15 @@ export const postSlice = createSlice({
       state.maxPrice = action.payload.maxPrice;
       state.minArea = action.payload.minArea;
       state.maxArea = action.payload.maxArea;
+    },
+    resetFilter: (state, action) => {
+      state.searchPost = null;
+      state.roomType = 0;
+      state.sortType = 0;
+      state.minPrice = "";
+      state.maxPrice = "";
+      state.minArea = "";
+      state.maxArea = "";
     },
   },
 });

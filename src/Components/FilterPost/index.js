@@ -25,9 +25,10 @@ const FilterPost = ({ setModalVisible }) => {
     setMaxPriceValue(maxPrice.toString());
     setMinAreaValue(minArea.toString());
     setMaxAreaValue(maxArea.toString());
-  }, []);
+  }, [roomType, sortType, minPrice, maxPrice, minArea, maxArea]);
   const handleFiltered = () => {
     if (validate().status) {
+      setError("");
       const action = {
         roomType: selectedIndexRoom,
         sortType: selectedIndexType,
@@ -37,6 +38,7 @@ const FilterPost = ({ setModalVisible }) => {
         maxArea: parseInt(maxAreaValue),
       };
       dispatch(postSlice.actions.getSearchFilteredPost(action));
+      setModalVisible(false);
     } else {
       setError(validate().message);
     }
@@ -48,6 +50,7 @@ const FilterPost = ({ setModalVisible }) => {
       maxAreaValue === "" ||
       minAreaValue === ""
     ) {
+      console.log(false);
       return {
         status: false,
         message: `Bạn cần nhập đầy đủ các thông tin.`,

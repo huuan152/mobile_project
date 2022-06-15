@@ -24,8 +24,6 @@ import * as Notifications from "expo-notifications";
 import { useToast } from "react-native-styled-toast";
 import { infoConfigToast } from "../../Constants/toast";
 
-const io = require("socket.io-client");
-
 const Stack = createStackNavigator();
 
 export default function AddPostStack() {

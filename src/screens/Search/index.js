@@ -98,6 +98,7 @@ const SeachScreen = () => {
     setSearch("");
     if (location !== "") {
       dispatch(postSlice.actions.getLocationSearchPost(location));
+      //dispatch(postSlice.actions.resetFilter());
     }
   };
 
@@ -143,20 +144,6 @@ const SeachScreen = () => {
               </TouchableOpacity>
             </View>
             <ListPostWithAddress title={area} data={searchPost} />
-            {/* <View>
-                <Text>Your expo push token: {expoPushToken}</Text>
-                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <Text>Title: {notification && notification.request.content.title} </Text>
-                    <Text>Body: {notification && notification.request.content.body}</Text>
-                    <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
-                </View>
-                <Button
-                    title="Press to Send Notification"
-                    onPress={async () => {
-                    await sendPushNotification(expoPushToken);
-                    }}
-                />
-            </View> */}
           </View>
           <View style={styles.centeredView}>
             <Modal
@@ -177,7 +164,7 @@ const SeachScreen = () => {
           </View>
         </ScrollView>
       </SafeAreaView>
-      {searchPost.length > 0 && (
+      {searchPost !== null && (
         <View style={styles.buttonShowModalField}>
           <Pressable
             style={[styles.button, styles.buttonOpen]}

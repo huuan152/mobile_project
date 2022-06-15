@@ -8,7 +8,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { listPostSelector, userSelector } from "../../redux/selectors";
 import { userSlice } from "../../redux/slice/userSlice";
-const io = require("socket.io-client");
 
 const Profile = () => {
   const nav = useNavigation();
