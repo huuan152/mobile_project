@@ -14,6 +14,7 @@ import {
   addPostConfirmScreenSelector,
   addPostSelector,
   addPostThumbnailSelector,
+  addPostMessageSelector,
 } from "../../redux/selectors";
 import myMotelApi from "../../api/myMotelApi";
 import { AddPostSlice } from "./AddPostSlice";
@@ -34,6 +35,7 @@ export default function AddPostStack() {
   const ConfirmScreen = useSelector(addPostConfirmScreenSelector);
   const addPostData = useSelector(addPostSelector);
   const thumbnail = useSelector(addPostThumbnailSelector);
+  const message = useSelector(addPostMessageSelector);
   const dispatch = useDispatch();
   /// Notification
   const [notification, setNotification] = useState(false);
@@ -137,7 +139,7 @@ export default function AddPostStack() {
     } else if (name === "Confirm" && ConfirmScreen) {
       createMyNewMotel(navigation);
     } else {
-      toast({ message: "Vui lòng điền thông tin hợp lệ!", ...infoConfigToast });
+      toast({ message: message, ...infoConfigToast });
     }
   };
 

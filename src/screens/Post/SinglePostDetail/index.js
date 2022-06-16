@@ -276,6 +276,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: BUTTON_COLORS.colorPicked,
     marginBottom: 8,
+    paddingLeft: 8,
   },
   detailField: {
     paddingHorizontal: 12,
@@ -283,12 +284,13 @@ const styles = StyleSheet.create({
   info: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 12,
+    marginLeft: 6,
   },
   infoText: {
-    marginLeft: 8,
+    marginLeft: 18,
     fontSize: 16,
     color: "gray",
+    flex: 1,
   },
   utilitiesField: {
     marginTop: 12,
@@ -297,6 +299,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "700",
     marginBottom: 10,
+    paddingLeft: 8,
   },
   utilities: {
     flexDirection: "row",

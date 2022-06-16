@@ -34,6 +34,7 @@ const initStates = {
   updateMotels: 0,
   motelUpdateID: "",
   thumbnail: 0,
+  message: "",
 };
 
 export const UpdatePostSlice = createSlice({
@@ -94,6 +95,9 @@ export const UpdatePostSlice = createSlice({
     setSendingState: (state, action) => {
       state.sending = action.payload;
     },
+    setMessage: (state, action) => {
+      state.message = action.payload;
+    },
     updatePostDetail: (state, action) => {
       state.post.address = action.payload.address;
       state.post.postType = action.payload.postType;
@@ -118,6 +122,7 @@ export const UpdatePostSlice = createSlice({
       state.confirmScreen = true;
       state.search = action.payload.address;
       state.sending = false;
+      state.message = "";
       state.motelUpdateID = action.payload._id;
     },
     resetPostDetail: (state) => {

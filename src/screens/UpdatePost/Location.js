@@ -96,6 +96,9 @@ export default function Location() {
     if (search === location && search !== "") {
       dispatch(UpdatePostSlice.actions.locationScreenUpdate(true));
     } else {
+      dispatch(
+        UpdatePostSlice.actions.setMessage("Chỉ chọn địa chỉ được gợi ý!")
+      );
       dispatch(UpdatePostSlice.actions.locationScreenUpdate(false));
     }
   }, [search]);

@@ -41,9 +41,19 @@ export default function Info() {
   };
 
   useEffect(() => {
-    if (parseInt(roomPrice) !== 0 && parseInt(area) !== 0) {
+    if (
+      roomPrice !== "" &&
+      area !== "" &&
+      parseInt(roomPrice) !== 0 &&
+      parseInt(area) !== 0
+    ) {
       dispatch(UpdatePostSlice.actions.infoScreenUpdate(true));
     } else {
+      dispatch(
+        UpdatePostSlice.actions.setMessage(
+          "Giá phòng hoặc diện tích phải khác 0!"
+        )
+      );
       dispatch(UpdatePostSlice.actions.infoScreenUpdate(false));
     }
   }, [roomPrice, area, room, post]);

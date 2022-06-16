@@ -71,6 +71,7 @@ export default function Images() {
     if (countUploadedImages !== 0) {
       dispatch(AddPostSlice.actions.imagesScreenUpdate(true));
     } else {
+      dispatch(AddPostSlice.actions.setMessage("Phải có ít nhất 1 ảnh!"));
       dispatch(AddPostSlice.actions.imagesScreenUpdate(false));
     }
   }, [countUploadedImages]);

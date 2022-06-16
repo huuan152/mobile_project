@@ -9,6 +9,7 @@ export const addPostSelector = (state) => state.addPost.addPost;
 export const addPostSearchSelector = (state) => state.addPost.search;
 export const addPostThumbnailSelector = (state) => state.addPost.thumbnail;
 export const addPostSendingStateSelector = (state) => state.addPost.sending;
+export const addPostMessageSelector = (state) => state.addPost.message;
 export const isCreated = (state) => state.addPost.createMotels;
 
 export const postLocationScreenSelector = (state) =>
@@ -22,6 +23,7 @@ export const postSelector = (state) => state.updatePost.post;
 export const postSearchSelector = (state) => state.updatePost.search;
 export const postThumbnailSelector = (state) => state.updatePost.thumbnail;
 export const postSendingStateSelector = (state) => state.updatePost.sending;
+export const postMessageSelector = (state) => state.updatePost.message;
 export const isDeleted = (state) => state.updatePost.deleteMotels;
 export const isUpdated = (state) => state.updatePost.updateMotels;
 export const motelUpdateID = (state) => state.updatePost.motelUpdateID;

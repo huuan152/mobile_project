@@ -15,6 +15,7 @@ import {
   postSelector,
   motelUpdateID,
   postThumbnailSelector,
+  postMessageSelector,
 } from "../../redux/selectors";
 import myMotelApi from "../../api/myMotelApi";
 import { useNavigation } from "@react-navigation/native";
@@ -25,13 +26,14 @@ import { infoConfigToast } from "../../Constants/toast";
 const Stack = createStackNavigator();
 
 export default function UpdatePostStack() {
-  const { toast } = useToast;
+  const { toast } = useToast();
   const LocationScreen = useSelector(postLocationScreenSelector);
   const InfoScreen = useSelector(postInfoScreenSelector);
   const ImagesScreen = useSelector(postImagesScreenSelector);
   const ConfirmScreen = useSelector(postConfirmScreenSelector);
   const PostData = useSelector(postSelector);
   const motelID = useSelector(motelUpdateID);
+  const message = useSelector(postMessageSelector);
   const nav = useNavigation();
   const thumbnail = useSelector(postThumbnailSelector);
   const dispatch = useDispatch();
@@ -119,7 +121,7 @@ export default function UpdatePostStack() {
     } else if (name === "Confirm" && ConfirmScreen) {
       updateMyMotelInfo();
     } else {
-      toast({ message: "Vui lòng điền thông tin hợp lệ!", ...infoConfigToast });
+      toast({ message: message, ...infoConfigToast });
     }
   };
 
