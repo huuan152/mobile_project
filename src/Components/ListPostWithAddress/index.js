@@ -1,10 +1,9 @@
 import { View, Text, StyleSheet } from "react-native";
 
 import CustomListPost from "../ListPost";
-const ListPostWithAddress = ({ data, title }) => {
+const ListPostWithAddress = ({ data }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
       <CustomListPost data={data} />
     </View>
   );

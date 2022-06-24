@@ -38,23 +38,30 @@ export const postSlice = createSlice({
       state.favoritePost = listFavorite;
     },
     getSearchFilteredPost: (state, action) => {
+      console.log(action.payload);
       let newArr = [...state.post];
       newArr = newArr.filter((element, index) =>
         element.address.includes(state.locationSearchText)
       );
-      newArr = newArr.filter(
-        (element, index) => element.roomType === action.payload.roomType
-      );
-      newArr = newArr.filter(
-        (element, index) =>
-          action.payload.minPrice <= element.rentalPrice &&
-          element.rentalPrice <= action.payload.maxPrice
-      );
-      newArr = newArr.filter(
-        (element, index) =>
-          action.payload.minArea <= element.area &&
-          element.area <= action.payload.maxArea
-      );
+      if(action.payload.roomType !== 0){
+        newArr = newArr.filter(
+          (element, index) => element.roomType === action.payload.roomType
+        );
+      }
+      if(action.payload.minPrice !== 0 && action.payload.maxPrice !== 0){
+        newArr = newArr.filter(
+          (element, index) =>
+            action.payload.minPrice <= element.rentalPrice &&
+            element.rentalPrice <= action.payload.maxPrice
+        );
+      }
+      if(action.payload.minArea !== 0 && action.payload.maxArea !== 0){
+        newArr = newArr.filter(
+          (element, index) =>
+            action.payload.minArea <= element.area &&
+            element.area <= action.payload.maxArea
+        );
+      }
       if (action.payload.sortType === 2) {
         newArr.sort((a, b) => a.rentalPrice - b.rentalPrice);
       }
@@ -84,6 +91,9 @@ export const postSlice = createSlice({
       state.maxPrice = "";
       state.minArea = "";
       state.maxArea = "";
+    },
+    resetSearchPost: (state, action) => {
+      state.searchPost = null;
     },
   },
 });

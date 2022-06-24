@@ -33,6 +33,11 @@ const SeachScreen = () => {
   const [data, setData] = useState([]);
   const [location, setLocation] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [showCancelButton, setShowCancelButton] = useState(false);
+
+  useEffect(() => {
+    console.log({ data, area, search, location });
+  }, [data, area, search, location]);
 
   const searchArea = (input) => {
     setSearch(input);
@@ -94,12 +99,20 @@ const SeachScreen = () => {
   };
 
   const addNewAreaTracking = () => {
+    setShowCancelButton(true);
     setArea(search);
-    setSearch("");
     if (location !== "") {
       dispatch(postSlice.actions.getLocationSearchPost(location));
       //dispatch(postSlice.actions.resetFilter());
     }
+  };
+
+  const cancelSearch = () => {
+    setShowCancelButton(false);
+    setLocation("");
+    setArea("");
+    setSearch("");
+    dispatch(postSlice.actions.resetSearchPost());
   };
 
   useEffect(() => {
@@ -138,12 +151,12 @@ const SeachScreen = () => {
                   padding: 10,
                   borderRadius: 5,
                 }}
-                onPress={addNewAreaTracking}
+                onPress={showCancelButton ? cancelSearch : addNewAreaTracking}
               >
-                <Text style={{ color: "white" }}>Tìm kiếm</Text>
+                <Text style={{ color: "white" }}>{showCancelButton ? 'Hủy' : "Tìm kiếm"}</Text>
               </TouchableOpacity>
             </View>
-            <ListPostWithAddress title={area} data={searchPost} />
+            <ListPostWithAddress data={searchPost} />
           </View>
           <View style={styles.centeredView}>
             <Modal
