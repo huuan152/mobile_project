@@ -78,7 +78,7 @@ export default function SignUp() {
       } else if (!passwordRegex.test(password)) {
         toast({
           message:
-            "Mật khẩu bao gồm ít nhất 8 kí tự, trong đó có 1 chữ cái in hoa, 1 chữ cái in thường, 1 chữ số!",
+            "Mật khẩu bao gồm ít nhất 8 kí tự, trong đó có tối thiểu 1 chữ cái in hoa, 1 chữ cái in thường, 1 chữ số, 1 kí tự đặc biệt!",
           ...infoConfigToast,
         });
       } else {

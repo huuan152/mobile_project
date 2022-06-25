@@ -312,6 +312,7 @@ const styles = StyleSheet.create({
   },
   detailInfo: {
     fontSize: 16,
+    paddingLeft: 8,
   },
 });
 
