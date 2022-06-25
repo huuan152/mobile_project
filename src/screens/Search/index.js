@@ -35,9 +35,9 @@ const SeachScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [showCancelButton, setShowCancelButton] = useState(false);
 
-  useEffect(() => {
-    console.log({ data, area, search, location });
-  }, [data, area, search, location]);
+  // useEffect(() => {
+  //   console.log({ data, area, search, location });
+  // }, [data, area, search, location]);
 
   const searchArea = (input) => {
     setSearch(input);
@@ -148,8 +148,12 @@ const SeachScreen = () => {
               <TouchableOpacity
                 style={{
                   backgroundColor: BUTTON_COLORS.colorPicked,
-                  padding: 10,
+                  // padding: 10,
                   borderRadius: 5,
+                  width: 80,
+                  height: 36,
+                  justifyContent: 'center',
+                  alignItems: 'center'
                 }}
                 onPress={showCancelButton ? cancelSearch : addNewAreaTracking}
               >

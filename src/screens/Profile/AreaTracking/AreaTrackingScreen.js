@@ -36,12 +36,12 @@ const AreaTrackingScreen = (props) => {
     var result = [];
     if (input !== "") {
       var enoughData = false;
-      if (area.length === 0) {
-        result.push("Thành phố Hà Nội");
-      } else if (area[0] === "Thành phố Hà Nội") {
-        enoughData = true;
-        return false;
-      }
+      // if (area.length === 0) {
+      //   result.push("Thành phố Hà Nội");
+      // } else if (area[0] === "Thành phố Hà Nội") {
+      //   enoughData = true;
+      //   return false;
+      // }
       if (enoughData === false) {
         District.every((item) => {
           if (result.length > 10) {
