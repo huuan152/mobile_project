@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  ToastAndroid,
   Pressable,
   Alert,
 } from "react-native";
@@ -34,15 +33,22 @@ const Item = (props) => {
 
   const formatPrice = () => {
     let price = rentalPrice;
-    if (price < 1000000) {
+    if (price < 10000) {
+      price = price.toString() + " đồng";
+    } else if (10000 <= price && price < 1000000) {
       price = price.toString().substring(0, price.toString().length - 3);
-      price = parseInt(price);
+      price = parseInt(price, 10);
       price = price.toString() + " nghìn";
-    } else {
+    } else if (1000000 <= price && price < 1000000000) {
       price = price.toString().substring(0, price.toString().length - 5);
-      price = parseInt(price);
+      price = parseInt(price, 10);
       price /= 10;
       price = price.toString() + " triệu";
+    } else if (price >= 1000000000) {
+      price = price.toString().substring(0, price.toString().length - 8);
+      price = parseInt(price, 10);
+      price /= 10;
+      price = price.toString() + " tỷ";
     }
     return price;
   };

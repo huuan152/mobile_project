@@ -9,7 +9,7 @@ const FilterPost = ({ setModalVisible }) => {
   const dispatch = useDispatch();
   const { roomType, sortType, minPrice, maxPrice, minArea, maxArea } =
     useSelector(listPostSelector);
-  const roomTypes = ["Phòng", "Căn hộ", "Căn hộ mini", "Nguyên căn"];
+  const roomTypes = ["Tất cả", "Căn hộ", "Căn hộ mini", "Nguyên căn"];
   const sortTypes = ["Mới nhất", "Giá giảm dần", "Giá tăng dần"];
   const [selectedIndexRoom, setSelectedIndexRoom] = useState(0);
   const [selectedIndexType, setSelectedIndexType] = useState(0);
@@ -25,38 +25,37 @@ const FilterPost = ({ setModalVisible }) => {
     setMaxPriceValue(maxPrice.toString());
     setMinAreaValue(minArea.toString());
     setMaxAreaValue(maxArea.toString());
-  }, []);
+  }, [roomType, sortType, minPrice, maxPrice, minArea, maxArea]);
   const handleFiltered = () => {
     if (validate().status) {
+      setError("");
       const action = {
         roomType: selectedIndexRoom,
         sortType: selectedIndexType,
-        minPrice: parseInt(minPriceValue),
-        maxPrice: parseInt(maxPriceValue),
-        minArea: parseInt(minAreaValue),
-        maxArea: parseInt(maxAreaValue),
+        minPrice: parseInt(minPriceValue !== '' ? minPriceValue : '0'),
+        maxPrice: parseInt(maxPriceValue !== '' ? maxPriceValue : '0'),
+        minArea: parseInt(minAreaValue !== '' ? minAreaValue : '0'),
+        maxArea: parseInt(maxAreaValue !== '' ? maxAreaValue : '0'),
       };
-      console.log("Filter action", action);
       dispatch(postSlice.actions.getSearchFilteredPost(action));
+      setModalVisible(false);
     } else {
       setError(validate().message);
     }
   };
   const validate = () => {
     if (
-      minPriceValue === "" ||
-      maxPriceValue === "" ||
-      maxAreaValue === "" ||
-      minAreaValue === ""
+      (minPriceValue !== "" && maxPriceValue !== "") ||
+      (maxAreaValue !== "" && minAreaValue !== "")
     ) {
       return {
-        status: false,
-        message: `Bạn cần nhập đầy đủ các thông tin.`,
+        status: true,
+        message: ``,
       };
     }
     return {
-      status: true,
-      message: ``,
+      status: false,
+      message: `Bạn cần nhập đầy đủ các thông tin.`,
     };
   };
   return (

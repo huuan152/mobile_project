@@ -33,7 +33,6 @@ const editMyMotelInfo = async (motel, _id) => {
 };
 
 const editMyMotelImages = async (_id, images) => {
-  console.log("editMyMotelImages", _id, images);
   return await axiosClient.put(`/motel/${_id}/update-image`, images, {
     headers: {
       "content-type": "multipart/form-data",

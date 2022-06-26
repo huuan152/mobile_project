@@ -4,7 +4,6 @@ import {
   View,
   Text,
   ImageBackground,
-  ToastAndroid,
   Pressable,
   Input,
 } from "react-native";
@@ -19,8 +18,11 @@ import {
 } from "../../redux/selectors";
 import { AddPostSlice } from "./AddPostSlice";
 import * as DocumentPicker from "expo-document-picker";
+import { useToast } from "react-native-styled-toast";
+import { infoConfigToast } from "../../Constants/toast";
 
 export default function Images() {
+  const { toast } = useToast();
   const dispatch = useDispatch();
   const images = useSelector(addPostSelector).images;
   const thumbnail = useSelector(addPostThumbnailSelector);
@@ -55,10 +57,10 @@ export default function Images() {
           dispatch(AddPostSlice.actions.setImages(imgs));
         }
       } else {
-        ToastAndroid.show(
-          "Số ảnh được đăng tải vượt quá giới hạn!",
-          ToastAndroid.SHORT
-        );
+        toast({
+          message: "Số ảnh được đăng tải vượt quá giới hạn!",
+          ...infoConfigToast,
+        });
       }
     } catch (e) {
       console.log(e);
@@ -69,6 +71,7 @@ export default function Images() {
     if (countUploadedImages !== 0) {
       dispatch(AddPostSlice.actions.imagesScreenUpdate(true));
     } else {
+      dispatch(AddPostSlice.actions.setMessage("Phải có ít nhất 1 ảnh!"));
       dispatch(AddPostSlice.actions.imagesScreenUpdate(false));
     }
   }, [countUploadedImages]);

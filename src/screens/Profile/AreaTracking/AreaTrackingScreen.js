@@ -36,12 +36,12 @@ const AreaTrackingScreen = (props) => {
     var result = [];
     if (input !== "") {
       var enoughData = false;
-      if (area.length === 0) {
-        result.push("Thành phố Hà Nội");
-      } else if (area[0] === "Thành phố Hà Nội") {
-        enoughData = true;
-        return false;
-      }
+      // if (area.length === 0) {
+      //   result.push("Thành phố Hà Nội");
+      // } else if (area[0] === "Thành phố Hà Nội") {
+      //   enoughData = true;
+      //   return false;
+      // }
       if (enoughData === false) {
         District.every((item) => {
           if (result.length > 10) {
@@ -49,9 +49,9 @@ const AreaTrackingScreen = (props) => {
             return false;
           }
           if (item.name.startsWith(input)) {
-            area.includes(item.name_with_type);
-            if (!area.includes(item.path_with_type)) {
-              result.push(item.path_with_type);
+            area.includes(item.path);
+            if (!area.includes(item.path)) {
+              result.push(item.path);
             }
           }
           return true;
@@ -63,8 +63,8 @@ const AreaTrackingScreen = (props) => {
             return false;
           }
           if (result.length < 10 && item.name.startsWith(input)) {
-            if (!area.includes(item.path_with_type)) {
-              result.push(item.path_with_type);
+            if (!area.includes(item.path)) {
+              result.push(item.path);
             }
           }
           return true;
@@ -76,9 +76,7 @@ const AreaTrackingScreen = (props) => {
 
   const onPressTrackingArea = (item) => {
     const list = District.concat(SubDistrict);
-    const searchLocationText = list.find(
-      (element) => element.path_with_type === item
-    );
+    const searchLocationText = list.find((element) => element.path === item);
     if (searchLocationText) {
       dispatch(
         postSlice.actions.getLocationSearchPost(searchLocationText.name)

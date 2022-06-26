@@ -11,6 +11,7 @@ import {
   Pressable,
   ScrollView,
   Modal,
+  SafeAreaView,
 } from "react-native";
 import BUTTON_COLORS from "../../Constants/Utilities/index";
 import District from "../../Constants/Areas/quan_huyen.json";
@@ -32,6 +33,11 @@ const SeachScreen = () => {
   const [data, setData] = useState([]);
   const [location, setLocation] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [showCancelButton, setShowCancelButton] = useState(false);
+
+  // useEffect(() => {
+  //   console.log({ data, area, search, location });
+  // }, [data, area, search, location]);
 
   const searchArea = (input) => {
     setSearch(input);
@@ -93,11 +99,20 @@ const SeachScreen = () => {
   };
 
   const addNewAreaTracking = () => {
+    setShowCancelButton(true);
     setArea(search);
-    setSearch("");
     if (location !== "") {
       dispatch(postSlice.actions.getLocationSearchPost(location));
+      //dispatch(postSlice.actions.resetFilter());
     }
+  };
+
+  const cancelSearch = () => {
+    setShowCancelButton(false);
+    setLocation("");
+    setArea("");
+    setSearch("");
+    dispatch(postSlice.actions.resetSearchPost());
   };
 
   useEffect(() => {
@@ -112,69 +127,61 @@ const SeachScreen = () => {
 
   return (
     <>
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.container}>
-          <View style={styles.inputArea}>
-            <TextInput
-              placeholder="Nhập khu vực muốn tìm kiếm"
-              style={styles.input}
-              value={search}
-              onChangeText={(text) => searchArea(text)}
-            ></TextInput>
-            <View style={{ width: 5 }}></View>
-            <TouchableOpacity
-              style={{
-                backgroundColor: BUTTON_COLORS.colorPicked,
-                padding: 10,
-                borderRadius: 5,
-              }}
-              onPress={addNewAreaTracking}
-            >
-              <Text style={{ color: "white" }}>Tìm kiếm</Text>
-            </TouchableOpacity>
-          </View>
-          <FlatList
-            data={data}
-            keyExtractor={(item, index) => index.toString()}
-            ItemSeparatorComponent={ItemSeparatorView}
-            renderItem={ItemView}
-            style={styles.flatListStyle}
-          ></FlatList>
-          <ListPostWithAddress title={area} data={searchPost} />
-          {/* <View>
-                <Text>Your expo push token: {expoPushToken}</Text>
-                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <Text>Title: {notification && notification.request.content.title} </Text>
-                    <Text>Body: {notification && notification.request.content.body}</Text>
-                    <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
-                </View>
-                <Button
-                    title="Press to Send Notification"
-                    onPress={async () => {
-                    await sendPushNotification(expoPushToken);
-                    }}
-                />
-            </View> */}
-        </View>
-        <View style={styles.centeredView}>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-              setModalVisible(!modalVisible);
-            }}
-          >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <FilterPost setModalVisible={setModalVisible} />
-              </View>
+      <SafeAreaView style={{ flex: 1 }}>
+        <FlatList
+          data={data}
+          keyExtractor={(item, index) => index.toString()}
+          ItemSeparatorComponent={ItemSeparatorView}
+          renderItem={ItemView}
+          style={styles.flatListStyle}
+        ></FlatList>
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.container}>
+            <View style={styles.inputArea}>
+              <TextInput
+                placeholder="Nhập khu vực muốn tìm kiếm"
+                style={styles.input}
+                value={search}
+                onChangeText={(text) => searchArea(text)}
+              ></TextInput>
+              <View style={{ width: 5 }}></View>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: BUTTON_COLORS.colorPicked,
+                  // padding: 10,
+                  borderRadius: 5,
+                  width: 80,
+                  height: 36,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+                onPress={showCancelButton ? cancelSearch : addNewAreaTracking}
+              >
+                <Text style={{ color: "white" }}>{showCancelButton ? 'Hủy' : "Tìm kiếm"}</Text>
+              </TouchableOpacity>
             </View>
-          </Modal>
-        </View>
-      </ScrollView>
-      {searchPost.length > 0 && (
+            <ListPostWithAddress data={searchPost} />
+          </View>
+          <View style={styles.centeredView}>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <FilterPost setModalVisible={setModalVisible} />
+                </View>
+              </View>
+            </Modal>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+      {searchPost !== null && (
         <View style={styles.buttonShowModalField}>
           <Pressable
             style={[styles.button, styles.buttonOpen]}
@@ -229,12 +236,13 @@ const styles = StyleSheet.create({
   },
   itemStyle: {
     padding: 10,
+    backgroundColor: "#cccccc",
   },
   flatListStyle: {
     zIndex: 99,
     position: "absolute",
-    top: 98,
-    left: 12,
+    top: 56,
+    left: 18,
     backgroundColor: "white",
     borderRadius: 12,
     minWidth: "80%",

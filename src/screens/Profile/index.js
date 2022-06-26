@@ -8,14 +8,12 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { listPostSelector, userSelector } from "../../redux/selectors";
 import { userSlice } from "../../redux/slice/userSlice";
-const io = require("socket.io-client");
 
 const Profile = () => {
   const nav = useNavigation();
   const dispatch = useDispatch();
   const { user } = useSelector(userSelector);
-  const { post } = useSelector(listPostSelector);
-
+  console.log("user", user);
   const signOut = async () => {
     try {
       await userApi.clearExpotoken().then(() => {
@@ -31,37 +29,6 @@ const Profile = () => {
       console.log(error.message);
     }
   };
-
-  // useEffect(() => {
-  //     console.log('Current user', user);
-  // }, []);
-  // ///////////////////////////////////////
-  // useEffect(() => {
-  //     console.log('List post', post);
-  // }, []);
-
-  // useEffect(() => {
-  //     const socket = io(
-  //         `https://mtapp-a.herokuapp.com`,
-  //       );
-  //         socket.emit('connection');
-  //         console.log('connect socket');
-  //         socket.emit('created-motel', '62884e4b9ca74fcff0779754');
-  //         socket.on('new-motel', (motel) => {
-  //             console.log('New motel', motel);
-  //         });
-
-  //         // socket.on('connect', () => {
-  //         //     console.log('connected --------------- socket ---------------');
-  //         //     socket.emit('created-motel', '62874122e276563f4d254af8');
-  //         //     socket.on('new-motel', (motel) => {
-  //         //         console.log(motel);
-  //         //     });
-  //         // });
-  //         socket.on('connect_error', err => {
-  //             console.log(err.message);
-  //         });
-  // }, [])
   return (
     <View style={styles.container}>
       <View style={styles.profileImageField}>

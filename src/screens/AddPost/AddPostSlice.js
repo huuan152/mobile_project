@@ -31,6 +31,7 @@ const initStates = {
   search: "",
   sending: false,
   thumbnail: 0,
+  message: "",
 };
 
 export const AddPostSlice = createSlice({
@@ -90,6 +91,9 @@ export const AddPostSlice = createSlice({
     },
     setSendingState: (state, action) => {
       state.sending = action.payload;
+    },
+    setMessage: (state, action) => {
+      state.message = action.payload;
     },
     resetAddPost: (state) => {
       return initStates;

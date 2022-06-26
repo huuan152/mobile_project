@@ -84,15 +84,22 @@ const PostDetail = ({ route }) => {
   };
   const formatPrice = () => {
     let price = rentalPrice;
-    if (price < 1000000) {
+    if (price < 10000) {
+      price = price.toString() + " đồng";
+    } else if (10000 <= price && price < 1000000) {
       price = price.toString().substring(0, price.toString().length - 3);
-      price = parseInt(price);
-      price = price.toString() + " nghìn/ 1 tháng";
-    } else {
+      price = parseInt(price, 10);
+      price = price.toString() + " nghìn";
+    } else if (1000000 <= price && price < 1000000000) {
       price = price.toString().substring(0, price.toString().length - 5);
-      price = parseInt(price);
+      price = parseInt(price, 10);
       price /= 10;
-      price = price.toString() + " triệu/ 1 tháng";
+      price = price.toString() + " triệu";
+    } else if (price >= 1000000000) {
+      price = price.toString().substring(0, price.toString().length - 8);
+      price = parseInt(price, 10);
+      price /= 10;
+      price = price.toString() + " tỷ";
     }
     return price;
   };
@@ -269,6 +276,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: BUTTON_COLORS.colorPicked,
     marginBottom: 8,
+    paddingLeft: 8,
   },
   detailField: {
     paddingHorizontal: 12,
@@ -276,12 +284,13 @@ const styles = StyleSheet.create({
   info: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 12,
+    marginLeft: 6,
   },
   infoText: {
-    marginLeft: 8,
+    marginLeft: 18,
     fontSize: 16,
     color: "gray",
+    flex: 1,
   },
   utilitiesField: {
     marginTop: 12,
@@ -290,6 +299,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "700",
     marginBottom: 10,
+    paddingLeft: 8,
   },
   utilities: {
     flexDirection: "row",
@@ -302,6 +312,7 @@ const styles = StyleSheet.create({
   },
   detailInfo: {
     fontSize: 16,
+    paddingLeft: 8,
   },
 });
 
